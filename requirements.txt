@@ -1,0 +1,4 @@
+Django>=4.2,<4.3
+wagtail>=5.1,<5.2
+wagtail-markdown==0.10.0
+python-webpack-boilerplate==1.0.0
