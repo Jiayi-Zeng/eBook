@@ -1,4 +1,4 @@
-# eTextBook
+# eBook
 ## Getting started
 ```bash
 git clone https://github.com/Jiayi-Zeng/eBook.git
