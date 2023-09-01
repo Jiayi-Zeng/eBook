@@ -1,5 +1,5 @@
 # eBook
-This is a eBook website based on Wagtail.
+This is a eBook website based on [Wagtail](https://wagtail.org/).
 ## Getting started
 ```bash
 git clone https://github.com/Jiayi-Zeng/eBook.git
@@ -9,4 +9,4 @@ python manage.py runserver
 ```
 ## TODO
 - [ ] Frontend: Bootstrap + Vue
-- [ ] Online Answering Questions System
+- [ ] Online Questions Answering System
