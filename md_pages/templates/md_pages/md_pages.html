@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailmarkdown %}
+
+{% block body_class %}template-mdpages{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <div class="body">{{ self.body|markdown }}</div>
+
+{% endblock %}

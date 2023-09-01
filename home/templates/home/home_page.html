@@ -8,4 +8,7 @@
 <!-- replace everything below with: -->
 {% block content %}
     {{ page.body|richtext }}
+    {% for post in page.get_children %}
+        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+    {% endfor %}
 {% endblock %}
