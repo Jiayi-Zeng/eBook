@@ -108,6 +108,7 @@
 
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 3.5rem;">
             <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                
                 <li class="nav-item">
                     <a href="/" class="nav-link active py-3 border-bottom rounded-0" aria-current="page" title="Home"
                         data-bs-toggle="tooltip" data-bs-placement="right">
@@ -116,22 +117,72 @@
                         </svg>
                     </a>
                 </li>
+
                 <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Exercise" data-bs-toggle="tooltip"
-                        data-bs-placement="right">
+                    <a href="#offcanvasExample" class="nav-link py-3 border-bottom rounded-0" title="Exercise" data-bs-toggle="offcanvas"
+                        data-bs-placement="right" role="button" aria-controls="offcanvasExample">
                         <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Dashboard">
                             <use xlink:href="#speedometer2" />
                         </svg>
                     </a>
+
+                    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false"tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Exercise</h5>
+                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                          <div>
+                            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                          </div>
+                          <div class="dropdown mt-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                              Dropdown button
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                 </li>
+
+
                 <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="GPT" data-bs-toggle="tooltip"
-                        data-bs-placement="right">
+                    <a href="#offcanvasExample" class="nav-link py-3 border-bottom rounded-0" title="Exercise" data-bs-toggle="offcanvas"
+                        data-bs-placement="right" role="button" aria-controls="offcanvasExample">
                         <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Orders">
                             <use xlink:href="#table" />
                         </svg>
                     </a>
+
+                    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false"tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                          <h5 class="offcanvas-title" id="offcanvasExampleLabel">GPT</h5>
+                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                          <div>
+                            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                          </div>
+                          <div class="dropdown mt-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                              Dropdown button
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                 </li>
+
+
+
                 <li>
                     <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Products" data-bs-toggle="tooltip"
                         data-bs-placement="right">
