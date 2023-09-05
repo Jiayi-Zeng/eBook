@@ -13,7 +13,7 @@ class Pages(Page):
         InlinePanel('questions', label="Questions"),
     ]
 
-class BlogPageGalleryImage(Orderable):
+class Questions(Orderable):
     page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='questions')
     
     question = RichTextField(blank=True)
