@@ -24,16 +24,18 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
+    # Local apps
     "pages",
     "book",
     "home",
     "md_pages",
     "search",
-    'wagtailmarkdown',
-    
+    "chatbot",
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'wagtailmarkdown',
 
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",

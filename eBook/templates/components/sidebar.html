@@ -142,14 +142,27 @@
                     </div>
                 </li>
 
-                <!-- 3  -->
+                <!-- 3  ChatBot-->
                 <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Products" data-bs-toggle="tooltip"
-                        data-bs-placement="right">
+                    <a href="#offcanvas-chatBot" class="nav-link py-3 border-bottom rounded-0" title="Exercise"
+                        data-bs-toggle="offcanvas" data-bs-placement="right" role="button"
+                        aria-controls="offcanvasExample">
                         <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Products">
                             <use xlink:href="#grid" />
                         </svg>
                     </a>
+
+                    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                        id="offcanvas-chatBot" aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                            <h4 class="offcanvas-title" id="offcanvasExampleLabel">Question? Let's Chat!</h4>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        
+                        <div class="offcanvas-body">
+                            {% include 'chatbot/chatbot.html' %}
+                        </div>
+                    </div>
                 </li>
 
                 <!-- 4 -->
