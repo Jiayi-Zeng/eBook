@@ -33,8 +33,6 @@
 <body class="{% block body_class %}{% endblock %}">
     {% wagtailuserbar %}
 
-    <!-- <div class="d-flex flex-nowrap"> -->
-
     <div class="container">
         <div class="row align-items-start">
             <div class="col">
@@ -46,17 +44,11 @@
         </div>
     </div>
     
-    
-    <!-- {% include 'components/footer.html' %} -->
-
-
     {# Global javascript #}
+    
     <script src="{% static 'js/eBook.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/sidebars.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %} "
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
 
     {% block extra_js %}
     {# Override this in templates to add extra javascript #}

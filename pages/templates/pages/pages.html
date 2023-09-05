@@ -9,34 +9,14 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="container">
     <div class="row">
-        <!-- <div class="col-8"> -->
-            <div id="context">
-                <h1>{{ page.title }}</h1>
-                <div class="body">{{ page.body|richtext }}</div>
-            </div>
-        <!-- </div> -->
-
-        <!-- <div class="col-4">
-            <div id="options">
-                
-            </div>
-        </div> -->
+        <div id="context">
+            <h1>{{ page.title }}</h1>
+            <div class="body">{{ page.body|richtext }}</div>
+        </div>
+    </div>
 </div>
-
-<!-- <div class="wrapper">
-    <div class="pane left">
-        <h1>{{ page.title }}</h1>
-        <div class="body">{{ page.body|richtext }}</div>
-    </div>
-    <div class="pane right">
-        <h5>xxxx</h5>
-      <div class="gutter"></div>
-    </div>
-  </div> -->
-
 {% endblock %}
 
 {% block extra_js %}
