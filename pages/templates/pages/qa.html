@@ -1,9 +1,10 @@
 {% load wagtailcore_tags static%}
 
+{% if page.multipleChoice.count > 0 %}
 <h5>选择题</h5>
 <div class="accordion accordion-flush" id="multipleChoice">
     {% for item in page.multipleChoice.all %}
-    <div class="accordion-item">
+    <d iv class="accordion-item">
         <h2 class="accordion-header" id="flush-heading-{{ forloop.counter }}">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapse-{{ forloop.counter }}" aria-expanded="false"
@@ -11,6 +12,7 @@
                 Question #{{ forloop.counter }}
             </button>
         </h2>
+
         <div id="flush-collapse-{{ forloop.counter }}" class="accordion-collapse collapse"
             aria-labelledby="flush-heading-{{ forloop.counter }}">
             <div class="accordion-body" style="text-align: left;">
@@ -18,27 +20,27 @@
 
                 <form>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-a">
                         <label class="form-check-label" for="flexRadioDefault1">
                             A {{ item.optionA }}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-b"
                             checked>
                         <label class="form-check-label" for="flexRadioDefault2">
                             B {{ item.optionB }}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-c"
                             checked>
                         <label class="form-check-label" for="flexRadioDefault2">
                             C {{ item.optionC }}
                         </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                    <div class="form-check"> fud
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-d"
                             checked>
                         <label class="form-check-label" for="flexRadioDefault2">
                             D {{ item.optionD }}
@@ -51,8 +53,9 @@
     </div>
     {% endfor %}
 </div>
+{% endif %}
 
-
+{% if page.clozeQuestion.count > 0 %}
 <h5>填空题</h5>
 <div class="accordion accordion-flush" id="clozeQuestion">
     {% for item in page.clozeQuestion.all %}
@@ -81,3 +84,12 @@
     </div>
     {% endfor %}
 </div>
+{% endif %}
+
+{% if page.clozeQuestion.count == 0 and page.multipleChoice.count == 0 %}
+<h5>There are no questions in this page.</h5>
+{% endif %}
+
+{% if page.clozeQuestion == null and page.multipleChoice == null %}
+<h5>There are no questions in this page.</h5>
+{% endif %}

@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/pygments.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/sidebars.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/chatbot.css' %}">    
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
@@ -33,7 +35,6 @@
 
 <body class="{% block body_class %}{% endblock %}">
     {% wagtailuserbar %}
-
     <div class="container">
         <div class="row align-items-start">
             <div class="col">
@@ -48,8 +49,10 @@
     {# Global javascript #}
     
     <script src="{% static 'js/eBook.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
     <script src="{% static 'js/sidebars.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
 
     {% block extra_js %}
     {# Override this in templates to add extra javascript #}
