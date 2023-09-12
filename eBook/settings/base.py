@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "md_pages",
     "search",
     "chatbot",
-    "qa",
+    # "question",
 
     'allauth',
     'allauth.account',

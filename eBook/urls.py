@@ -15,6 +15,7 @@ urlpatterns = [
     path("chat/", include("chatbot.urls", namespace="chatbot")),
     path("search/", search_views.search, name="search"),
     path('', include('allauth.urls')),
+    # path("form/", include("form.urls")),
 ]
 
 

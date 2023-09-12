@@ -1,3 +1,4 @@
+# models.py
 from django.db import models
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
@@ -7,19 +8,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 from wagtail.admin.panels import PublishingPanel
 from wagtail.models import DraftStateMixin, RevisionMixin
 from modelcluster.fields import ParentalKey
-from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
+from pages.models import Pages
 
-class Pages(Page):
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('body'),
-        # InlinePanel('multipleChoice', label="MultipleChoice"),
-        # InlinePanel('clozeQuestion', label="ClozeQuestion"),
-    ]
 
 @register_snippet
-class MultipleChoice(AbstractForm):
+class MultipleChoice(DraftStateMixin, RevisionMixin, models.Model):
     # page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
 
     shortcut = models.CharField(blank=False, max_length=250)
@@ -45,7 +38,7 @@ class MultipleChoice(AbstractForm):
     # end = 
 
 
-    content_panels = AbstractForm.content_panels + [
+    panels = [
         MultiFieldPanel([
             FieldPanel('shortcut'),
             FieldPanel('question'),
@@ -57,6 +50,7 @@ class MultipleChoice(AbstractForm):
                 FieldPanel('option_d'),
                 ], heading="Options"),
         ], heading="Question Info"),
+        PublishingPanel(),
     ]
 
     def __str__(self):
@@ -84,4 +78,3 @@ class ClozeQuestion(Orderable):
 
     class Meta:
         verbose_name_plural = 'ClozeQuestion'
-
