@@ -1,27 +1,23 @@
 from django.db import models
+from django import forms
+from modelcluster.fields import ParentalKey
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.snippets.models import register_snippet
-from django.contrib.contenttypes.fields import GenericRelation
-from wagtail.admin.panels import PublishingPanel
-from wagtail.models import DraftStateMixin, RevisionMixin
-from modelcluster.fields import ParentalKey
-from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
 
 class Pages(Page):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('body'),
-        # InlinePanel('multipleChoice', label="MultipleChoice"),
-        # InlinePanel('clozeQuestion', label="ClozeQuestion"),
+        InlinePanel('multipleChoice', label="MultipleChoice"),
+        InlinePanel('clozeQuestion', label="ClozeQuestion"),
     ]
 
-@register_snippet
-class MultipleChoice(AbstractForm):
-    # page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
-
+class MultipleChoice(Orderable):
+    page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
+    
     shortcut = models.CharField(blank=False, max_length=250)
     question = RichTextField(blank=False)
 
@@ -39,13 +35,12 @@ class MultipleChoice(AbstractForm):
     
     answer = models.CharField(max_length=10, choices=option)
     
-    _revisions = GenericRelation("wagtailcore.Revision", related_query_name="multiple")
     
     # pubilish = 
     # end = 
 
 
-    content_panels = AbstractForm.content_panels + [
+    panels = [
         MultiFieldPanel([
             FieldPanel('shortcut'),
             FieldPanel('question'),
@@ -56,22 +51,19 @@ class MultipleChoice(AbstractForm):
                 FieldPanel('option_c'),
                 FieldPanel('option_d'),
                 ], heading="Options"),
-        ], heading="Question Info"),
+        ], heading="Question Info")
     ]
 
     def __str__(self):
         return self.shortcut
-    
-    @property
-    def revisions(self):
-        return self._revisions
 
     class Meta:
         verbose_name_plural = 'MultipleChoice'
 
 @register_snippet
 class ClozeQuestion(Orderable):
-    # page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='clozeQuestion')
+    page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='clozeQuestion')
+    
     question = RichTextField(blank=True)
     answer = models.CharField(blank=True, max_length=250)
     panels = [
@@ -84,4 +76,3 @@ class ClozeQuestion(Orderable):
 
     class Meta:
         verbose_name_plural = 'ClozeQuestion'
-
