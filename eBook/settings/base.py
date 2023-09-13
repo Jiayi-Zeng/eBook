@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "search",
     "chatbot",
     # "question",
+    "polls",
 
     'allauth',
     'allauth.account',

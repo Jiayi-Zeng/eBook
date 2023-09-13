@@ -14,10 +14,9 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("chat/", include("chatbot.urls", namespace="chatbot")),
     path("search/", search_views.search, name="search"),
+    path("polls/", include("polls.urls")),
     path('', include('allauth.urls')),
-    # path("form/", include("form.urls")),
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
