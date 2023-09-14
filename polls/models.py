@@ -4,17 +4,15 @@ from django.db import models
 from django.utils import timezone
 from wagtail.snippets.models import register_snippet
 from django.contrib.auth.models import User
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel
-from wagtail.snippets.blocks import SnippetChooserBlock
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.models import Page, Orderable
 from modelcluster.models import ClusterableModel
 from modelcluster.fields import ParentalKey
-from wagtail.snippets.views.snippets import SnippetViewSet
-from wagtail.admin.ui.tables import UpdatedAtColumn
-
+from wagtail.contrib.forms.views import SubmissionsListView
 
 @register_snippet
 class Question(ClusterableModel):
+
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField("date published")
     panels = [
@@ -33,7 +31,7 @@ class Question(ClusterableModel):
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
-        
+
 class Choice(Orderable):
     question = ParentalKey(Question, on_delete=models.CASCADE, related_name='choices')
     # question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
@@ -54,5 +52,4 @@ class UserChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
-    list_display = ('user', 'question', 'choice')
-    search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
+  

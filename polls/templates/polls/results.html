@@ -29,11 +29,34 @@
     </ul>
 
     <h2>Submissions</h2>
-    <table>
+    <!-- <form method="get">
+        <input type="text" name="search" placeholder="Search..." value="{{ request.GET.search }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <select onchange="location = this.value;">
+        <option value="?">All Choices</option>
+        {% for choice in question.choices.all %}
+            <option value="?choices={{ choice.id }}" {% if request.GET.question == choice.id|stringformat:"s" %}selected{% endif %}>
+                {{ choice.choice_text }}
+            </option>
+        {% endfor %}
+    </select> -->
+
+
+    <table class="listing listing--inline-actions">
         <thead>
             <tr>
-                <th>User</th>
-                <th>Choice</th>
+                <th>
+                    <a href="?ordering=user" title="Sort by 'User' in ascending order." class="icon icon-arrow-down-after teal">
+                        User
+                    </a>
+                </th>
+                <th>
+                    <a href="?ordering=choice" title="Sort by 'Choice' in ascending order." class="icon icon-arrow-down-after teal">
+                        choice
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -45,5 +68,25 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if user_choices.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ user_choices.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ user_choices.number }} of {{ user_choices.paginator.num_pages }}.
+            </span>
+
+            {% if user_choices.has_next %}
+            <a href="?page={{ user_choices.next_page_number }}">next</a>
+            <a href="?page={{ user_choices.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
 </div>
+<!-- <iframe src="/admin/snippets/polls/userchoice/" height="100%" width="100%"></iframe> -->
 {% endblock %}

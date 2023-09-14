@@ -2,24 +2,28 @@
 {% load wagtailadmin_tags wagtailcore_tags %}
 
 {% block content %}
-    {{ block.super }}  {# This will render the default content #}
+{{ block.super }} {# This will render the default content #}
 
-    <h2>User Answers</h2>
-    <p> {{ instance }}</p>
-    <table>
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Choice</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for userchoice in instance.userchoice_set.all %}
-            <tr>
-                <td>{{ userchoice.user }}</td>
-                <td>{{ userchoice.choice.choice_text }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h2>User Answers</h2>
+<p> {{ instance }}</p>
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Choice</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for userchoice in instance.userchoice_set.all %}
+        <tr>
+            <td>{{ userchoice.user }}</td>
+            <td>{{ userchoice.choice.choice_text }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- <iframe>snippets/polls/userchoice/?question=1</iframe> -->
+<!-- <iframe src="www.baidu.com"></iframe> -->
+
 {% endblock %}

@@ -1,16 +1,20 @@
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail.snippets.models import register_snippet
+from wagtail.snippets.views.snippets import SnippetViewSet
 from wagtail import hooks
 from . import views
 from django.urls import path
+from polls.models import UserChoice
 
-# class UserChoiceAdmin(ModelAdmin):
-#     model = UserChoice
-#     menu_label = 'User Choices'
-#     menu_icon = 'pick'  # Change as required, this is just an example icon
-#     list_display = ('user', 'question', 'choice')
-#     search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
+class UserChoiceAdmin(SnippetViewSet):
+    model = UserChoice
+    menu_label = 'User Choices'
+    menu_icon = 'pick' 
+    
+    list_display = ('question', 'user', 'choice')
+    list_filter = ('question',)
+    search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
 
-# modeladmin_register(UserChoiceAdmin)
+register_snippet(UserChoiceAdmin)
 
 from wagtail.snippets import widgets as wagtailsnippets_widgets
 
