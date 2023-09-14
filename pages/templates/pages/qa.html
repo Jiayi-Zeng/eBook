@@ -18,7 +18,7 @@
             <div class="accordion-body" style="text-align: left;">
                 {{ item.question|richtext }}
 
-                <form action="{% url 'pages:vote' question.id %}" method="post">
+                <form>
                     {% csrf_token %}
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-a">
@@ -44,7 +44,7 @@
                             D {{ item.option_d }}
                         </label>
                     </div>
-                    <input type="submit" value="Vote" class="btn btn-primary">Submit</button>
+                    <button onclick="submitAnswer" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
@@ -91,3 +91,7 @@
 {% if page.clozeQuestion == null and page.multipleChoice == null %}
 <h5>There are no questions in this page.</h5>
 {% endif %}
+
+
+{% block extra_js %}
+{% endblock %}

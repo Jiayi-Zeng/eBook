@@ -70,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    'eBook.settings.csp_middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = "eBook.urls"

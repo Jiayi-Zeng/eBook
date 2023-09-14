@@ -11,68 +11,66 @@ class Pages(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('body'),
-        InlinePanel('multipleChoice', label="MultipleChoice"),
-        InlinePanel('clozeQuestion', label="ClozeQuestion"),
     ]
 
-class MultipleChoice(Orderable):
-    page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
+# class MultipleChoice(Orderable):
+#     page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
     
-    shortcut = models.CharField(blank=False, max_length=250)
-    question = RichTextField(blank=False)
+#     shortcut = models.CharField(blank=False, max_length=250)
+#     question = RichTextField(blank=False)
 
-    option_a = models.CharField(blank=True, max_length=250)
-    option_b = models.CharField(blank=True, max_length=250)
-    option_c = models.CharField(blank=True, max_length=250)
-    option_d = models.CharField(blank=True, max_length=250)
+#     option_a = models.CharField(blank=True, max_length=250)
+#     option_b = models.CharField(blank=True, max_length=250)
+#     option_c = models.CharField(blank=True, max_length=250)
+#     option_d = models.CharField(blank=True, max_length=250)
     
-    option = [
-        ("A", "A"),
-        ("B", "B"),
-        ("C", "C"),
-        ("D", "D"),
-    ]
+#     option = [
+#         ("A", "A"),
+#         ("B", "B"),
+#         ("C", "C"),
+#         ("D", "D"),
+#     ]
     
-    answer = models.CharField(max_length=10, choices=option)
+#     answer = models.CharField(max_length=10, choices=option)
     
     
-    # pubilish = 
-    # end = 
+#     # pubilish = 
+#     # end = 
 
 
-    panels = [
-        MultiFieldPanel([
-            FieldPanel('shortcut'),
-            FieldPanel('question'),
-            FieldPanel('answer'),
-            MultiFieldPanel([
-                FieldPanel('option_a'),
-                FieldPanel('option_b'),
-                FieldPanel('option_c'),
-                FieldPanel('option_d'),
-                ], heading="Options"),
-        ], heading="Question Info")
-    ]
+#     panels = [
+#         MultiFieldPanel([
+#             FieldPanel('shortcut'),
+#             FieldPanel('question'),
+#             FieldPanel('answer'),
+#             MultiFieldPanel([
+#                 FieldPanel('option_a'),
+#                 FieldPanel('option_b'),
+#                 FieldPanel('option_c'),
+#                 FieldPanel('option_d'),
+#                 ], heading="Options"),
+#         ], heading="Question Info")
+#     ]
 
-    def __str__(self):
-        return self.shortcut
+#     def __str__(self):
+#         return self.shortcut
 
-    class Meta:
-        verbose_name_plural = 'MultipleChoice'
+#     class Meta:
+#         verbose_name_plural = 'MultipleChoice'
 
-@register_snippet
-class ClozeQuestion(Orderable):
-    page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='clozeQuestion')
+# @register_snippet
+# class ClozeQuestion(Orderable):
+#     page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='clozeQuestion')
     
-    question = RichTextField(blank=True)
-    answer = models.CharField(blank=True, max_length=250)
-    panels = [
-        FieldPanel('question'),
-        FieldPanel('answer'),
-    ]
+#     question = RichTextField(blank=True)
+#     answer = models.CharField(blank=True, max_length=250)
+#     panels = [
+#         FieldPanel('question'),
+#         FieldPanel('answer'),
+#     ]
 
-    def __str__(self):
-        return self.question
+#     def __str__(self):
+#         return self.question
 
-    class Meta:
-        verbose_name_plural = 'ClozeQuestion'
+#     class Meta:
+#         verbose_name_plural = 'ClozeQuestion'

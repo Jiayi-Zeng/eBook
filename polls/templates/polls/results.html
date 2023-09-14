@@ -1,9 +1,49 @@
-<h1>{{ question.question_text }}</h1>
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %}Result{% endblock %}
 
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
+{% block extra_css %}
+{{ block.super }}
+<style>
+    table.month {
+        margin: 20px;
+    }
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+    table.month td,
+    table.month th {
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include "wagtailadmin/shared/header.html" with title="Result" icon="success" %}
+
+<div class="nice-padding">
+    {{ block.super }} {# This will render the default content #}
+    <h1>{{ question.question_text }}</h1>
+
+    <ul>
+        {% for choice in question.choices.all %}
+        <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Submissions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Choice</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for userchoice in user_choices %}
+            <tr>
+                <td>{{ userchoice.user }}</td>
+                <td>{{ userchoice.choice.choice_text }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
