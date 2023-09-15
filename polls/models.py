@@ -54,5 +54,4 @@ class UserChoice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-
-  
+    submitted_at = models.DateTimeField(auto_now_add=True) 

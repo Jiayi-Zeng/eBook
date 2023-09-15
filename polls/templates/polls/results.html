@@ -43,7 +43,6 @@
         {% endfor %}
     </select> -->
 
-
     <table class="listing listing--inline-actions">
         <thead>
             <tr>
@@ -54,7 +53,12 @@
                 </th>
                 <th>
                     <a href="?ordering=choice" title="Sort by 'Choice' in ascending order." class="icon icon-arrow-down-after teal">
-                        choice
+                        Choice
+                    </a>
+                </th>
+                <th>
+                    <a href="?ordering=submitted_at" title="Sort by 'Submit Time' in ascending order." class="icon icon-arrow-down-after teal">
+                        Submit Time
                     </a>
                 </th>
             </tr>
@@ -64,28 +68,29 @@
             <tr>
                 <td>{{ userchoice.user }}</td>
                 <td>{{ userchoice.choice.choice_text }}</td>
+                <td>{{ userchoice.submitted_at }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <div class="pagination">
+    <!-- <div class="pagination">
         <span class="step-links">
-            {% if user_choices.has_previous %}
+            {% if userchoice.has_previous %}
             <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ user_choices.previous_page_number }}">previous</a>
+            <a href="?page={{ userchoice.previous_page_number }}">previous</a>
             {% endif %}
 
             <span class="current">
-                Page {{ user_choices.number }} of {{ user_choices.paginator.num_pages }}.
+                Page {{ userchoice.number }} of {{ userchoice.paginator.num_pages }}.
             </span>
 
-            {% if user_choices.has_next %}
-            <a href="?page={{ user_choices.next_page_number }}">next</a>
-            <a href="?page={{ user_choices.paginator.num_pages }}">last &raquo;</a>
+            {% if userchoice.has_next %}
+            <a href="?page={{ userchoice.next_page_number }}">next</a>
+            <a href="?page={{ userchoice.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
-    </div>
+    </div> -->
 
 </div>
 <!-- <iframe src="/admin/snippets/polls/userchoice/" height="100%" width="100%"></iframe> -->
