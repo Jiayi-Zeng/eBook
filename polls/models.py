@@ -12,9 +12,12 @@ from wagtail.contrib.forms.views import SubmissionsListView
 
 @register_snippet
 class Question(ClusterableModel):
-
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField("date published")
+    
+    published = models.BooleanField(default=False)
+    published_end_date = models.DateTimeField(null=True, blank=True)
+
     panels = [
         FieldPanel('question_text'),
         FieldPanel('pub_date'),

@@ -6,11 +6,14 @@ from .models import Question, Choice, UserChoice
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
+
+    questions = Question.objects.filter(published=True, pub_date__lte=timezone.now(), published_end_date__gte=timezone.now())
 
     def get_queryset(self):
         """Return the last five published questions."""
@@ -36,11 +39,6 @@ class IndexView(generic.ListView):
 
         return context
     
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = "polls/detail.html"
-
-
 
 class ResultsView(generic.DetailView):
     model = Question
@@ -53,8 +51,8 @@ class ResultsView(generic.DetailView):
         context['user_choices'] = user_choices
         return context
     
-    list_display = ('user', 'question', 'choice')
-    search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
+    # list_display = ('user', 'question', 'choice')
+    # search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
 
 def vote(request, question_id):
     current_user = request.user
