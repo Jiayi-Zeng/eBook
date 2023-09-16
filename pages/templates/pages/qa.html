@@ -4,7 +4,7 @@
 <h5>选择题</h5>
 <div class="accordion accordion-flush" id="multipleChoice">
     {% for item in page.multipleChoice.all %}
-    <d iv class="accordion-item">
+    <div class="accordion-item">
         <h2 class="accordion-header" id="flush-heading-{{ forloop.counter }}">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapse-{{ forloop.counter }}" aria-expanded="false"
@@ -19,34 +19,32 @@
                 {{ item.question|richtext }}
 
                 <form>
+                    {% csrf_token %}
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-a">
                         <label class="form-check-label" for="flexRadioDefault1">
-                            A {{ item.optionA }}
+                            A {{ item.option_a }}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-b"
-                            checked>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-b" checked>
                         <label class="form-check-label" for="flexRadioDefault2">
-                            B {{ item.optionB }}
+                            B {{ item.option_b }}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-c"
-                            checked>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-c" checked>
                         <label class="form-check-label" for="flexRadioDefault2">
-                            C {{ item.optionC }}
+                            C {{ item.option_c }}
                         </label>
                     </div>
-                    <div class="form-check"> fud
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-d"
-                            checked>
+                    <div class="form-check"> 
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option-d" checked>
                         <label class="form-check-label" for="flexRadioDefault2">
-                            D {{ item.optionD }}
+                            D {{ item.option_d }}
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button onclick="submitAnswer" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
@@ -76,7 +74,7 @@
                     <div class="mb-3">
                         <label for="answer-input" class="form-label">答案</label>
                         <input type="text" class="form-control" id="answer-input{{ forloop.counter }}">
-                      </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -93,3 +91,7 @@
 {% if page.clozeQuestion == null and page.multipleChoice == null %}
 <h5>There are no questions in this page.</h5>
 {% endif %}
+
+
+{% block extra_js %}
+{% endblock %}

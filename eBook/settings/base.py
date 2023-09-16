@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     "md_pages",
     "search",
     "chatbot",
-    "qa",
+    # "question",
+    "polls",
 
     'allauth',
     'allauth.account',
@@ -58,6 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # 'wagtail.contrib.modeladmin',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +72,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    'eBook.settings.csp_middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = "eBook.urls"
