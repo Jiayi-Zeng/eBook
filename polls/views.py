@@ -1,12 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 from django.urls import reverse
-from .models import Question, Choice, UserChoice
+from .models import Question, Choice, UserChoice, Publish, PublishQuestionForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
+from wagtail.contrib.modeladmin.views import DeleteView
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -39,7 +40,6 @@ class IndexView(generic.ListView):
 
         return context
     
-
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
@@ -50,9 +50,7 @@ class ResultsView(generic.DetailView):
         user_choices = UserChoice.objects.filter(question=question)
         context['user_choices'] = user_choices
         return context
-    
-    # list_display = ('user', 'question', 'choice')
-    # search_fields = ('user__username', 'question__question_text', 'choice__choice_text')
+
 
 def vote(request, question_id):
     current_user = request.user
@@ -84,3 +82,22 @@ def vote(request, question_id):
             user_choice = UserChoice(user=current_user, question_id=question_id, choice=selected_choice)
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
+
+class PublishView(generic.DetailView):
+    # model = Publish
+    # template_name = "polls/publish.html"
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     question = self.get_object()
+    #     context['question'] = question
+    #     return context
+
+    model = Question
+    template_name = "polls/publish.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        publish_instance = self.get_object()
+        context['question'] = publish_instance.question
+        return context

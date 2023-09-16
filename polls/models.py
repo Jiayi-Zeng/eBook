@@ -1,5 +1,5 @@
 import datetime
-
+from django import forms
 from django.db import models
 from django.utils import timezone
 from wagtail.snippets.models import register_snippet
@@ -55,3 +55,26 @@ class UserChoice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     submitted_at = models.DateTimeField(auto_now_add=True) 
+
+class Publish(models.Model):
+    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='publish')
+    are_you_sure = models.BooleanField(default=False, help_text="Are you sure you want to schedule the publication?")
+    delay_duration = models.DurationField(help_text="Duration to wait before the question should be published.")
+    
+    panels = [
+        FieldPanel('are_you_sure'),
+        FieldPanel('delay_duration'),
+    ]
+
+    def __str__(self):
+        return f"Publication schedule for {self.question.question_text}"
+
+    class Meta:
+        verbose_name = "Publication Schedule"
+        verbose_name_plural = "Publication Schedules"
+
+class PublishQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Publish
+        fields = ['are_you_sure', 'delay_duration']
+
