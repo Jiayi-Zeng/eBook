@@ -2,12 +2,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 from django.urls import reverse
-from .models import Question, Choice, UserChoice, Publish, PublishQuestionForm
+from .models import Question, Choice, UserChoice, Publish, PublishForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
-from wagtail.contrib.modeladmin.views import DeleteView
+from django.views.generic.edit import FormView
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -83,21 +83,23 @@ def vote(request, question_id):
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
 
-class PublishView(generic.DetailView):
-    # model = Publish
-    # template_name = "polls/publish.html"
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     question = self.get_object()
-    #     context['question'] = question
-    #     return context
-
-    model = Question
+class PublishView(FormView):
+    form_class = PublishForm
     template_name = "polls/publish.html"
+    success_url = '/some-success-url/'  
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        publish_instance = self.get_object()
-        context['question'] = publish_instance.question
-        return context
+            context = super().get_context_data(**kwargs)
+            question_id = self.kwargs['pk']
+            question = Question.objects.get(pk=question_id)
+            context['question_text'] = question.question_text
+            return context
+
+
+    def form_valid(self, form):
+        question_id = self.kwargs['question_id']
+        question= Question.objects.get(pk=question_id)
+
+        Publish.objects.create(question=question, delay_duration=form.cleaned_data['duration'])
+        # publish.save()  
+        return super().form_valid(form)

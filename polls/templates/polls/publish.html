@@ -1,13 +1,40 @@
 {% extends "wagtailadmin/base.html" %}
+{% block titletag %}Result{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<style>
+    table.month {
+        margin: 20px;
+    }
+
+    table.month td,
+    table.month th {
+        padding: 5px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-    <h1>Are you sure you want to publish this question?</h1>
-    <!-- <p>{{ question.question_text }}</p> -->
-    
-    <!-- <form method="post">
+{% include "wagtailadmin/shared/header.html" with title="Result" icon="success" %}
+
+<div class="nice-padding">
+    {{ block.super }} 
+    <h1>Are you sure you want to publish this question -- {{ question_text }}?</h1>
+    <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="action" value="Publish">
-        <input type="submit" name="action" value="Cancel">
-    </form> -->
+        {% csrf_token %}
+
+        <label for="{{ form.duration.id_for_label }}">Duration:</label>
+        <input type="text" name="{{ form.duration.name }}" id="{{ form.duration.id_for_label }}" placeholder="e.g. 15min 45s">
+        {% if form.duration.errors %}
+            <div class="error">
+                {{ form.duration.errors }}
+            </div>
+        {% endif %}
+        <button type="submit" value="publish" class="btn btn-primary">Publish</button>
+        <button type="submit" value="cancel" class="btn btn-primary">Cancel</button>
+    </form>
+    
+</div>
 {% endblock %}

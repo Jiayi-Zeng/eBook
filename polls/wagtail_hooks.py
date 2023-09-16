@@ -3,7 +3,7 @@ from wagtail.snippets.views.snippets import SnippetViewSet
 from wagtail import hooks
 from . import views
 from django.urls import path
-from polls.models import UserChoice, Publish, Question, PublishQuestionForm
+from polls.models import UserChoice, Publish, Question
 from wagtail.contrib.modeladmin.views import CreateView
 
 from wagtail.snippets import widgets as wagtailsnippets_widgets

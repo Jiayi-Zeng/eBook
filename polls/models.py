@@ -49,7 +49,6 @@ class Choice(Orderable):
     def __str__(self):
         return self.choice_text
     
-
 class UserChoice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -57,24 +56,15 @@ class UserChoice(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True) 
 
 class Publish(models.Model):
-    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='publish')
-    are_you_sure = models.BooleanField(default=False, help_text="Are you sure you want to schedule the publication?")
+    publish_id = models.IntegerField(default=0)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     delay_duration = models.DurationField(help_text="Duration to wait before the question should be published.")
     
-    panels = [
-        FieldPanel('are_you_sure'),
-        FieldPanel('delay_duration'),
-    ]
-
-    def __str__(self):
-        return f"Publication schedule for {self.question.question_text}"
-
-    class Meta:
-        verbose_name = "Publication Schedule"
-        verbose_name_plural = "Publication Schedules"
-
-class PublishQuestionForm(forms.ModelForm):
-    class Meta:
-        model = Publish
-        fields = ['are_you_sure', 'delay_duration']
-
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            max_id = Publish.objects.all().aggregate(max_id=models.Max('publish_id'))['max_id'] or 0
+            self.publish_id = max_id + 1
+        super(Publish, self).save(*args, **kwargs)
+class PublishForm(forms.Form):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    duration = forms.DurationField()
