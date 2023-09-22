@@ -12,6 +12,7 @@ from wagtail.snippets import widgets as wagtailsnippets_widgets
 @hooks.register('register_snippet_listing_buttons')
 def snippet_history_buttons(snippet, user, next_url=None):
     question_id = snippet.id
+    
 
     url = f"/admin/snippets/polls/{question_id}"
 
@@ -24,14 +25,29 @@ def snippet_history_buttons(snippet, user, next_url=None):
 @hooks.register('register_snippet_listing_buttons')
 def snippet_publish_buttons(snippet, user, next_url=None):
     question_id = snippet.id
+    is_published = snippet.published
 
-    url = f"/admin/snippets/polls/publish/{question_id}"
+    
+
+    if is_published:
+        # Snippet is published, generate an "Unpublish" button
+        button_text = 'Unpublish'
+        url = f"/admin/snippets/polls/publish/{question_id}"
+    else:
+        # Snippet is not published, generate a "Publish" button
+        button_text = 'Publish'
+        url = f"/admin/snippets/polls/publish/{question_id}"
 
     yield wagtailsnippets_widgets.SnippetListingButton(
-        'Publish',
+        button_text,
         url,
         priority=10
     )
+
+
+
+
+       
 
 @hooks.register('register_admin_urls')
 def register_history_url():
@@ -41,8 +57,16 @@ def register_history_url():
 
 @hooks.register('register_admin_urls')
 def register_publish_url():
-    return [
-        path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
-    ]
+    questions = Question.objects.all()
+
+    for question in questions:
+        if not question.published:
+            # If the question is published, create a URL pattern with a different name and path
+            return [
+                path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
+            ]
+        else: # question.published
+            path('snippets/polls/publish/<int:pk>/', views.publish, name='unpublish'),
+
 
 
