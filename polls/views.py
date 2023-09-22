@@ -117,3 +117,16 @@ def publish(request, pk):
 
     return  HttpResponseRedirect('/admin/snippets/polls/question/')
 
+
+def unpublish(request, pk):
+    snippet = get_object_or_404(Question, pk=pk)
+
+    if snippet.published:
+        snippet.published = False
+        snippet.save()
+        messages.success(request, f'Snippet "{snippet.question_text}" unpublished successfully.')
+    else:
+        messages.warning(request, f'Snippet "{snippet.question_text}" is already unpublished.')
+
+    return  HttpResponseRedirect('/admin/snippets/polls/question/')
+

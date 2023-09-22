@@ -27,12 +27,10 @@ def snippet_publish_buttons(snippet, user, next_url=None):
     question_id = snippet.id
     is_published = snippet.published
 
-    
-
     if is_published:
         # Snippet is published, generate an "Unpublish" button
         button_text = 'Unpublish'
-        url = f"/admin/snippets/polls/publish/{question_id}"
+        url = f"/admin/snippets/polls/unpublish/{question_id}"
     else:
         # Snippet is not published, generate a "Publish" button
         button_text = 'Publish'
@@ -43,11 +41,6 @@ def snippet_publish_buttons(snippet, user, next_url=None):
         url,
         priority=10
     )
-
-
-
-
-       
 
 @hooks.register('register_admin_urls')
 def register_history_url():
@@ -65,8 +58,14 @@ def register_publish_url():
             return [
                 path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
             ]
-        else: # question.published
-            path('snippets/polls/publish/<int:pk>/', views.publish, name='unpublish'),
 
+@hooks.register('register_admin_urls')
+def register_unpublish_url():
+    questions = Question.objects.all()
 
+    for question in questions:
+        if question.published:
+            return [
+                path('snippets/polls/unpublish/<int:pk>/', views.unpublish, name='unpublish'),
+            ]
 
