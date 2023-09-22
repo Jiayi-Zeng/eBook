@@ -15,7 +15,6 @@ class Question(ClusterableModel):
     question_text = models.CharField(max_length=200)
     
     published = models.BooleanField(default=False)
-    published_end_date = models.DateTimeField(null=True, blank=True)
 
     panels = [
         FieldPanel('question_text'),
@@ -52,13 +51,9 @@ class UserChoice(models.Model):
 class Publish(models.Model):
     publish_id = models.IntegerField(default=0)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    delay_duration = models.DurationField(help_text="Duration to wait before the question should be published.")
     
     def save(self, *args, **kwargs):
         if not self.pk:
             max_id = Publish.objects.all().aggregate(max_id=models.Max('publish_id'))['max_id'] or 0
             self.publish_id = max_id + 1
         super(Publish, self).save(*args, **kwargs)
-class PublishForm(forms.Form):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    duration = forms.DurationField()
