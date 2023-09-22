@@ -14,11 +14,11 @@ class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
-    questions = Question.objects.filter(published=True, pub_date__lte=timezone.now(), published_end_date__gte=timezone.now())
+    questions = Question.objects.filter(published=True)
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by("-pub_date")[:5]
+        return Question.objects.filter(published=True)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -103,3 +103,17 @@ class PublishView(FormView):
         Publish.objects.create(question=question, delay_duration=form.cleaned_data['duration'])
         # publish.save()  
         return super().form_valid(form)
+
+
+def publish(request, pk):
+    snippet = get_object_or_404(Question, pk=pk)
+
+    if not snippet.published:
+        snippet.published = True
+        snippet.save()
+        messages.success(request, f'Snippet "{snippet.question_text}" published successfully.')
+    else:
+        messages.warning(request, f'Snippet "{snippet.question_text}" is already published.')
+
+    return  HttpResponseRedirect('/admin/snippets/polls/question/')
+

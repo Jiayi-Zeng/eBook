@@ -5,6 +5,7 @@ from . import views
 from django.urls import path
 from polls.models import UserChoice, Publish, Question
 from wagtail.contrib.modeladmin.views import CreateView
+from django.shortcuts import get_object_or_404
 
 from wagtail.snippets import widgets as wagtailsnippets_widgets
 
@@ -41,7 +42,7 @@ def register_history_url():
 @hooks.register('register_admin_urls')
 def register_publish_url():
     return [
-        path('snippets/polls/publish/<int:pk>/', views.PublishView.as_view(), name='publish'),
+        path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
     ]
 
 
