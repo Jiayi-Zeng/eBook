@@ -85,14 +85,14 @@ def vote(request, question_id):
 
 
 def publish(request, pk):
-    snippet = get_object_or_404(Question, pk=pk)
+    question = get_object_or_404(Question, pk=pk)
 
-    if not snippet.published:
-        snippet.published = True
-        snippet.save()
-        messages.success(request, f'Snippet "{snippet.question_text}" published successfully.')
+    if not question.published:
+        question.published = True
+        question.save()
+        messages.success(request, f'Snippet "{question.question_text}" published successfully.')
     else:
-        messages.warning(request, f'Snippet "{snippet.question_text}" is already published.')
+        messages.warning(request, f'Snippet "{question.question_text}" is already published.')
 
     return  HttpResponseRedirect('/admin/snippets/polls/question/')
 
