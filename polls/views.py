@@ -12,7 +12,7 @@ from django.views.generic.edit import FormView
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
-    context_object_name = "latest_question_list"
+    context_object_name = "question_list"
 
     questions = Question.objects.filter(published=True)
 
@@ -69,7 +69,7 @@ def vote(request, question_id):
             # Redisplay the question voting form.
             return render(
                 request,
-                "polls/detail.html",
+                "polls/index.html",
                 {
                     "question": question,
                     "error_message": "You didn't select a choice.",
@@ -83,10 +83,13 @@ def vote(request, question_id):
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
 
-
+    
 def publish(request, pk):
     question = get_object_or_404(Question, pk=pk)
 
+    new_publish = Publish(question=question)
+    new_publish.save()  
+    
     if not question.published:
         question.published = True
         question.save()
@@ -107,5 +110,5 @@ def unpublish(request, pk):
     else:
         messages.warning(request, f'Snippet "{snippet.question_text}" is already unpublished.')
 
-    return  HttpResponseRedirect('/admin/snippets/polls/question/')
+    return HttpResponseRedirect('/admin/snippets/polls/question/')
 

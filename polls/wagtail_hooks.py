@@ -13,14 +13,20 @@ from wagtail.snippets import widgets as wagtailsnippets_widgets
 def snippet_history_buttons(snippet, user, next_url=None):
     question_id = snippet.id
     
-
-    url = f"/admin/snippets/polls/{question_id}"
+    url = f"/admin/snippets/polls/{question_id}/"
 
     yield wagtailsnippets_widgets.SnippetListingButton(
         'History',
         url,
         priority=15
     )
+
+@hooks.register('register_admin_urls')
+def register_history_url():
+    return [
+        path('snippets/polls/<int:pk>/', views.ResultsView.as_view(), name='history'),
+    ]
+
 
 @hooks.register('register_snippet_listing_buttons')
 def snippet_publish_buttons(snippet, user, next_url=None):
@@ -29,24 +35,18 @@ def snippet_publish_buttons(snippet, user, next_url=None):
 
     if is_published:
         # Snippet is published, generate an "Unpublish" button
-        button_text = 'Unpublish'
-        url = f"/admin/snippets/polls/unpublish/{question_id}"
+        button_text = 'End'
+        url = f"/admin/snippets/polls/end/{question_id}/"
     else:
         # Snippet is not published, generate a "Publish" button
         button_text = 'Publish'
-        url = f"/admin/snippets/polls/publish/{question_id}"
+        url = f"/admin/snippets/polls/publish/{question_id}/"
 
     yield wagtailsnippets_widgets.SnippetListingButton(
         button_text,
         url,
         priority=10
     )
-
-@hooks.register('register_admin_urls')
-def register_history_url():
-    return [
-        path('snippets/polls/<int:pk>', views.ResultsView.as_view(), name='history'),
-    ]
 
 @hooks.register('register_admin_urls')
 def register_publish_url():
@@ -57,15 +57,11 @@ def register_publish_url():
             # If the question is published, create a URL pattern with a different name and path
             return [
                 path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
+                # path('', views.publish, name='publish'),
             ]
-
-@hooks.register('register_admin_urls')
-def register_unpublish_url():
-    questions = Question.objects.all()
-
-    for question in questions:
-        if question.published:
+        else:
             return [
-                path('snippets/polls/unpublish/<int:pk>/', views.unpublish, name='unpublish'),
+                path('snippets/polls/end/<int:pk>/', views.unpublish, name='end'),
+                # path('', views.unpublish, name='end'),
             ]
 

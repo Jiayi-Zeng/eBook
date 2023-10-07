@@ -49,7 +49,7 @@ class UserChoice(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True) 
 
 class Publish(models.Model):
-    publish_id = models.IntegerField(default=0)
+    publish_id = models.AutoField(primary_key=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     
     def save(self, *args, **kwargs):
