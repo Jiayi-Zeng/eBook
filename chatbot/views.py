@@ -59,11 +59,9 @@ def chat_view(request):
         { "role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020." },
         { "role": "user", "content": "Where was it played?" }
     ]
-
-    conversation_json = json.dumps(conversation)
-
+    
     context = {
-        'conversation_json': conversation_json
+        'conversation': conversation
     }
 
     return render(request, 'chatbot/chatbot.html', context)

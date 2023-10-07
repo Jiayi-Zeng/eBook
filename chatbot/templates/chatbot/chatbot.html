@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
-    <!-- Include jQuery and any other necessary dependencies here -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -14,6 +13,7 @@
         </div>
         <div class="card-body" id="history" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px; overflow: auto;">
             <!-- Messages will be displayed here -->
+            <p>{{ context.conversation }}</p>
         </div>
         <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3"
@@ -92,4 +92,4 @@
         });
     </script>
 </body>
-</html>
+<!-- </html> -->
