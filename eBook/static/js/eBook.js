@@ -6,8 +6,3 @@
 // document.oncopy = function(){ return false; };
 // // 禁止剪切
 // document.oncut = function(){ return false; };
-
-$('#context').resizable({
-    handles: 'e',
-    alsoResizeReverse: '#options'
-  });
