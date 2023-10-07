@@ -13,7 +13,6 @@ from wagtail.contrib.forms.views import SubmissionsListView
 @register_snippet
 class Question(ClusterableModel):
     question_text = models.CharField(max_length=200)
-    
     published = models.BooleanField(default=False)
 
     panels = [
@@ -42,18 +41,20 @@ class Choice(Orderable):
     def __str__(self):
         return self.choice_text
     
+class Publish(models.Model):
+    publish_id = models.AutoField(primary_key=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    
+    def save(self, *args, **kwargs):
+        # if not self.pk:
+        #     max_id = Publish.objects.all().aggregate(max_id=models.Max('publish_id'))['max_id'] or 0
+        #     self.publish_id = max_id + 1
+        super(Publish, self).save(*args, **kwargs)
+
 class UserChoice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     submitted_at = models.DateTimeField(auto_now_add=True) 
-
-class Publish(models.Model):
-    publish_id = models.AutoField(primary_key=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            max_id = Publish.objects.all().aggregate(max_id=models.Max('publish_id'))['max_id'] or 0
-            self.publish_id = max_id + 1
-        super(Publish, self).save(*args, **kwargs)
+    publish_id = models.ForeignKey(Publish, on_delete=models.CASCADE)

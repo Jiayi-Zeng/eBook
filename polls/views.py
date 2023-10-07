@@ -12,29 +12,28 @@ from django.views.generic.edit import FormView
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
-    context_object_name = "question_list"
-
-    questions = Question.objects.filter(published=True)
+    context_object_name = "republished_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions."""
+        """Return the published questions."""
+        # publish_objects = Publish.objects.filter(status=True)
+        # publish_questions = publish_objects.values_list('question', flat=True)
+        # return publish_questions
         return Question.objects.filter(published=True)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get all questions
-        all_questions = Question.objects.all()
-
         # Check which questions the user has answered
         if self.request.user.is_authenticated:
-            answered_questions_ids = UserChoice.objects.filter(user=self.request.user).values_list('question_id', flat=True)
+            publish_objects = Publish.objects.filter(status=True)
+            publish_ids = publish_objects.values_list('publish_id', flat=True)
+            answered_questions_ids = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_ids).values_list('question_id', flat=True)
         else:
             answered_questions_ids = []
 
         # Update the context
         context.update({
-            'all_questions': all_questions,
             'answered_questions_ids': answered_questions_ids,
         })
 
@@ -56,7 +55,7 @@ def vote(request, question_id):
     current_user = request.user
 
     # Check if the user has already made a choice for this question
-    existing_choice = UserChoice.objects.filter(user=current_user, question_id=question_id).first()
+    existing_choice = UserChoice.objects.filter(user=current_user, question_id=question_id, publish_id=publish_id).first()
 
     if existing_choice:
         messages.error(request, f'For Question {existing_choice.question}, you have already submitted Option {existing_choice.choice}')
@@ -79,18 +78,18 @@ def vote(request, question_id):
             selected_choice.votes += 1
             selected_choice.save()
             # After saving the selected choice, save a UserChoice record
-            user_choice = UserChoice(user=current_user, question_id=question_id, choice=selected_choice)
+            user_choice = UserChoice(user=current_user, question_id=question_id, choice=selected_choice, publish_id=publish_id)
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
 
     
 def publish(request, pk):
     question = get_object_or_404(Question, pk=pk)
-
-    new_publish = Publish(question=question)
-    new_publish.save()  
     
     if not question.published:
+        new_publish = Publish(question=question, status=True)
+        new_publish.save()  
+
         question.published = True
         question.save()
         messages.success(request, f'Snippet "{question.question_text}" published successfully.')
@@ -101,14 +100,17 @@ def publish(request, pk):
 
 
 def unpublish(request, pk):
-    snippet = get_object_or_404(Question, pk=pk)
+    question = get_object_or_404(Question, pk=pk)
 
-    if snippet.published:
-        snippet.published = False
-        snippet.save()
-        messages.success(request, f'Snippet "{snippet.question_text}" unpublished successfully.')
+    if question.published:
+        new_publish = Publish(question=question, status=False)
+        new_publish.save()  
+
+        question.published = False
+        question.save()
+        messages.success(request, f'Snippet "{question.question_text}" unpublished successfully.')
     else:
-        messages.warning(request, f'Snippet "{snippet.question_text}" is already unpublished.')
+        messages.warning(request, f'Snippet "{question.question_text}" is already unpublished.')
 
     return HttpResponseRedirect('/admin/snippets/polls/question/')
 

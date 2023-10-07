@@ -34,9 +34,9 @@
 </head>
 
 <body>
-    {% if question_list %}
+    {% if republished_question_list %}
         <h5>选择题</h5>
-        {% for question in question_list %}
+        {% for question in republished_question_list %}
             <div class="accordion accordion-flush" id="multipleChoice">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-heading-{{ forloop.counter }}">
@@ -56,7 +56,6 @@
                             {{ question.question_text }}
                             <form action="{% url 'polls:vote' question.id %}" method="post">
                                 {% csrf_token %}
-
                                 {% for choice in question.choices.all %}
                                 <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                 <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
