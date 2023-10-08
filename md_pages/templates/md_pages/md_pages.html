@@ -3,18 +3,18 @@
 {% load wagtailcore_tags static  wagtailmarkdown %}
 
 {% block content %}
+{% with page.get_site.root_page as root %}
 <div class="container-fluid container-docs">
     <!-- Sidenav -->
     <nav class="sidenav navbar navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
         <div class="scrollbar-inner px-4">
             <!-- Navigation -->
             <div class="docs-sidebar pt-6 pt-lg-7">
-                {% if page.get_parent.get_parent %}
-                <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ page.get_parent.get_parent.title }}</a></h5>
-                {% endif %}
-
-                {% for chapter in page.get_parent.get_parent.get_children %}
-                    <h6 class="mt-4">{{ chapter.title }} </h6>
+                {% if root.get_children %}
+                {% for book in root.get_children %}
+                <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ book.title }}</a></h5>
+                {% for chapter in book.get_children %}
+                    <h6 class="mt-4"><a href="{% pageurl chapter %}">{{ chapter.title }}</a></h6>
                     <ul class="nav flex-column">
                         {% for post in chapter.get_children %}
                         <li class="nav-item">
@@ -23,6 +23,8 @@
                         {% endfor %}
                     </ul>
                 {% endfor %}
+                {% endfor %}
+                {% endif %}
 
                 
             </div>
@@ -52,4 +54,5 @@
     </div>
 </div>
 
+{% endwith %}
 {% endblock %}
