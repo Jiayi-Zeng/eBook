@@ -8,17 +8,21 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.models import Page, Orderable
 from modelcluster.models import ClusterableModel
 from modelcluster.fields import ParentalKey
-from wagtail.contrib.forms.views import SubmissionsListView
+from wagtail.snippets.views.snippets import SnippetViewSet
+from md_pages.models import MdPages
+from wagtail.admin.ui.tables import UpdatedAtColumn
 
-@register_snippet
+
+# @register_snippet
 class Question(ClusterableModel):
+    page = ParentalKey(MdPages, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
     published = models.BooleanField(default=False)
 
     panels = [
+        FieldPanel('page'),
         FieldPanel('question_text'),
         InlinePanel('choices', label="Choices"),
-        
     ]
 
     def __str__(self):
@@ -26,6 +30,14 @@ class Question(ClusterableModel):
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
+
+class QuestionViewSet(SnippetViewSet):
+    model = Question
+    icon = "clipboard-list"
+    list_display = ['question_text', 'page', 'published', UpdatedAtColumn()]
+    list_per_page = 50
+
+register_snippet(QuestionViewSet)
 
 class Choice(Orderable):
     question = ParentalKey(Question, on_delete=models.CASCADE, related_name='choices')
@@ -39,6 +51,10 @@ class Choice(Orderable):
 
     def __str__(self):
         return self.choice_text
+
+    class Meta:
+        verbose_name = "Choice"
+        verbose_name_plural = "Choices"
     
 class Publish(models.Model):
     publish_id = models.AutoField(primary_key=True)

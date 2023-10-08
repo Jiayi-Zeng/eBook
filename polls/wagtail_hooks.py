@@ -6,6 +6,8 @@ from django.urls import path
 from polls.models import UserChoice, Publish, Question
 from wagtail.contrib.modeladmin.views import CreateView
 from django.shortcuts import get_object_or_404
+from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+
 
 from wagtail.snippets import widgets as wagtailsnippets_widgets
 
@@ -55,4 +57,4 @@ def register_publish_url():
         path('snippets/polls/end/<int:pk>/', views.unpublish, name='end'),
     ]
                 
-               
+register_snippet(Question)

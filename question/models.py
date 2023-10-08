@@ -13,7 +13,7 @@ from modelcluster.fields import ParentalKey
 
 @register_snippet
 class MultipleChoice(DraftStateMixin, RevisionMixin, models.Model):
-    # page = ParentalKey(Pages, on_delete=models.CASCADE, related_name='multipleChoice')
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name='multipleChoice')
 
     shortcut = models.CharField(blank=False, max_length=250)
     question = RichTextField(blank=False)
