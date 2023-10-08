@@ -30,7 +30,7 @@ class IndexView(generic.ListView):
             publish_objects_ids = Publish.objects.filter(status=True).values_list('publish_id', flat=True)
             answered_publish = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids).values_list('publish_id', flat=True)
             if answered_publish:
-                answered_choice = UserChoice.objects.get(user=self.request.user, publish_id__in=publish_objects_ids).choice.choice_text
+                answered_choice = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids)
             else:
                 answered_choice = []
         else:

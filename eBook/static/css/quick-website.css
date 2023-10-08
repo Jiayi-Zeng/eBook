@@ -10754,7 +10754,7 @@ button.bg-white:focus
 .pb-5,
 .py-5
 {
-    padding-bottom: 3rem !important;
+    /* padding-bottom: 3rem !important; */
 }
 
 .pl-5,
@@ -11712,7 +11712,7 @@ button.bg-white:focus
     .pb-sm-5,
     .py-sm-5
     {
-        padding-bottom: 3rem !important;
+        /* padding-bottom: 3rem !important; */
     }
     .pl-sm-5,
     .px-sm-5
@@ -12580,7 +12580,7 @@ button.bg-white:focus
     .pb-md-5,
     .py-md-5
     {
-        padding-bottom: 3rem !important;
+        /* padding-bottom: 3rem !important; */
     }
     .pl-md-5,
     .px-md-5
@@ -13448,7 +13448,7 @@ button.bg-white:focus
     .pb-lg-5,
     .py-lg-5
     {
-        padding-bottom: 3rem !important;
+        /* padding-bottom: 3rem !important; */
     }
     .pl-lg-5,
     .px-lg-5
@@ -14316,7 +14316,7 @@ button.bg-white:focus
     .pb-xl-5,
     .py-xl-5
     {
-        padding-bottom: 3rem !important;
+        /* padding-bottom: 3rem !important; */
     }
     .pl-xl-5,
     .px-xl-5

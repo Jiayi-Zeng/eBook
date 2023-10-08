@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    
     'wagtailmarkdown',
 
     "wagtail.contrib.forms",
