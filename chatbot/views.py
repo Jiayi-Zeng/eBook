@@ -1,13 +1,13 @@
 # chat/views.py
 
 from django.views.generic import TemplateView
-import openai
+# import openai
 import json
 from django.shortcuts import render
 
-openai.api_key = "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"
+# openai.api_key = "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"
 
-openai.proxy = "http://127.0.0.1:7890"
+# openai.proxy = "http://127.0.0.1:7890"
 
 conversation=[
                 { "role": "system", "content": "You are a helpful assistant." },
@@ -30,24 +30,24 @@ conversation=[
 #     print("\n" + response['choices'][0]['message']['content'] + "\n")
 #     print(conversation)
 
-# class ChatView(TemplateView):
-#     template_name: str = "chatbot/chatbot.html"
+class ChatView(TemplateView):
+    template_name: str = "chatbot/chatbot.html"
 
-#     conversation=[
-#                 { "role": "system", "content": "You are a helpful assistant." },
-#                 { "role": "user", "content": "Who won the world series in 2020?" },
-#                 { "role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020." },
-#                 { "role": "user", "content": "Where was it played?" }
-#             ]
+    conversation=[
+                { "role": "system", "content": "You are a helpful assistant." },
+                { "role": "user", "content": "Who won the world series in 2020?" },
+                { "role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020." },
+                { "role": "user", "content": "Where was it played?" }
+            ]
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-#         context.update({
-#             'conversation': conversation,
-#         })
+        context.update({
+            'conversation': conversation,
+        })
 
-#         return context
+        return context
 
 import json
 from django.shortcuts import render

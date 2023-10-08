@@ -35,6 +35,7 @@ class IndexView(generic.ListView):
                 answered_choice = []
         else:
             answered_publish = []
+            answered_choice = []
 
         # Update the context
         context.update({
@@ -166,3 +167,5 @@ def countVote(publish):
         
     return choice_vote_dict
  
+def example(request):
+    return render(request, "polls/typography.html")

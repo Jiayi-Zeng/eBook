@@ -1,7 +1,7 @@
 // Generative the TOC
 document.addEventListener('DOMContentLoaded', function () {
-    var contentToc = document.getElementById('navbar-example3');
-    var headings = document.querySelectorAll('.body h2, .body h3');
+    var contentToc = document.getElementById('navbar');
+    var headings = document.querySelectorAll('.main-content row position-relative pb-5 h2, .main-content row position-relative pb-5 h3');
 
     // 遍历所有标题元素
     headings.forEach(function (heading) {
@@ -13,14 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 设置标题的锚点ID
         heading.id = titleId;
-
-        // 创建内部链接
-        // var link = document.createElement('h2');
-        // link.href = '#' + titleId;
-        // link.textContent = titleText;
-
-        // // 替换标题元素为带有链接的元素
-        // heading.parentNode.replaceChild(link, heading);
     });
 
 
