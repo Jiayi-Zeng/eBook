@@ -48,16 +48,19 @@ class ResultsView(generic.DetailView):
         
         question = self.get_object()
         
-        all_publish_id = publish_id = Publish.objects.filter(question=question).values_list('publish_id', flat=True)
-        new_publish_id = Publish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
-        publish_object = get_object_or_404(Publish, pk=new_publish_id)
+        publish_id = self.request.GET.get('publish_id')
+        if not publish_id:
+            publish_id = Publish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
+        print(publish_id)
+        publish_object = get_object_or_404(Publish, pk=publish_id)
+        all_publish_id = Publish.objects.filter(question=question).values_list('publish_id', flat=True)
         
         user_choices = UserChoice.objects.filter(publish=publish_object)
         
         context = {
             'user_choices': user_choices,
             'question': question,
-            'new_publish_id': new_publish_id,
+            'publish_id': publish_id,
             'all_publish_id': all_publish_id
         }
         return context

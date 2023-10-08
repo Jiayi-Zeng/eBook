@@ -32,7 +32,6 @@ class Choice(Orderable):
     # question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     
     choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
 
     panels = [
         FieldPanel('choice_text'),
@@ -45,6 +44,7 @@ class Publish(models.Model):
     publish_id = models.AutoField(primary_key=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+    # pubished_at = models.DateTimeField(auto_now_add=True)
     
     def save(self, *args, **kwargs):
         # if not self.pk:
