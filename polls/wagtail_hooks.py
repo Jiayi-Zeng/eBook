@@ -50,18 +50,9 @@ def snippet_publish_buttons(snippet, user, next_url=None):
 
 @hooks.register('register_admin_urls')
 def register_publish_url():
-    questions = Question.objects.all()
-
-    for question in questions:
-        if not question.published:
-            # If the question is published, create a URL pattern with a different name and path
-            return [
-                path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
-                # path('', views.publish, name='publish'),
-            ]
-        else:
-            return [
-                path('snippets/polls/end/<int:pk>/', views.unpublish, name='end'),
-                # path('', views.unpublish, name='end'),
-            ]
-
+    return [
+        path('snippets/polls/publish/<int:pk>/', views.publish, name='publish'),
+        path('snippets/polls/end/<int:pk>/', views.unpublish, name='end'),
+    ]
+                
+               

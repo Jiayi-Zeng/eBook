@@ -34,9 +34,9 @@
 </head>
 
 <body>
-    {% if republished_question_list %}
+    {% if publish_objects %}
         <h5>选择题</h5>
-        {% for question in republished_question_list %}
+        {% for publish_object in publish_objects %}
             <div class="accordion accordion-flush" id="multipleChoice">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-heading-{{ forloop.counter }}">
@@ -50,13 +50,13 @@
                     <div id="flush-collapse-{{ forloop.counter }}" class="accordion-collapse collapse"
                         aria-labelledby="flush-heading-{{ forloop.counter }}">
                         <div class="accordion-body" style="text-align: left;">
-                            {% if question.id in answered_questions_ids %}
-                            <p>You've already answered this question</p>
+                            {% if publish_object.publish_id in answered_publish_ids %}
+                            <p>You've already answered this question.</p>
                             {% else %}
-                            {{ question.question_text }}
-                            <form action="{% url 'polls:vote' question.id %}" method="post">
+                            {{ publish_object.question.question_text }}
+                            <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post" >
                                 {% csrf_token %}
-                                {% for choice in question.choices.all %}
+                                {% for choice in publish_object.question.choices.all %}
                                 <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                 <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                 {% endfor %}
