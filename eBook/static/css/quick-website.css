@@ -261,8 +261,8 @@ figure
 img
 {
     vertical-align: middle;
-
     border-style: none;
+    max-width: 100%;
 }
 
 svg
@@ -501,6 +501,7 @@ h1,
 .h1
 {
     font-size: 2.5rem;
+    margin-bottom: 0px;
 }
 @media (max-width: 1200px)
 {
@@ -508,6 +509,7 @@ h1,
     .h1
     {
         font-size: calc(1.375rem + 1.5vw) ;
+        margin-bottom: 0px;
     }
 }
 

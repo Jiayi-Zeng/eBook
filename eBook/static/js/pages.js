@@ -1,7 +1,7 @@
 // Generative the TOC
 document.addEventListener('DOMContentLoaded', function () {
     var contentToc = document.getElementById('navbar');
-    var headings = document.querySelectorAll('.main-content row position-relative pb-5 h2, .main-content row position-relative pb-5 h3');
+    var headings = document.querySelectorAll('h2, h3');
 
     // 遍历所有标题元素
     headings.forEach(function (heading) {

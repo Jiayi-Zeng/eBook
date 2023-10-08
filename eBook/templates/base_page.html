@@ -1,6 +1,4 @@
-{% load wagtailcore_tags static%}
-
-{% load static wagtailuserbar cache %}
+{% load wagtailcore_tags static wagtailuserbar cache wagtailmarkdown %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Webpixels">
-    <title>Quick – Website UI Kit (FREE)</title>
+    <title>
+        {% block title %}
+        {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+        {% endblock %}
+        {% block title_suffix %}
+        {% with self.get_site.site_name as site_name %}
+        {% if site_name %}- {{ site_name }}{% endif %}
+        {% endwith %}
+        {% endblock %}
+    </title>
+
+    
+
     <!-- Preloader -->
     <style>
         @keyframes hidePreloader {
@@ -61,14 +71,19 @@
         });
     </script>
 
+    {# Global stylesheets #}
     <!-- Favicon -->
     <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
-
     <link rel="stylesheet" href="{% static 'libs/@fortawesome/fontawesome-free/css/all.min.css' %}">
     <!-- Quick CSS -->
     <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
     <!-- Docs CSS - used only for demo -->
     <link rel="stylesheet" href="{% static 'css/docs.css' %}">
+
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+
 </head>
 
 <body class="docs">
@@ -91,13 +106,13 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mt-4 mt-lg-0 ml-auto">
                         <li class="nav-item ">
-                            <a class="nav-link" href="intro_to_cs/">eTextBook</a>
+                            <a class="nav-link" href="/intro_to_cs/">eTextBook</a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link" href="/polls/">Exercise</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="docs/index.html">ChatBot</a>
+                            <a class="nav-link" href="/chat/">ChatBot</a>
                         </li>
                     </ul>
                     <!-- Button -->
@@ -113,56 +128,12 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid container-docs">
-        <!-- Sidenav -->
-        <nav class="sidenav navbar navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
-            <div class="scrollbar-inner px-4">
-                <!-- Navigation -->
-                <div class="docs-sidebar pt-6 pt-lg-7">
-                    {% if page.get_parent.get_parent %}
-                    <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ page.get_parent.get_parent.title }}</a></h5>
-                    {% endif %}
 
-                    {% for chapter in page.get_parent.get_parent.get_children %}
-                        <h6 class="mt-4">{{ chapter.title }} </h6>
-                        <ul class="nav flex-column">
-                            {% for post in chapter.get_children %}
-                            <li class="nav-item">
-                                <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
+    {% block content %}{% endblock %}
 
-                    
-                </div>
-            </div>
-        </nav>
-        <!-- Main content -->
-        <div class="main-content row position-relative pb-5">
-            <div class="col-xl-9 docs-content pb-5">
-                <!-- Docs title -->
-                <div class="docs-title">
-                    <h1>{{ page.title }}</h1>
-                </div>
-                <!-- Docs content -->
-                {{ page.body|richtext }}
-            </div>
-            <!-- Document toc-->
-            <div class="col-xl-3 docs-sidebar d-none d-xl-block">
-                <div class="toc-sidebar pl-4 mt-lg-8 border-left">
-                    <div class="scrollbar-inner">
-                        <h6 class="mb-3">Summary</h6>
-                        <ul class="section-nav" , id="navbar">
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Footer -->
-    <!-- Scripts -->
+
+    {# Global javascript #}
     <!-- Core JS  -->
     <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
@@ -181,6 +152,10 @@
             'height': '1em'
         })
     </script>
+    {% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+    {% endblock %}
+
 </body>
 
 </html>

@@ -1,12 +1,55 @@
-{% extends "base.html" %}
+{% extends "base_page.html" %}
 
-{% load wagtailcore_tags wagtailmarkdown %}
-
-{% block body_class %}template-mdpages{% endblock %}
+{% load wagtailcore_tags static  wagtailmarkdown %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
+<div class="container-fluid container-docs">
+    <!-- Sidenav -->
+    <nav class="sidenav navbar navbar-vertical navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+        <div class="scrollbar-inner px-4">
+            <!-- Navigation -->
+            <div class="docs-sidebar pt-6 pt-lg-7">
+                {% if page.get_parent.get_parent %}
+                <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ page.get_parent.get_parent.title }}</a></h5>
+                {% endif %}
 
-    <div class="body">{{ self.body|markdown }}</div>
+                {% for chapter in page.get_parent.get_parent.get_children %}
+                    <h6 class="mt-4">{{ chapter.title }} </h6>
+                    <ul class="nav flex-column">
+                        {% for post in chapter.get_children %}
+                        <li class="nav-item">
+                            <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </nav>
+    <!-- Main content -->
+    <div class="main-content row position-relative pb-5">
+        <div class="col-xl-9 docs-content pb-5">
+            <!-- Docs title -->
+            <div class="docs-title">
+                <h1>{{ page.title }}</h1>
+            </div>
+            <!-- Docs content -->
+            {{ self.body|markdown }}
+        </div>
+        <!-- Document toc-->
+        <div class="col-xl-3 docs-sidebar d-none d-xl-block">
+            <div class="toc-sidebar pl-4 mt-lg-8 border-left">
+                <div class="scrollbar-inner">
+                    <h6 class="mb-3">Summary</h6>
+                    <ul class="section-nav" , id="navbar">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
