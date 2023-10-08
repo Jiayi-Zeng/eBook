@@ -4,12 +4,6 @@ from wagtailmarkdown.fields import MarkdownField
 
 
 class MdPages(Page):
-    # body = MarkdownField()
-
-    # content_panels = [
-    #     FieldPanel("title", classname="full title"),
-    #     FieldPanel("body"),
-    # ]
 
     body = MarkdownField(blank=True)
 
