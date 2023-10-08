@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.views.generic.edit import FormView
-from django.db.models import Max
+from django.db.models import Max, Count
 
 # @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -55,13 +55,25 @@ class ResultsView(generic.DetailView):
         publish_object = get_object_or_404(Publish, pk=publish_id)
         all_publish_id = Publish.objects.filter(question=question).values_list('publish_id', flat=True)
         
+        choices = Choice.objects.filter(question=question)
+        choice_vote_dict = {choice.choice_text: 0 for choice in choices}
         user_choices = UserChoice.objects.filter(publish=publish_object)
+        choice_counts = user_choices.values('choice').annotate(choice_count=Count('choice'))
+
+        # 现在 choice_counts 包含每个 Choice 的 text 和票数
+        for choice_info in choice_counts:
+            choice_id = choice_info['choice']
+            choice_count = choice_info['choice_count']
+            choice = Choice.objects.get(pk=choice_id)
+            choice_text = choice.choice_text
+            choice_vote_dict[choice_text] = choice_count
         
         context = {
             'user_choices': user_choices,
             'question': question,
             'publish_id': publish_id,
-            'all_publish_id': all_publish_id
+            'all_publish_id': all_publish_id,
+            'choice_vote_dict': choice_vote_dict
         }
         return context
 

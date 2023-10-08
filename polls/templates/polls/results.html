@@ -1,6 +1,6 @@
 {% extends "wagtailadmin/base.html" %}
 
-{% load static %}
+{% load static custom_filters %}
 
 {% block titletag %}Result{% endblock %}
 
@@ -39,8 +39,9 @@
     <h1>{{ question.question_text }} -- {{ publish_id }}</h1>
 
     <ul>
+
         {% for choice in question.choices.all %}
-        <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes| pluralize }}</li>
+        <li>{{ choice.choice_text }} -- {{ choice_vote_dict|get_value_from_key:choice.choice_text }} vote</li>
         {% endfor %}
     </ul>
 
