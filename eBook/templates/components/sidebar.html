@@ -141,8 +141,32 @@
                         </div>
                     </div>
                 </li>
+                
+                <!-- 3 History -->
+                <li>
+                    <a href="#offcanvasHistory" class="nav-link py-3 border-bottom rounded-0" title="History"
+                        data-bs-toggle="offcanvas" data-bs-placement="right" role="button"
+                        aria-controls="offcanvasHistory">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Customers">
+                            <use xlink:href="#people-circle" />
+                        </svg>
+                    </a>
 
-                <!-- 3  ChatBot-->
+                    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                        id="offcanvasHistory" aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                            <h4 class="offcanvas-title" id="offcanvasExampleLabel">History</h4>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="offcanvas-body" >
+                            <iframe src="/polls/history/" height="100%" width="100%"></iframe>
+                        </div>
+                    </div>
+                </li>
+
+                <!--4 History-->
                 <li>
                     <a href="#offcanvas-chatBot" class="nav-link py-3 border-bottom rounded-0" title="Exercise"
                         data-bs-toggle="offcanvas" data-bs-placement="right" role="button"
@@ -164,16 +188,6 @@
                             {% include 'chatbot/chatbot.html' %}
                         </div>
                     </div>
-                </li>
-
-                <!-- 4 TBA -->
-                <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Customers" data-bs-toggle="tooltip"
-                        data-bs-placement="right">
-                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Customers">
-                            <use xlink:href="#people-circle" />
-                        </svg>
-                    </a>
                 </li>
 
             </ul>

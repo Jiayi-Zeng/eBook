@@ -29,17 +29,29 @@ class IndexView(generic.ListView):
         if self.request.user.is_authenticated:
             publish_objects_ids = Publish.objects.filter(status=True).values_list('publish_id', flat=True)
             answered_publish = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids).values_list('publish_id', flat=True)
-            answered_choice = UserChoice.objects.get(user=self.request.user, publish_id__in=publish_objects_ids).choice
+            if answered_publish:
+                answered_choice = UserChoice.objects.get(user=self.request.user, publish_id__in=publish_objects_ids).choice.choice_text
+            else:
+                answered_choice = []
         else:
             answered_publish = []
 
         # Update the context
         context.update({
             'answered_publish': answered_publish,
-            'answered_choice' : answered_choice.choice_text
+            'answered_choice' : answered_choice
         })
 
         return context
+    
+class HistoryView(generic.ListView):
+    template_name = "polls/history.html"
+    context_object_name = "answer_objects"
+
+    def get_queryset(self):
+        """Return the answered questions."""
+        published_history = Publish.objects.filter(status=False)
+        return UserChoice.objects.filter(user=self.request.user, publish__in=published_history)
     
 class ResultsView(generic.DetailView):
     model = Question
@@ -49,27 +61,17 @@ class ResultsView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         
         question = self.get_object()
-        
+        all_publish_id = Publish.objects.filter(question=question).values_list('publish_id', flat=True)
+
         publish_id = self.request.GET.get('publish_id')
         if not publish_id:
             publish_id = Publish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
-        print(publish_id)
+       
         publish_object = get_object_or_404(Publish, pk=publish_id)
-        all_publish_id = Publish.objects.filter(question=question).values_list('publish_id', flat=True)
+        user_choices = UserChoice.objects.filter(publish=publish_id)
         
-        choices = Choice.objects.filter(question=question)
-        choice_vote_dict = {choice.choice_text: 0 for choice in choices}
-        user_choices = UserChoice.objects.filter(publish=publish_object)
-        choice_counts = user_choices.values('choice').annotate(choice_count=Count('choice'))
+        choice_vote_dict = countVote(publish_object)
 
-        # 现在 choice_counts 包含每个 Choice 的 text 和票数
-        for choice_info in choice_counts:
-            choice_id = choice_info['choice']
-            choice_count = choice_info['choice_count']
-            choice = Choice.objects.get(pk=choice_id)
-            choice_text = choice.choice_text
-            choice_vote_dict[choice_text] = choice_count
-        
         context = {
             'user_choices': user_choices,
             'question': question,
@@ -112,7 +114,6 @@ def vote(request, publish_id):
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
 
-    
 def publish(request, pk):
     question = get_object_or_404(Question, pk=pk)
     
@@ -127,7 +128,6 @@ def publish(request, pk):
         messages.warning(request, f'Snippet "{question.question_text}" is already published.')
 
     return  HttpResponseRedirect('/admin/snippets/polls/question/')
-
 
 def unpublish(request, pk):
     question = get_object_or_404(Question, pk=pk)
@@ -147,3 +147,22 @@ def unpublish(request, pk):
 
     return HttpResponseRedirect(f'/admin/snippets/polls/{pk}/')
 
+def countVote(publish):
+    question = Question.objects.get(publish=publish)
+
+    choices = Choice.objects.filter(question=question)
+    choice_vote_dict = {choice.choice_text: 0 for choice in choices}
+    
+    user_choices = UserChoice.objects.filter(publish=publish)
+    choice_counts = user_choices.values('choice').annotate(choice_count=Count('choice'))
+
+    # 现在 choice_counts 包含每个 Choice 的 text 和票数
+    for choice_info in choice_counts:
+        choice_id = choice_info['choice']
+        choice_count = choice_info['choice_count']
+        choice = Choice.objects.get(pk=choice_id)
+        choice_text = choice.choice_text
+        choice_vote_dict[choice_text] = choice_count\
+        
+    return choice_vote_dict
+ 
