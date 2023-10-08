@@ -94,7 +94,7 @@
             id="navbar-main">
             <div class="container">
                 <!-- Brand -->
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="/">
                     <img alt="Image placeholder" src="{% static 'img/brand/dark.svg' %}" id="navbar-logo">
                 </a>
                 <!-- Toggler -->
@@ -117,18 +117,18 @@
                     </ul>
                     <!-- Button -->
                     <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" href="login.html">
-                        Sign in/Sign up
+                        {% if request.user.is_authenticated %}
+                        Hi, {{ request.user.username }}
+                        {% else %}
+                        Hi, guest!
+                        {% endif %}
                     </a>
-                    <!-- Mobile button -->
-                    <div class="d-lg-none text-center">
-                        <a href="https://webpixels.io/themes/quick-website-ui-kit"
-                            class="btn btn-block btn-sm btn-warning">See more details</a>
-                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
+    
     {% block content %}{% endblock %}
 
     <!-- Footer -->

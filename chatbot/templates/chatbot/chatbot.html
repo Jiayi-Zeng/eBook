@@ -1,3 +1,76 @@
+{% extends "base_home.html" %}
+
+{% load wagtailcore_tags static %}
+
+{% block content %}
+
+{% if publish_objects %}
+<div class="tab-example-result">
+    {% for publish_object in publish_objects %}
+    <div id="accordion-{{ forloop.counter }}" class="accordion accordion-stacked">
+        <!-- Accordion card 1 -->
+        <div class="card">
+            <div class="card-header py-4" id="heading-{{ forloop.counter }}-{{ forloop.counter }}"
+                data-toggle="collapse" role="button" data-target="#collapse-{{ forloop.counter }}-{{ forloop.counter }}"
+                aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}-{{ forloop.counter }}">
+                <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>Question #{{ forloop.counter }}
+                </h6>
+            </div>
+            <div id="collapse-{{ forloop.counter }}-{{ forloop.counter }}" class="collapse"
+                aria-labelledby="heading-{{ forloop.counter }}-{{ forloop.counter }}"
+                data-parent="#accordion-{{ forloop.counter }}">
+                <div class="card-body">
+
+                    
+                    <div class="container position-relative zindex-100">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                <h3>Question #{{ forloop.counter }}</h3>
+                                <p class="lh-190">{{ publish_object.question.question_text }}</p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
+                                {% if publish_object.publish_id in answered_publish %}
+                                <div class="row justify-content-center">
+                                    <p>You've already answered this question.</p>
+                                </div>
+                                <!-- <p>Your answer is {{ answered_choice }}. Please wait the end of the publish.</p> -->
+                                {% else %}
+                                <!-- Form -->
+                                <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post">
+                                    {% csrf_token %}
+                                    {% for choice in publish_object.question.choices.all %}
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" class="custom-control-input">
+                                        <label class="custom-control-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="text-center">
+                                        <button type="submit" value="Vote" class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
+                                    </div>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% else %}
+<p>No questions are available now.</p>
+{% endif %}
+{% endif %}
+
+
+{% endblock %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
