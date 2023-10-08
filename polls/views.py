@@ -143,5 +143,5 @@ def unpublish(request, pk):
     else:
         messages.warning(request, f'Snippet "{question.question_text}" is already unpublished.')
 
-    return HttpResponseRedirect('/admin/snippets/polls/question/')
+    return HttpResponseRedirect(f'/admin/snippets/polls/{pk}/')
 
