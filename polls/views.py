@@ -28,13 +28,15 @@ class IndexView(generic.ListView):
         # Check which questions the user has answered
         if self.request.user.is_authenticated:
             publish_objects_ids = Publish.objects.filter(status=True).values_list('publish_id', flat=True)
-            answered_publish_ids = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids).values_list('publish_id', flat=True)
+            answered_publish = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids).values_list('publish_id', flat=True)
+            answered_choice = UserChoice.objects.get(user=self.request.user, publish_id__in=publish_objects_ids).choice
         else:
-            answered_publish_ids = []
+            answered_publish = []
 
         # Update the context
         context.update({
-            'answered_publish_ids': answered_publish_ids,
+            'answered_publish': answered_publish,
+            'answered_choice' : answered_choice.choice_text
         })
 
         return context
@@ -103,7 +105,7 @@ def vote(request, publish_id):
                 },
             )
         else:
-            selected_choice.votes += 1
+            # selected_choice.votes += 1
             selected_choice.save()
             # After saving the selected choice, save a UserChoice record
             user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
