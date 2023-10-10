@@ -70,7 +70,7 @@ class Publish(models.Model):
     publish_id = models.AutoField(primary_key=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
-    # pubished_at = models.DateTimeField(auto_now_add=True)
+    pubished_at = models.DateTimeField(auto_now_add=True, blank=True)
     
     def save(self, *args, **kwargs):
         # if not self.pk:
@@ -83,3 +83,4 @@ class UserChoice(models.Model):
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     submitted_at = models.DateTimeField(auto_now_add=True) 
     publish = models.ForeignKey(Publish, on_delete=models.CASCADE)
+    correct = models.BooleanField(default=False)

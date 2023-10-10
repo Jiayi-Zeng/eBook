@@ -114,8 +114,12 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="/intro_to_cs/">eTextBook</a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="/polls/">Exercise</a>
+                    <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
+                        <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exercise</a>
+                        <div class="dropdown-menu dropdown-menu-single">
+                            <a href="/polls/" class="dropdown-item">Do it now!</a>
+                            <a href="/polls/history/" class="dropdown-item">History</a>
+                        </div>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="/chat/">ChatBot</a>
@@ -158,9 +162,9 @@
                         </a>
                         <!-- Webpixels' mission -->
                         <p class="mt-4 text-lg pr-lg-4">计算机导论 @2023年秋</p>
-                        <!-- <p class="text-sm opacity-8 pr-lg-4">Intro to CS @2023Fall</p> -->
-                        <!-- Social -->
-                        <!-- <ul class="nav mt-4">
+                        <!-- <p class="text-sm opacity-8 pr-lg-4">Intro to CS @2023Fall</p>
+                        Social
+                        <ul class="nav mt-4">
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="https://dribbble.com/webpixels" target="_blank">
                                     <i class="fab fa-dribbble"></i>

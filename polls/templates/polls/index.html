@@ -5,7 +5,7 @@
 {% block content %}
 
 {% if publish_objects %}
-<div class="tab-example-result" style="height: 55vh;">
+<div class="tab-example-result mt-5 ml-10 mr-10" style="min-height: 55vh;">
     {% for publish_object in publish_objects %}
     <div id="accordion-{{ forloop.counter }}" class="accordion accordion-stacked">
         <!-- Accordion card 1 -->
@@ -21,7 +21,7 @@
                 data-parent="#accordion-{{ forloop.counter }}">
                 <div class="card-body">
 
-                    
+
                     <div class="container position-relative zindex-100">
                         <div class="row justify-content-center">
                             <div class="col-lg-6 text-center">
@@ -31,26 +31,54 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
-                                {% if publish_object.publish_id in answered_publish %}
-                                <div class="row justify-content-center">
-                                    <p>You've already answered this question.</p>
-                                </div>
-                                <!-- <p>Your answer is {{ answered_choice }}. Please wait the end of the publish.</p> -->
-                                {% else %}
-                                <!-- Form -->
-                                <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post">
-                                    {% csrf_token %}
-                                    {% for choice in publish_object.question.choices.all %}
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
-                                    </div>
+                                {% if publish_object.publish_id in answered_publish_id %}
+                                    {% for publish in answered_publish %}
+                                        {% if publish_object.publish_id == publish.publish_id %}
+                                        <div class="row justify-content-center">
+                                            <p>You've already answered this question.</p>
+                                            <p>
+                                                Your answer is
+                                                <span class="badge badge-soft-primary">{{ publish.choice.choice_text }}</span>
+                                                . Please wait the end of the publish.
+                                            </p>
+                                        </div>
+                                        {% endif %}
                                     {% endfor %}
-                                    <div class="text-center">
-                                        <button type="submit" value="Vote" class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
-                                    </div>
-                                </form>
+                                {% elif %}
+                                    {% for publish in answered_end %}
+                                        {% if publish_object.publish_id == publish.publish_id %}
+                                        <div class="row justify-content-center">
+                                            <p>You've already answered this question.</p>
+                                            <p>
+                                                Your answer is
+                                                {% if publish.correct == True %}
+                                                <span class="badge badge-soft-success">{{ publish.choice.choice_text }}</span>.
+                                                {% else %}
+                                                <span class="badge badge-soft-danger">{{ publish.choice.choice_text }}</span>.
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Form -->
+                                    <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post">
+                                        {% csrf_token %}
+                                        {% for choice in publish_object.question.choices.all %}
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="choice" id="choice{{ forloop.counter }}"
+                                                value="{{ choice.id }}" class="custom-control-input">
+                                            <label class="custom-control-label" for="choice{{ forloop.counter }}">{{
+                                                choice.choice_text }}</label>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="text-center">
+                                            <button type="submit" value="Vote"
+                                                class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
+                                        </div>
+                                    </form>
                                 {% endif %}
+
                             </div>
                         </div>
                     </div>

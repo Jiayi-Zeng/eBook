@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.views.generic.edit import FormView
-from django.db.models import Max, Count
+from django.db.models import Max, Count, Q
+
+from django.utils import timezone
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -16,31 +18,35 @@ class IndexView(generic.ListView):
     context_object_name = "publish_objects"
 
     def get_queryset(self):
-        """Return the published questions."""
-        # publish_objects = Publish.objects.filter(status=True)
-        # publish_questions = publish_objects.values_list('question', flat=True)
-        # return publish_questions
-        return Publish.objects.filter(status=True)
+        current_datetime = timezone.now()
+        days_ago = current_datetime - timezone.timedelta(days=1)
+        # 使用过滤器获取最近1天内发布的 Publish 实例
+        return Publish.objects.filter(Q(pubished_at__gte=days_ago) | Q(status=True))
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         # Check which questions the user has answered
         if self.request.user.is_authenticated:
-            publish_objects_ids = Publish.objects.filter(status=True).values_list('publish_id', flat=True)
-            answered_publish = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids).values_list('publish_id', flat=True)
-            if answered_publish:
-                answered_choice = UserChoice.objects.filter(user=self.request.user, publish_id__in=publish_objects_ids)
-            else:
-                answered_choice = []
+            publish = Publish.objects.filter(status=True)
+            answered_publish = UserChoice.objects.filter(user=self.request.user, publish__in=publish)
+            answered_publish_id =  answered_publish.values_list('publish_id', flat=True)
+            
+            end_publish = Publish.objects.filter(status=False)
+            answered_end = UserChoice.objects.filter(user=self.request.user, publish__in=end_publish)
+            answered_end_id =  answered_end.values_list('publish_id', flat=True)
         else:
             answered_publish = []
-            answered_choice = []
+            answered_publish_id = []
+            answered_end = []
+            answered_end_id = []
 
         # Update the context
         context.update({
             'answered_publish': answered_publish,
-            'answered_choice' : answered_choice
+            'answered_publish_id': answered_publish_id,
+            'answered_end': answered_end,
+            'answered_end_id': answered_end_id
         })
 
         return context
@@ -133,15 +139,22 @@ def publish(request, pk):
 def unpublish(request, pk):
     question = get_object_or_404(Question, pk=pk)
 
-    publish_id = Publish.objects.filter(question_id=pk).aggregate(max_id=Max('publish_id'))['max_id']
-    publish_object = get_object_or_404(Publish, pk=publish_id)
-
+    publish_object_id = Publish.objects.filter(question_id=pk).aggregate(max_id=Max('publish_id'))['max_id']
+    publish_object = Publish.objects.get(publish_id=publish_object_id)
+    
     if publish_object.status:
         publish_object.status=False
         publish_object.save()
 
         question.published = False
         question.save()
+
+        publish_answer = UserChoice.objects.filter(publish=publish_object)
+        for user_choice in publish_answer:
+            if user_choice.choice == publish_object.question.correct_choice:
+                user_choice.correct = True
+                user_choice.save()
+                
         messages.success(request, f'Snippet "{question.question_text}" unpublished successfully.')
     else:
         messages.warning(request, f'Snippet "{question.question_text}" is already unpublished.')
