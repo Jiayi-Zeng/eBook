@@ -5,7 +5,7 @@
 {% block content %}
 
 {% if publish_objects %}
-<div class="tab-example-result">
+<div class="tab-example-result" style="height: 55vh;">
     {% for publish_object in publish_objects %}
     <div id="accordion-{{ forloop.counter }}" class="accordion accordion-stacked">
         <!-- Accordion card 1 -->
@@ -61,7 +61,7 @@
     {% endfor %}
 </div>
 {% else %}
-<section class="slice py-7">
+<section class="slice py-7 ">
     <div class="container">
         <div class="row row-grid align-items-center">
             <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
