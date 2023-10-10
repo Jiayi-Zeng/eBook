@@ -15,18 +15,30 @@ from wagtail.admin.ui.tables import UpdatedAtColumn
 
 # @register_snippet
 class Question(ClusterableModel):
+    id = models.AutoField(primary_key=True)
     page = ParentalKey(MdPages, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
     published = models.BooleanField(default=False)
+    correct_choice = models.ForeignKey(
+        'Choice',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='correct_for_question',
+    )
 
     panels = [
         FieldPanel('page'),
         FieldPanel('question_text'),
+        FieldPanel('correct_choice'),  # 添加正确答案字段
         InlinePanel('choices', label="Choices"),
     ]
 
     def __str__(self):
+        print(self.id)
         return self.question_text
+
+    
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
@@ -41,8 +53,6 @@ register_snippet(QuestionViewSet)
 
 class Choice(Orderable):
     question = ParentalKey(Question, on_delete=models.CASCADE, related_name='choices')
-    # question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
-    
     choice_text = models.CharField(max_length=200)
 
     panels = [
