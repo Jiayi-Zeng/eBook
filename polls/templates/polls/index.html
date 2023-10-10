@@ -32,6 +32,8 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 {% if publish_object.publish_id in answered_publish_id %}
+
+                                
                                     {% for publish in answered_publish %}
                                         {% if publish_object.publish_id == publish.publish_id %}
                                         <div class="row justify-content-center">
@@ -44,22 +46,25 @@
                                         </div>
                                         {% endif %}
                                     {% endfor %}
-                                {% elif %}
+                                
+                                {% elif publish_object.publish_id in answered_end_id %}
                                     {% for publish in answered_end %}
                                         {% if publish_object.publish_id == publish.publish_id %}
                                         <div class="row justify-content-center">
-                                            <p>You've already answered this question.</p>
                                             <p>
-                                                Your answer is
+                                                你的答案是
                                                 {% if publish.correct == True %}
-                                                <span class="badge badge-soft-success">{{ publish.choice.choice_text }}</span>.
+                                                <span class="badge badge-soft-success">{{ publish.choice.choice_text }}</span>. 
                                                 {% else %}
-                                                <span class="badge badge-soft-danger">{{ publish.choice.choice_text }}</span>.
+                                                <span class="badge badge-soft-danger">{{ publish.choice.choice_text }}</span>. 
+                                                正确答案是
+                                                <span class="badge badge-soft-success">{{ publish.publish.question.correct_choice }}</span>. 
                                                 {% endif %}
                                             </p>
                                         </div>
                                         {% endif %}
                                     {% endfor %}
+                                
                                 {% else %}
                                     <!-- Form -->
                                     <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post">
@@ -68,8 +73,7 @@
                                         <div class="custom-control custom-radio">
                                             <input type="radio" name="choice" id="choice{{ forloop.counter }}"
                                                 value="{{ choice.id }}" class="custom-control-input">
-                                            <label class="custom-control-label" for="choice{{ forloop.counter }}">{{
-                                                choice.choice_text }}</label>
+                                            <label class="custom-control-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
                                         </div>
                                         {% endfor %}
                                         <div class="text-center">
@@ -77,8 +81,8 @@
                                                 class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
                                         </div>
                                     </form>
+                                
                                 {% endif %}
-
                             </div>
                         </div>
                     </div>
