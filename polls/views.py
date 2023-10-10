@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.views.generic.edit import FormView
 from django.db.models import Max, Count
 
-# @method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "publish_objects"
