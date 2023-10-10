@@ -35,22 +35,30 @@ class IndexView(generic.ListView):
             end_publish = Publish.objects.filter(status=False)
             answered_end = UserChoice.objects.filter(user=self.request.user, publish__in=end_publish)
             answered_end_id =  answered_end.values_list('publish_id', flat=True)
+
+            unanswered_publish = publish.exclude(
+                Q(userchoice__user=self.request.user) | Q(publish_id__in=answered_publish)
+            )
+
         else:
             answered_publish = []
             answered_publish_id = []
             answered_end = []
             answered_end_id = []
+            unanswered_publish = []
 
         # Update the context
         context.update({
             'answered_publish': answered_publish,
             'answered_publish_id': answered_publish_id,
             'answered_end': answered_end,
-            'answered_end_id': answered_end_id
+            'answered_end_id': answered_end_id,
+            'unanswered_publish': unanswered_publish
         })
 
         return context
     
+@method_decorator(login_required, name='dispatch')
 class HistoryView(generic.ListView):
     template_name = "polls/history.html"
     context_object_name = "answer_objects"
