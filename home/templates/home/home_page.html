@@ -1,6 +1,6 @@
 {% extends "base_home.html" %}
 
-{% load wagtailcore_tags static wagtailmarkdown %}
+{% load wagtailcore_tags static wagtailmarkdown allauth %}
 
 {% block content %}
 
@@ -25,11 +25,11 @@
                 </h1>
                 <!-- Text -->
                 <p class="lead text-center text-md-left text-muted">
-                    2023年秋，周爱民教授
+                    2023年秋，周爱民老师
                 </p>
                 <!-- Buttons -->
                 <div class="text-center text-md-left mt-5">
-                    <a href="intro_to_cs/" class="btn btn-primary btn-icon" target="_blank">
+                    <a href="/intro_to_cs/" class="btn btn-primary btn-icon" target="_blank">
                         <span class="btn-inner--text">Get started</span>
                     </a>
                     <a href="/chat/"

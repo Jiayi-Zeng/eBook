@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags%}
+{% load static wagtailcore_tags allauth i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Webpixels">
-    <title>Intro to CS</title>
+    <title>计算机导论 - 2023秋</title>
     <!-- Preloader -->
     <style>
         @keyframes hidePreloader {
@@ -65,6 +65,7 @@
     <link rel="stylesheet" href="{% static 'libs/@fortawesome/fontawesome-free/css/all.min.css' %}">
     <!-- Quick CSS -->
     <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eBook.css' %}">
 
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
@@ -127,20 +128,67 @@
                 </ul>
                 <!-- Button -->
 
+                {% if request.user.is_authenticated %}
+                <!-- Button trigger modal -->
+                <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" data-toggle="modal" data-target="#exampleModal">
+                    Hi, {{ request.user.username }}!
+                </button>
+  
+                
+
+                {% else %}
                 <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
                     href="{% url 'account_login' %}">
-                    {% if request.user.is_authenticated %}
-                    Hi, {{ request.user.username }}
-                    {% else %}
-                    Hi, guest!
-                    {% endif %}
+                    Sign In
                 </a>
+                {% endif %}
+                
             </div>
         </div>
     </nav>
     <!-- Main content -->
     {% block content %}{% endblock %}
-
+     <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Log Out?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="pt-2 pb-3">
+                    <h5>Hi, {{user.username}}</h5>
+                    <p class="text-muted mb-0">
+                        Email: {{user.email}}
+                    </p>
+                </div>
+            {% include "account/logout.html" %}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {% url 'account_logout' as action_url %}
+            {% element form method="post" action=action_url no_visible_fields=True %}
+                {% slot body %}
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                        <input type="hidden"
+                            name="{{ redirect_field_name }}"
+                            value="{{ redirect_field_value }}" />
+                    {% endif %}
+                {% endslot %}
+                {% slot actions %}
+                    {% element button type="submit" %}
+                        {% trans 'Sign Out' %}
+                    {% endelement %}
+                {% endslot %}
+            {% endelement %}
+            </div>
+        </div>
+        </div>
+    </div>
     <footer class="position-relative" id="footer-main">
         <div class="footer pt-lg-7 footer-dark bg-dark">
             <!-- SVG shape -->
@@ -162,8 +210,8 @@
                         </a>
                         <!-- Webpixels' mission -->
                         <p class="mt-4 text-lg pr-lg-4">计算机导论 @2023年秋</p>
-                        <!-- <p class="text-sm opacity-8 pr-lg-4">Intro to CS @2023Fall</p>
-                        Social
+                        <p class="text-sm opacity-8 pr-lg-4">Introduction to CS @2023Fall</p>
+                        <!-- Social
                         <ul class="nav mt-4">
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="https://dribbble.com/webpixels" target="_blank">
@@ -217,7 +265,7 @@
                     <div class="col-md-6">
                         <div class="copyright text-sm font-weight-bold text-center text-md-left">
                             &copy; 2023 <a href="https://webpixels.io" class="font-weight-bold"
-                                target="_blank">Intro to CS</a>. 
+                                target="_blank">Introduction to CS</a>. 
                         </div>
                     </div>
                     <!-- <div class="col-md-6">

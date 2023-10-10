@@ -25,7 +25,7 @@
                 aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}-{{ forloop.counter }}">
                 <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
                     <span class="badge badge-danger mr-4">Error</span>
-                    Question #{{ forloop.counter }}
+                    Question #{{ forloop.counter }} {{ answered_object.publish.question.question_text }}
                 </h6>
             </div>
             {% endif %}
@@ -37,23 +37,20 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6 text-center">
                                 
-                                <h3>Question #{{ forloop.counter }}</h3>
-                                <p class="lh-190">{{ answered_object.publish.question.question_text }} </p>
+                                <h3>Question #{{ forloop.counter }} {{ answered_object.publish.question.question_text }} </p>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="mb-3">
                                 <form>
                                     {% csrf_token %}
-                                    {% for choice in publish_object.question.choices.all %}
+                                    {% for choice in answered_object.publish.question.choices.all %}
                                     <div class="custom-control custom-radio">
                                         <input type="radio" name="choice" id="choice-{{ forloop.counter }}"
                                             value="{{ choice.id }}" class="custom-control-input" disabled>
                                         <label class="custom-control-label" for="choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
                                     </div>
                                     {% endfor %}
-
-                                    
                                 </form>
                             </div>
                         </div>

@@ -15,7 +15,7 @@ urlpatterns = [
     path("chat/", include("chatbot.urls", namespace="chatbot")),
     path("search/", search_views.search, name="search"),
     path("polls/", include("polls.urls")),
-    path('', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:

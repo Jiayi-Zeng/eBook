@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     # Local apps
-    "pages",
+    # "pages",
     "book",
     "home",
     "md_pages",
@@ -60,8 +60,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # 'wagtail.contrib.modeladmin',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +72,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     'eBook.settings.csp_middleware.CSPMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "eBook.urls"
@@ -83,6 +82,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(PROJECT_DIR, "templates"),
+            # os.path.join(PROJECT_DIR, "templates", "allauth"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {

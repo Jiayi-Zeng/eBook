@@ -2,6 +2,7 @@
 
 {% load wagtailcore_tags static  wagtailmarkdown %}
 
+
 {% block content %}
 {% with page.get_site.root_page as root %}
 <div class="container-fluid container-docs">
@@ -42,7 +43,8 @@
         </div>
         <!-- Document toc-->
         <div class="col-xl-3 docs-sidebar d-none d-xl-block">
-            <div class="toc-sidebar pl-4 mt-lg-8 border-left">
+            <div class="toc-sidebar pl-4 pr-4 mt-lg-8 border-left" 
+            style="height: -webkit-fill-available; overflow: auto;">
                 <div class="scrollbar-inner">
                     <h6 class="mb-3">Summary</h6>
                     <ul class="section-nav" , id="navbar">

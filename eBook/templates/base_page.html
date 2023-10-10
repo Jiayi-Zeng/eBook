@@ -1,4 +1,4 @@
-{% load wagtailcore_tags static wagtailuserbar cache wagtailmarkdown %}
+{% load wagtailcore_tags static wagtailuserbar cache wagtailmarkdown allauth i18n%}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +79,7 @@
     <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
     <!-- Docs CSS - used only for demo -->
     <link rel="stylesheet" href="{% static 'css/docs.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eBook.css' %}">
 
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
@@ -108,21 +109,34 @@
                         <li class="nav-item ">
                             <a class="nav-link" href="/intro_to_cs/">eTextBook</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="/polls/">Exercise</a>
+                        <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
+                            <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exercise</a>
+                            <div class="dropdown-menu dropdown-menu-single">
+                                <a href="/polls/" class="dropdown-item">Do it now!</a>
+                                <a href="/polls/history/" class="dropdown-item">History</a>
+                            </div>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link" href="/chat/">ChatBot</a>
                         </li>
                     </ul>
                     <!-- Button -->
-                    <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" href="login.html">
-                        {% if request.user.is_authenticated %}
-                        Hi, {{ request.user.username }}
-                        {% else %}
-                        Hi, guest!
-                        {% endif %}
+    
+                    {% if request.user.is_authenticated %}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" data-toggle="modal" data-target="#exampleModal">
+                        Hi, {{ request.user.username }}!
+                    </button>
+      
+                    
+    
+                    {% else %}
+                    <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                        href="{% url 'account_login' %}">
+                        Sign In
                     </a>
+                    {% endif %}
+                    
                 </div>
             </div>
         </nav>
@@ -131,6 +145,47 @@
     
     {% block content %}{% endblock %}
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Log Out?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="pt-2 pb-3">
+                    <h5>Hi, {{user.username}}</h5>
+                    <p class="text-muted mb-0">
+                        Email: {{user.email}}
+                    </p>
+                </div>
+            {% include "account/logout.html" %}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {% url 'account_logout' as action_url %}
+            {% element form method="post" action=action_url no_visible_fields=True %}
+                {% slot body %}
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                        <input type="hidden"
+                            name="{{ redirect_field_name }}"
+                            value="{{ redirect_field_value }}" />
+                    {% endif %}
+                {% endslot %}
+                {% slot actions %}
+                    {% element button type="submit" %}
+                        {% trans 'Sign Out' %}
+                    {% endelement %}
+                {% endslot %}
+            {% endelement %}
+            </div>
+        </div>
+        </div>
+    </div>
     <!-- Footer -->
 
     {# Global javascript #}
