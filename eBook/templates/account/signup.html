@@ -1,7 +1,10 @@
 {% extends "allauth/layouts/index.html" %}
 {% load wagtailcore_tags static allauth i18n account %}
-
+{% block head_title %}
+    {% trans "Sign Up" %}
+{% endblock head_title %}
 {% block content %}
+
 
 <div class="card-body px-md-5 py-5">
     <div class="mb-3">

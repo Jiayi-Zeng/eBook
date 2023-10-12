@@ -193,8 +193,9 @@ figure {
 
 img {
   vertical-align: middle;
-  /* border-style: none; */
+  border-style: none;
   max-width: 100%;
+  height: auto;
 }
 
 svg {
@@ -3145,8 +3146,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-block {
-  display: block;
-  width: 100%;
+  /* display: block; */
+  width: 18rem;
 }
 
 .btn-block + .btn-block {

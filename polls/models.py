@@ -1,7 +1,4 @@
-import datetime
-from django import forms
 from django.db import models
-from django.utils import timezone
 from wagtail.snippets.models import register_snippet
 from django.contrib.auth.models import User
 from wagtail.admin.panels import FieldPanel, InlinePanel
@@ -11,13 +8,14 @@ from modelcluster.fields import ParentalKey
 from wagtail.snippets.views.snippets import SnippetViewSet
 from md_pages.models import MdPages
 from wagtail.admin.ui.tables import UpdatedAtColumn
+from wagtail.fields import RichTextField
 
-
-# @register_snippet
 class Question(ClusterableModel):
     id = models.AutoField(primary_key=True)
     page = ParentalKey(MdPages, on_delete=models.CASCADE, related_name='questions')
     question_text = models.CharField(max_length=200)
+    body = RichTextField(blank=True)
+
     published = models.BooleanField(default=False)
     correct_choice = models.ForeignKey(
         'Choice',
@@ -30,6 +28,7 @@ class Question(ClusterableModel):
     panels = [
         FieldPanel('page'),
         FieldPanel('question_text'),
+        FieldPanel('body'),
         FieldPanel('correct_choice'),  # 添加正确答案字段
         InlinePanel('choices', label="Choices"),
     ]

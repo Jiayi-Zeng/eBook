@@ -50,6 +50,11 @@
                                 <h3>{{ publish_object.question.question_text }}</h3>
                             </div>
                         </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
+                                <p>{{ publish_object.question.body | richtext }}</h3>
+                            </div>
+                        </div>
                         <!-- Alerts -->
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
@@ -102,6 +107,11 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6 text-center">
                                 <h3>{{ publish_object.question.question_text }}</h3>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
+                                <p>{{ publish_object.question.body | richtext }}</h3>
                             </div>
                         </div>
                         <!-- Alerts -->
@@ -165,6 +175,11 @@
                                     <h3>{{ publish_object.question.question_text }}</h3>
                                 </div>
                             </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6 text-center">
+                                    <p>{{ publish_object.question.body | richtext }}</h3>
+                                </div>
+                            </div>
                             <!-- Alerts -->
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
@@ -175,10 +190,10 @@
                                                 {% csrf_token %}
                                                 {% for choice in publish_object.question.choices.all %}
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" name="choice" id="choice-{{ forloop.counter }}"
+                                                    <input type="radio" name="choice" id="choice-{{ choice.id }}"
                                                         value="{{ choice.id }}" class="custom-control-input">
                                                     <label class="custom-control-label"
-                                                        for="choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                                                        for="choice-{{ choice.id }}">{{ choice.choice_text }}</label>
                                                 </div>
                                                 {% endfor %}
                                                 <div class="text-center">

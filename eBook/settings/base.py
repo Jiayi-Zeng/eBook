@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "chatbot",
     # "question",
     "polls",
+    # "polls_cloze",
 
     'allauth',
     'allauth.account',

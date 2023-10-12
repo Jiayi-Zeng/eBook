@@ -10,6 +10,7 @@ class MdPages(Page):
     body = MarkdownField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body'),
+        FieldPanel('body', icon="code"),
         InlinePanel('questions', label='Question'),
+        # InlinePanel('cloze_questions', label='Cloze Question'),
     ]

@@ -96,7 +96,6 @@ class ResultsView(generic.DetailView):
         }
         return context
 
-
 def vote(request, publish_id):
     current_user = request.user
 
@@ -122,9 +121,6 @@ def vote(request, publish_id):
                 },
             )
         else:
-            # selected_choice.votes += 1
-            selected_choice.save()
-            # After saving the selected choice, save a UserChoice record
             user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
             user_choice.save()
     return HttpResponseRedirect(reverse("polls:index"))
@@ -188,5 +184,3 @@ def countVote(publish):
         
     return choice_vote_dict
  
-def example(request):
-    return render(request, "polls/typography.html")

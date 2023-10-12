@@ -49,6 +49,7 @@
         body.loaded>div.preloader {
             animation: hidePreloader .5s linear .5s forwards;
         }
+        
     </style>
     <script>
         window.addEventListener("load", function () {
@@ -102,7 +103,7 @@
         <div class="container">
             <!-- Brand -->
             <a class="navbar-brand" href="/">
-                <img alt="Image placeholder" src="{% static 'img/brand/dark.svg' %}" id="navbar-logo">
+                <img alt="Image placeholder" src="{% static 'img/brand/dark.png' %}" id="navbar-logo">
             </a>
             <!-- Toggler -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -206,7 +207,8 @@
                     <div class="col-lg-4">
                         <!-- Theme's logo -->
                         <a href="index.html">
-                            <img alt="Image placeholder" src="{% static 'img/brand/light.svg' %}" id="footer-logo">
+                            <img alt="Image placeholder" src="{% static 'img/brand/light.png' %}" id="footer-logo" 
+                            style="height: 2.75rem;">
                         </a>
                         <!-- Webpixels' mission -->
                         <p class="mt-4 text-lg pr-lg-4">计算机导论 @2023年秋</p>
@@ -264,7 +266,7 @@
                 <div class="row align-items-center justify-content-md-between pb-4">
                     <div class="col-md-6">
                         <div class="copyright text-sm font-weight-bold text-center text-md-left">
-                            &copy; 2023 <a href="https://webpixels.io" class="font-weight-bold"
+                            &copy; 2023 <a class="font-weight-bold"
                                 target="_blank">Introduction to CS</a>. 
                         </div>
                     </div>
@@ -297,7 +299,6 @@
     <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'libs/svg-injector/dist/svg-injector.min.js' %}"></script>
-    <script src="{% static 'libs/feather-icons/dist/feather.min.js' %}"></script>
     <!-- Quick JS -->
     <script src="{% static 'js/quick-website.js' %}"></script>
     <!-- Feather Icons -->

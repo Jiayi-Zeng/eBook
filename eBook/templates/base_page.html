@@ -19,7 +19,7 @@
         {% endblock %}
     </title>
 
-    
+
 
     <!-- Preloader -->
     <style>
@@ -61,6 +61,23 @@
         body.loaded>div.preloader {
             animation: hidePreloader .5s linear .5s forwards;
         }
+
+        blockquote {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            border: 1px solid #eaecf3;
+            border-radius: 0.75rem;
+            background-color: #fff;
+            background-clip: border-box;
+            margin: 0;
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem !important;
+            position: relative;
+            margin-bottom: 30px;
+            box-shadow: 0 0 1.25rem rgba(31, 45, 61, .05);
+        }
     </style>
 
     <script>
@@ -96,7 +113,7 @@
             <div class="container">
                 <!-- Brand -->
                 <a class="navbar-brand" href="/">
-                    <img alt="Image placeholder" src="{% static 'img/brand/dark.svg' %}" id="navbar-logo">
+                    <img alt="Image placeholder" src="{% static 'img/brand/dark.png' %}" id="navbar-logo">
                 </a>
                 <!-- Toggler -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -110,7 +127,8 @@
                             <a class="nav-link" href="/intro_to_cs/">eTextBook</a>
                         </li>
                         <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
-                            <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exercise</a>
+                            <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">Exercise</a>
                             <div class="dropdown-menu dropdown-menu-single">
                                 <a href="/polls/" class="dropdown-item">Do it now!</a>
                                 <a href="/polls/history/" class="dropdown-item">History</a>
@@ -121,69 +139,69 @@
                         </li>
                     </ul>
                     <!-- Button -->
-    
+
                     {% if request.user.is_authenticated %}
                     <!-- Button trigger modal -->
-                    <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                        data-toggle="modal" data-target="#exampleModal">
                         Hi, {{ request.user.username }}!
                     </button>
-      
-                    
-    
+
+
+
                     {% else %}
                     <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
                         href="{% url 'account_login' %}">
                         Sign In
                     </a>
                     {% endif %}
-                    
+
                 </div>
             </div>
         </nav>
     </header>
 
-    
+
     {% block content %}{% endblock %}
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Log Out?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <div class="pt-2 pb-3">
-                    <h5>Hi, {{user.username}}</h5>
-                    <p class="text-muted mb-0">
-                        Email: {{user.email}}
-                    </p>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log Out?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            {% include "account/logout.html" %}
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            {% url 'account_logout' as action_url %}
-            {% element form method="post" action=action_url no_visible_fields=True %}
-                {% slot body %}
+                <div class="modal-body">
+                    <div class="pt-2 pb-3">
+                        <h5>Hi, {{user.username}}</h5>
+                        <p class="text-muted mb-0">
+                            Email: {{user.email}}
+                        </p>
+                    </div>
+                    {% include "account/logout.html" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {% url 'account_logout' as action_url %}
+                    {% element form method="post" action=action_url no_visible_fields=True %}
+                    {% slot body %}
                     {% csrf_token %}
                     {% if redirect_field_value %}
-                        <input type="hidden"
-                            name="{{ redirect_field_name }}"
-                            value="{{ redirect_field_value }}" />
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                     {% endif %}
-                {% endslot %}
-                {% slot actions %}
+                    {% endslot %}
+                    {% slot actions %}
                     {% element button type="submit" %}
-                        {% trans 'Sign Out' %}
+                    {% trans 'Sign Out' %}
                     {% endelement %}
-                {% endslot %}
-            {% endelement %}
+                    {% endslot %}
+                    {% endelement %}
+                </div>
             </div>
-        </div>
         </div>
     </div>
     <!-- Footer -->

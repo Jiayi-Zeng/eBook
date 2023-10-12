@@ -263,6 +263,7 @@ img
     vertical-align: middle;
     border-style: none;
     max-width: 100%;
+    height: auto;
 }
 
 svg
@@ -4104,9 +4105,9 @@ fieldset:disabled a.btn
 
 .btn-block
 {
-    display: block;
+    /* display: block; */
 
-    width: 100%;
+    width: 18rem;
 }
 .btn-block + .btn-block
 {
@@ -22733,7 +22734,7 @@ textarea[resize='horizontal']
 }
 .docs .sidenav-header .navbar-brand img
 {
-    height: 1.5rem;
+    height: 3.75rem;
 }
 
 .docs .main-content-title + .nav-tabs

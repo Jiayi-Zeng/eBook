@@ -1,7 +1,15 @@
 {% extends "base_page.html" %}
 
-{% load wagtailcore_tags static  wagtailmarkdown %}
+{% load wagtailcore_tags static wagtailmarkdown %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'highlight/styles/onedark.min.css' %}">
+<style>
+    pre code.hljs {
+        border-radius: 0.375rem;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 {% with page.get_site.root_page as root %}
@@ -15,19 +23,19 @@
                 {% for book in root.get_children %}
                 <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ book.title }}</a></h5>
                 {% for chapter in book.get_children %}
-                    <h6 class="mt-4"><a href="{% pageurl chapter %}">{{ chapter.title }}</a></h6>
-                    <ul class="nav flex-column">
-                        {% for post in chapter.get_children %}
-                        <li class="nav-item">
-                            <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                <h6 class="mt-4"><a href="{% pageurl chapter %}">{{ chapter.title }}</a></h6>
+                <ul class="nav flex-column">
+                    {% for post in chapter.get_children %}
+                    <li class="nav-item">
+                        <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
                 {% endfor %}
                 {% endfor %}
                 {% endif %}
 
-                
+
             </div>
         </div>
     </nav>
@@ -43,8 +51,8 @@
         </div>
         <!-- Document toc-->
         <div class="col-xl-3 docs-sidebar d-none d-xl-block">
-            <div class="toc-sidebar pl-4 pr-4 mt-lg-8 border-left" 
-            style="height: -webkit-fill-available; overflow: auto;">
+            <div class="toc-sidebar pl-4 pr-4 mt-lg-8 border-left"
+                style="height: -webkit-fill-available; overflow: auto;">
                 <div class="scrollbar-inner">
                     <h6 class="mb-3">Summary</h6>
                     <ul class="section-nav" , id="navbar">
@@ -57,4 +65,12 @@
 </div>
 
 {% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"
+    integrity="sha512-gU7kztaQEl7SHJyraPfZLQCNnrKdaQi5ndOyt4L4UPL/FHDd/uB9Je6KDARIqwnNNE27hnqoWLBq+Kpe4iHfeQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="{% static 'highlight/highlight.js' %}"></script> -->
+<script>hljs.highlightAll();</script>
 {% endblock %}
