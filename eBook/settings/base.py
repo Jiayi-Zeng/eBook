@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "home",
     "md_pages",
     "search",
-    "chatbot",
+    # "chatbot",
     # "question",
     "polls",
     # "polls_cloze",

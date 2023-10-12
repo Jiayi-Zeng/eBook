@@ -16,7 +16,7 @@
                 aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}-{{ forloop.counter }}">
                 <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
                     <span class="badge badge-success mr-4">Success</span>
-                    Question #{{ forloop.counter }}
+                    Question #{{ forloop.counter }} {{ answered_object.publish.question.question_text }}
                 </h6>
             </div>
             {% else %}
@@ -24,7 +24,7 @@
                 data-toggle="collapse" role="button" data-target="#collapse-{{ forloop.counter }}-{{ forloop.counter }}"
                 aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}-{{ forloop.counter }}">
                 <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
-                    <span class="badge badge-danger mr-4">Error</span>
+                    <span class="badge badge-danger mr-4">&nbsp;&nbsp;Error&nbsp;&nbsp;</span>
                     Question #{{ forloop.counter }} {{ answered_object.publish.question.question_text }}
                 </h6>
             </div>
@@ -57,7 +57,7 @@
                         <div class="row justify-content-center">
                             <p>
                                 你的答案是
-                                {% if publish.correct == True %}
+                                {% if answered_object.correct == True %}
                                 <span class="badge badge-soft-success">{{ answered_object.choice.choice_text }}</span>. 
                                 {% else %}
                                 <span class="badge badge-soft-danger">{{ answered_object.choice.choice_text }}</span>. 
@@ -72,8 +72,41 @@
         </div>
     </div>
     {% endfor %}
-    {% else %}
-    <p>暂无历史记录</p>
-    {% endif %}
+    <!-- No Question Available -->
+{% else %}
+<section class="slice py-7 ">
+    <div class="container">
+        <div class="row row-grid align-items-center">
+            <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
+                <!-- Image -->
+                <figure class="w-100">
+                    <img alt="Image placeholder" src="{% static 'img/svg/illustrations/illustration-2.svg' %}"
+                        class="img-fluid mw-md-120">
+                </figure>
+            </div>
+            <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5">
+                <!-- Heading -->
+                <h1 class="display-4 text-center text-md-left mb-3">
+                    {% if error_message %}
+                    <p>{{ error_message }}</p>
+                    {% else %}
+                    <strong class="text-primary">暂无</strong>历史记录。
+                    {% endif %}
+                </h1>
+                <!-- Buttons -->
+                <div class="text-center text-md-left mt-5">
+                    <a href="/intro_to_cs/" class="btn btn-primary btn-icon" target="_blank">
+                        <span class="btn-inner--text">Return</span>
+                    </a>
+                    <!-- <a href="https://webpixels.io/illustrations"
+                        class="btn btn-neutral btn-icon d-none d-lg-inline-block" target="_blank">Chat with Bot
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endif %}
 </div>
 {% endblock %}
