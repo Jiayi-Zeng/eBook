@@ -77,6 +77,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "eBook.urls"
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
