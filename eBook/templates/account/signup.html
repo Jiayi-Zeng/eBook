@@ -1,15 +1,18 @@
 {% extends "allauth/layouts/index.html" %}
 {% load wagtailcore_tags static allauth i18n account %}
 {% block head_title %}
-    {% trans "Sign Up" %}
+    {% trans "注册" %}
 {% endblock head_title %}
 {% block content %}
 
 
 <div class="card-body px-md-5 py-5">
     <div class="mb-3">
-        <h6 class="h3">Sign Up</h6>
-        <p class="text-muted mb-0">Sign up to get started!</p>
+        <h6 class="h3">注册</h6>
+        <p class="text-muted mb-2">注册后即可开始！</p>
+        <span class="badge badge-danger">
+            请设置用户名为学号！！
+        </span>
     </div>
     <span class="clearfix"></span>
     {% url 'account_signup' as action_url %}
@@ -24,13 +27,13 @@
     {% endslot %}
     {% slot actions %}
     <div class="mt-4">
-        <button type="submit" class="btn btn-block btn-primary">Sign Up</button>
+        <button type="submit" class="btn btn-block btn-primary">注册</button>
     </div>
     {% endslot %}
     {% endelement %}                     
 </div>
-<div class="card-footer px-md-5"><small>Already have an account? Then please</a>.</small>
-    <a href="{{ login_url }}" class="small font-weight-bold">Login in</a>
+<div class="card-footer px-md-5"><small>已有帐户？请</a></small>
+    <a href="{{ login_url }}" class="small font-weight-bold">登录</a>
 </div>
 
 {% endblock %}

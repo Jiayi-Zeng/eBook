@@ -4,12 +4,14 @@
 
 {% block content %}
 
-<div class="tab-example-result mt-5 ml-10 mr-10" style="min-height: 55vh;">
-    {% if answer_objects %}
+
+{% if answer_objects %}
+<div class="tab-example-result mt-3 ml-lg-10 mr-lg-10 " style="min-height: 55vh;">
     {% for answered_object in answer_objects %}
     <div id="accordion-{{ forloop.counter }}" class="accordion accordion-stacked">
         <!-- Accordion card 1 -->
         <div class="card">
+            <!-- Card Title -->
             {% if answered_object.correct == True %}
             <div class="card-header py-4 color" id="heading-{{ forloop.counter }}-{{ forloop.counter }}"
                 data-toggle="collapse" role="button" data-target="#collapse-{{ forloop.counter }}-{{ forloop.counter }}"
@@ -29,6 +31,8 @@
                 </h6>
             </div>
             {% endif %}
+
+            <!-- Card Content -->
             <div id="collapse-{{ forloop.counter }}-{{ forloop.counter }}" class="collapse"
                 aria-labelledby="heading-{{ forloop.counter }}-{{ forloop.counter }}"
                 data-parent="#accordion-{{ forloop.counter }}">
@@ -36,8 +40,12 @@
                     <div class="container position-relative zindex-100">
                         <div class="row justify-content-center">
                             <div class="col-lg-6 text-center">
-                                
                                 <h3>Question #{{ forloop.counter }} {{ answered_object.publish.question.question_text }} </p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 text-center">
+                                {{ answered_object.publish.question.body | richtext }}
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -59,6 +67,7 @@
                                 你的答案是
                                 {% if answered_object.correct == True %}
                                 <span class="badge badge-soft-success">{{ answered_object.choice.choice_text }}</span>. 
+                                
                                 {% else %}
                                 <span class="badge badge-soft-danger">{{ answered_object.choice.choice_text }}</span>. 
                                 正确答案是
@@ -72,6 +81,7 @@
         </div>
     </div>
     {% endfor %}
+</div>
     <!-- No Question Available -->
 {% else %}
 <section class="slice py-7 ">
@@ -108,5 +118,5 @@
 </section>
 
 {% endif %}
-</div>
+
 {% endblock %}

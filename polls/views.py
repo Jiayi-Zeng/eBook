@@ -21,8 +21,8 @@ class IndexView(generic.ListView):
         current_datetime = timezone.now()
         days_ago = current_datetime - timezone.timedelta(days=1)
         # 使用过滤器获取最近1天内发布的 Publish 实例
-        return Publish.objects.filter(Q(pubished_at__gte=days_ago) | Q(status=True))
-    
+        return Publish.objects.filter(status=True)
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

@@ -2,14 +2,14 @@
 
 {% load wagtailcore_tags static allauth i18n account %}
 {% block head_title %}
-    {% trans "Sign In" %}
+    {% trans "登录" %}
 {% endblock head_title %}
 {% block content %}
 
 <div class="card-body px-md-5 py-5">
     <div class="mb-3">
-        <h6 class="h3">Login</h6>
-        <p class="text-muted mb-0">Sign in to your account to continue.</p>
+        <h6 class="h3">登录</h6>
+        <p class="text-muted mb-0">登录您的账户以继续。</p>
     </div>
     <span class="clearfix"></span>
     {% url 'account_login' as login_url %}
@@ -26,16 +26,16 @@
         {% endslot %}
         {% slot actions %}
             {% element button type="submit" tags="prominent,login" %}
-                {% trans "Sign In" %}
+                {% trans "登录" %}
             {% endelement %}
         {% endslot %}
     {% endelement %}
 </div>
 <div class="card-footer px-md-5">
-    <small>Forget Password?</small>
-    <a href="/accounts/password/reset/" class="small font-weight-bold">Find your Password</a>.<br>
-    <small>Not registered?</small>
-    <a href="{{ signup_url }}" class="small font-weight-bold">Create account</a>.
+    <!-- <small>忘记密码？</small>
+    <a href="/accounts/password/reset/" class="small font-weight-bold">找回密码</a><br> -->
+    <small>还没有账户？</small>
+    <a href="{{ signup_url }}" class="small font-weight-bold">创建账号</a>
 </div>
 
 {% endblock %}

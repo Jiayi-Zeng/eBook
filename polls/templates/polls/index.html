@@ -6,7 +6,7 @@
 
 {% if publish_objects %}
 
-<div class="tab-example-result mt-3 ml-10 mr-10 " style="min-height: 55vh;">
+<div class="tab-example-result mt-3 ml-lg-10 mr-lg-10 " style="min-height: 55vh;">
     {% if unanswered_publish %}
     <div class="container position-relative zindex-100">
         <div class="row justify-content-center">
@@ -15,7 +15,7 @@
                     <span class="badge badge-warning badge-pill">
                         New
                     </span>
-                        <span class="alert-content">你有新的未完成的题目</span>
+                        <span class="alert-content" style="display: inline;">你有新的未完成的题目</span>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
                 </div>
             </div>
             {% elif publish_object.publish_id in answered_end_id %}
-            <!-- Card Heading  -->
+            <!-- Card Heading 
             <div class="card-header py-4 color" id="heading-{{ forloop.counter }}-{{ forloop.counter }}"
                 data-toggle="collapse" role="button" data-target="#collapse-{{ forloop.counter }}-{{ forloop.counter }}"
                 aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}-{{ forloop.counter }}">
@@ -97,13 +97,13 @@
                 </h6>
 
             </div>
-            <!-- Card body-->
+            Card body
             <div id="collapse-{{ forloop.counter }}-{{ forloop.counter }}" class="collapse"
                 aria-labelledby="heading-{{ forloop.counter }}-{{ forloop.counter }}"
                 data-parent="#accordion-{{ forloop.counter }}">
                 <div class="card-body">
                     <div class="container position-relative zindex-100">
-                        <!-- Question -->
+                        Question
                         <div class="row justify-content-center">
                             <div class="col-lg-6 text-center">
                                 <h3>{{ publish_object.question.question_text }}</h3>
@@ -114,10 +114,10 @@
                                 <p>{{ publish_object.question.body | richtext }}</h3>
                             </div>
                         </div>
-                        <!-- Alerts -->
+                        Alerts
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
-                                <!-- Options -->
+                                Options
                                 <div class="row justify-content-center">
                                     <div class="mb-3">
                                         <form>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             {% else %}
             
                 <!-- Card Heading  -->

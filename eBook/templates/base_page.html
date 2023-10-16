@@ -124,19 +124,19 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mt-4 mt-lg-0 ml-auto">
                         <li class="nav-item ">
-                            <a class="nav-link" href="/intro_to_cs/">eTextBook</a>
+                            <a class="nav-link" href="/intro_to_cs/">电子教材</a>
                         </li>
                         <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
                             <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">Exercise</a>
+                                aria-expanded="false">练习</a>
                             <div class="dropdown-menu dropdown-menu-single">
-                                <a href="/polls/" class="dropdown-item">Do it now!</a>
-                                <a href="/polls/history/" class="dropdown-item">History</a>
+                                <a href="/polls/" class="dropdown-item">当前问题</a>
+                                <a href="/polls/history/" class="dropdown-item">历史记录</a>
                             </div>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="/chat/">ChatBot</a>
-                        </li>
+                        <!-- <li class="nav-item ">
+                            <a class="nav-link" disabled>ChatBot</a>
+                        </li> -->
                     </ul>
                     <!-- Button -->
 
@@ -144,7 +144,7 @@
                     <!-- Button trigger modal -->
                     <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
                         data-toggle="modal" data-target="#exampleModal">
-                        Hi, {{ request.user.username }}!
+                        你好, {{ request.user.username }}!
                     </button>
 
 
@@ -152,7 +152,7 @@
                     {% else %}
                     <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
                         href="{% url 'account_login' %}">
-                        Sign In
+                        登录/注册
                     </a>
                     {% endif %}
 
