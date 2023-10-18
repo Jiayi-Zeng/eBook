@@ -183,4 +183,23 @@ def countVote(publish):
         choice_vote_dict[choice_text] = choice_count\
         
     return choice_vote_dict
+
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
  
+class DetailView(generic.DetailView):
+    model = Publish
+    template_name = "polls/detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        publish_id = self.get_object()
+        
+        publish_object = get_object_or_404(Publish, pk=publish_id)
+    
+        context = {
+            'publish_object': publish_object,
+            'publish_id': publish_id,
+        }
+        return context

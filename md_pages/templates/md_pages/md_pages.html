@@ -48,6 +48,11 @@
             </div>
             <!-- Docs content -->
             {{ self.body|markdown }}
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </div>
+            </div>
         </div>
         <!-- Document toc-->
         <div class="col-xl-3 docs-sidebar d-none d-xl-block">
@@ -65,6 +70,8 @@
 </div>
 
 {% endwith %}
+
+
 {% endblock %}
 
 {% block extra_js %}
