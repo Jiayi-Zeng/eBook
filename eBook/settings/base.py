@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     # Local apps
-    # "pages",
+    "pages",
     "book",
     "home",
     "md_pages",
@@ -199,12 +199,13 @@ LOGIN_REDIRECT_URL = '/'
 
 WAGTAILMARKDOWN = {
     "autodownload_fontawesome": False,
-    "allowed_tags": ["a", "button", "div"],
+    "allowed_tags": ["a", "button", "div", "iframe"],
     "allowed_styles": [], 
     "allowed_attributes": {
         "a": ["class", "data-toggle", "href", "role", "aria-expanded", "aria-controls"],
         "button": ["class", "type", "data-toggle", "data-target", "aria-expanded", "aria-controls"],
         "div": ["class", "id"],
+        "iframe" :["src"],
     },
     "allowed_settings_mode": "extend",  # optional. Possible values: "extend" or "override". Defaults to "extend".
     "extensions": [],  # optional. a list of python-markdown supported extensions

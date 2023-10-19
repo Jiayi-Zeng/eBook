@@ -8,6 +8,13 @@
     pre code.hljs {
         border-radius: 0.375rem;
     }
+    /* 设置 iframe 样式，确保没有边距和滚动条 */
+    iframe {
+        margin: 0;
+        padding: 0;
+        border: none;
+        overflow: hidden;
+    }
 </style>
 {% endblock %}
 
@@ -48,11 +55,6 @@
             </div>
             <!-- Docs content -->
             {{ self.body|markdown }}
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                </div>
-            </div>
         </div>
         <!-- Document toc-->
         <div class="col-xl-3 docs-sidebar d-none d-xl-block">
@@ -68,10 +70,7 @@
         </div>
     </div>
 </div>
-
 {% endwith %}
-
-
 {% endblock %}
 
 {% block extra_js %}
@@ -80,4 +79,22 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- <script src="{% static 'highlight/highlight.js' %}"></script> -->
 <script>hljs.highlightAll();</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var showIframeButton = document.getElementById("showIframeButton");
+      var iframe = document.querySelector(".auto-height-iframe");
+    
+      showIframeButton.addEventListener("click", function() {
+        // 显示 iframe
+        iframe.style.display = "block";
+    
+        iframe.addEventListener("load", function() {
+            var iframeContentHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+            iframe.style.height = iframeContentHeight + "px";
+        });
+
+      });
+    });
+    </script>
+    
 {% endblock %}

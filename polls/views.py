@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.views.generic.edit import FormView
 from django.db.models import Max, Count, Q
-
+from django.http import Http404
 from django.utils import timezone
 
 @method_decorator(login_required, name='dispatch')
@@ -185,21 +185,25 @@ def countVote(publish):
     return choice_vote_dict
 
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, "polls/detail.html", {"question": question})
  
 class DetailView(generic.DetailView):
-    model = Publish
+    model = Question
     template_name = "polls/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        publish_id = self.get_object()
+        question_id = self.get_object()
         
-        publish_object = get_object_or_404(Publish, pk=publish_id)
+        question_object = get_object_or_404(Publish, pk=question_id)
     
         context = {
-            'publish_object': publish_object,
-            'publish_id': publish_id,
+            'question': question_object,
+            'question_id': question_id,
         }
         return context
