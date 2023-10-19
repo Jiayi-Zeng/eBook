@@ -7,7 +7,7 @@ urlpatterns = [
     path("history/", views.HistoryView.as_view(), name="history"),
 
     path("<int:question_id>/", views.detail, name="detail"),
-    # path("<int:question_id>/", views.DetailView.as_view, name="detail"),
+    path("<int:question_id>/", views.DetailView.as_view, name="detail"),
     
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     path("<int:publish_id>/vote/", views.vote, name="vote"),

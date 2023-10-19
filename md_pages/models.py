@@ -11,6 +11,6 @@ class MdPages(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('body', icon="code"),
-        InlinePanel('questions', label='Question'),
-        # InlinePanel('cloze_questions', label='Cloze Question'),
+        InlinePanel('questions', label='选择题'),
+        InlinePanel('cloze_questions', label='填空题'),
     ]

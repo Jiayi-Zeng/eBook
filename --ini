@@ -1,0 +1,54 @@
+*** Starting uWSGI 2.0.22 (64bit) on [Thu Oct 19 18:56:20 2023] ***
+compiled with version: 11.4.0 on 12 October 2023 13:05:20
+os: Linux-5.15.0-79-generic #86-Ubuntu SMP Mon Jul 10 16:07:21 UTC 2023
+nodename: iZuf69h9hoorjdh7mb6lmbZ
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /root/eBook
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /root/eBook/
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 14005
+your memory page size is 4096 bytes
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.10.12 (main, Jun 11 2023, 05:26:28) [GCC 11.4.0]
+Python main interpreter initialized at 0x55ef246396e0
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 824888 bytes (805 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/eBook/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55ef246396e0 pid: 33466 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 33466, cores: 2)
+spawned uWSGI worker 2 (pid: 33467, cores: 2)
+spawned uWSGI worker 3 (pid: 33468, cores: 2)
+spawned uWSGI worker 4 (pid: 33470, cores: 2)
+[pid: 33470|app: 0|req: 1/1] 61.230.149.80 () {40 vars in 3000 bytes} [Thu Oct 19 18:56:25 2023] GET / => generated 15627 bytes in 598 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 0)
+[pid: 33470|app: 0|req: 2/2] 49.52.5.42 () {44 vars in 3088 bytes} [Thu Oct 19 18:56:36 2023] GET /intro_to_cs/ => generated 23492 bytes in 44 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 1)
+[pid: 33470|app: 0|req: 3/3] 49.52.5.42 () {44 vars in 3224 bytes} [Thu Oct 19 18:56:43 2023] GET /intro_to_cs/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E8%AE%A1%E7%AE%97/ => generated 13458 bytes in 121 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 0)
+[pid: 33468|app: 0|req: 1/4] 49.52.5.42 () {44 vars in 3184 bytes} [Thu Oct 19 18:56:46 2023] GET /polls/5/ => generated 5303 bytes in 351 msecs (HTTP/1.1 200) 8 headers in 278 bytes (1 switches on core 0)
+[pid: 33470|app: 0|req: 4/5] 49.52.5.42 () {44 vars in 3202 bytes} [Thu Oct 19 18:56:49 2023] GET /intro_to_cs/1/15/ => generated 13907 bytes in 39 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 1)
+[pid: 33470|app: 0|req: 5/6] 49.52.5.42 () {44 vars in 3115 bytes} [Thu Oct 19 18:56:54 2023] GET /intro_to_cs/1/11/ => generated 35169 bytes in 71 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 0)
+[pid: 33470|app: 0|req: 6/7] 61.230.149.80 () {40 vars in 3000 bytes} [Thu Oct 19 19:01:18 2023] GET / => generated 15627 bytes in 14 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 1)
+[pid: 33470|app: 0|req: 7/8] 61.230.149.80 () {40 vars in 3000 bytes} [Thu Oct 19 19:01:55 2023] GET / => generated 15627 bytes in 14 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 0)
+[pid: 33470|app: 0|req: 8/9] 61.230.149.80 () {42 vars in 3062 bytes} [Thu Oct 19 19:02:53 2023] GET /intro_to_cs/ => generated 23492 bytes in 22 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 1)
+[pid: 33470|app: 0|req: 9/10] 49.52.5.42 () {44 vars in 3110 bytes} [Thu Oct 19 19:02:59 2023] GET /intro_to_cs/1/11/ => generated 35169 bytes in 80 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 0)
+[pid: 33470|app: 0|req: 10/11] 49.52.5.42 () {44 vars in 3229 bytes} [Thu Oct 19 19:03:17 2023] GET /intro_to_cs/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E4%B8%8E%E8%AE%A1%E7%AE%97/ => generated 13458 bytes in 36 msecs (HTTP/1.1 200) 9 headers in 415 bytes (1 switches on core 1)
+[pid: 33467|app: 0|req: 1/12] 49.52.5.42 () {44 vars in 3184 bytes} [Thu Oct 19 19:03:20 2023] GET /polls/5/ => generated 5303 bytes in 356 msecs (HTTP/1.1 200) 8 headers in 278 bytes (1 switches on core 0)
+[pid: 33467|app: 0|req: 2/13] 52.167.144.170 () {36 vars in 573 bytes} [Thu Oct 19 19:17:37 2023] GET /polls/ => generated 0 bytes in 100 msecs (HTTP/1.1 302) 9 headers in 319 bytes (1 switches on core 1)
+[pid: 33470|app: 0|req: 11/14] 52.167.144.170 () {36 vars in 616 bytes} [Thu Oct 19 19:17:39 2023] GET /accounts/login/?next=/polls/ => generated 7381 bytes in 27 msecs (HTTP/1.1 200) 11 headers in 526 bytes (1 switches on core 0)

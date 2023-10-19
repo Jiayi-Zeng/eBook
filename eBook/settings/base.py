@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # "chatbot",
     # "question",
     "polls",
+    "polls_cloze",
 
     'allauth',
     'allauth.account',
@@ -164,8 +165,7 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = "static/"
-
+STATIC_URL = "https://gitee.com/Jiayi-Zeng/picgo_markdown/raw/master/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
 

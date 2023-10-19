@@ -39,8 +39,8 @@ class Question(ClusterableModel):
 
     
     class Meta:
-        verbose_name = "Question"
-        verbose_name_plural = "Questions"
+        verbose_name = "选择题"
+        verbose_name_plural = "选择题"
 
 class QuestionViewSet(SnippetViewSet):
     model = Question

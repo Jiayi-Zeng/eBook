@@ -1,5 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 from .models import Question, Choice, UserChoice, Publish
@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
-from django.views.generic.edit import FormView
 from django.db.models import Max, Count, Q
 from django.http import Http404
 from django.utils import timezone

@@ -13,6 +13,7 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     # path("search/", search_views.search, name="search"),
     path("polls/", include("polls.urls")),
+    path("cloze_polls/", include("polls_cloze.urls")),
     path('accounts/', include('allauth.urls')),
 ]
 
