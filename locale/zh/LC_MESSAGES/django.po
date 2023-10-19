@@ -1,0 +1,53 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-19 20:35+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: eBook/templates/account/login.html:5 eBook/templates/account/login.html:29
+#: eBook/templates/allauth/layouts/base.html:24
+msgid "登录"
+msgstr ""
+
+#: eBook/templates/account/password_change.html:4
+#: eBook/templates/account/password_change.html:22
+msgid "修改密码"
+msgstr ""
+
+#: eBook/templates/account/password_change.html:31
+msgid "忘记密码?"
+msgstr ""
+
+#: eBook/templates/account/password_reset.html:4
+msgid "忘记密码"
+msgstr ""
+
+#: eBook/templates/account/password_reset.html:26
+msgid "重置密码"
+msgstr ""
+
+#: eBook/templates/account/password_reset.html:31
+msgid "如果您在重设密码时遇到任何问题，请联系我们。"
+msgstr ""
+
+#: eBook/templates/account/signup.html:4
+#: eBook/templates/allauth/layouts/base.html:27
+msgid "注册"
+msgstr ""
+
+#: eBook/templates/base_home.html:187 eBook/templates/base_page.html:199
+msgid "退出"
+msgstr ""

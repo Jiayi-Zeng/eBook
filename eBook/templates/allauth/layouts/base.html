@@ -13,30 +13,18 @@
     </head>
     <body>
         {% block body %}
-            <!-- {% if messages %}
-                <div>
-                    <strong>{% trans "Messages:" %}</strong>
-                    <ul>
-                        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
-                    </ul>
-                </div>
-            {% endif %} -->
             <div>     
-               
                 <ul>
                     {% if user.is_authenticated %}
-                        <!-- <li>
-                            <a href="{% url 'account_email' %}">{% trans "Change Email" %}</a>
-                        </li> -->
                         <li>
-                            <a href="/accounts/password/change/">Change Password</a>
+                            <a href="/accounts/password/change/">修改密码</a>
                         </li>
                     {% else %}
                         <li>
-                            <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                            <a href="{% url 'account_login' %}">{% trans "登录" %}</a>
                         </li>
                         <li>
-                            <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                            <a href="{% url 'account_signup' %}">{% trans "注册" %}</a>
                         </li>
                     {% endif %}
                 </ul>

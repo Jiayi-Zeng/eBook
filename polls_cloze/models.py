@@ -30,7 +30,6 @@ class ClozeQuestion(ClusterableModel):
     ]
 
     def __str__(self):
-        print(self.id)
         return self.question_text
 
     
