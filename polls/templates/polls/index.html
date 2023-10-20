@@ -186,7 +186,7 @@
                                     <!-- Form -->
                                     <div class="row justify-content-center">
                                         <div class="mb-3">
-                                            <form action="{% url 'polls:vote' publish_object.publish_id%}" method="post">
+                                            <form action="{% url 'polls:vote' publish_object.publish_id %}" method="post">
                                                 {% csrf_token %}
                                                 {% for choice in publish_object.question.choices.all %}
                                                 <div class="custom-control custom-radio">

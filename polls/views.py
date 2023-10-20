@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.db.models import Max, Count, Q
 from django.http import Http404
 from django.utils import timezone
+from wagtail.models import Site, Page
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -66,6 +67,27 @@ class HistoryView(generic.ListView):
         """Return the answered questions."""
         published_history = Publish.objects.filter(status=False)
         return UserChoice.objects.filter(user=self.request.user, publish__in=published_history)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        site = Site.objects.first()  # 或者使用您的站点名称或ID来过滤
+        root_page = Page.objects.get(title="计算机导论")
+        questions = Question.objects.all
+
+        if self.request.user.is_authenticated:
+            user_answer_id = UserChoice.objects.filter(user=self.request.user, publish__question_id__in=questions).aggregate(max_id=Max('id'))['max_id']
+        if user_answer_id:
+            user_answer = UserChoice.objects.get(id=user_answer_id)
+        else:
+            user_answer = None
+
+        context = {
+            'root': root_page,
+            'questions': questions,
+             'user_answer': user_answer,
+
+        }
+        return context
     
 class ResultsView(generic.DetailView):
     model = Question
@@ -188,21 +210,21 @@ def detail(request, question_id):
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, "polls/detail.html", {"question": question})
- 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = "polls/detail.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        question_id = self.get_object()
-        
-        question_object = get_object_or_404(Publish, pk=question_id)
     
-        context = {
-            'question': question_object,
-            'question_id': question_id,
-        }
-        return context
+    publish_id = Publish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
+    publish = get_object_or_404(Publish, pk=publish_id)
+
+    if request.user.is_authenticated:
+        user_answer_id = UserChoice.objects.filter(user=request.user, publish__question_id=question_id).aggregate(max_id=Max('id'))['max_id']
+        if user_answer_id:
+            user_answer = UserChoice.objects.get(id=user_answer_id)
+        else:
+            user_answer = None
+
+    context = {
+        'question': question,
+        'user_answer': user_answer,
+        'publish': publish,
+    }
+    return render(request, "polls/detail.html", context)
+ 
