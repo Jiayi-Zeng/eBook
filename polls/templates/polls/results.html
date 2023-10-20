@@ -27,16 +27,16 @@
 
 <div class="nice-padding">
     {{ block.super }}
-    <select id="publishSelector" onchange="location = this.value;">
+    <!-- <select id="publishSelector" onchange="location = this.value;">
         <option value="?publish_id={{ publish_id }}">All Publish</option>
         {% for publish_id in all_publish_id %}
         <option value="?publish_id={{ publish_id }}" {% if request.GET.publish_id == publish.id|stringformat:"d" %}selected{% endif %}>
             {{ publish_id }}
         </option>
         {% endfor %}
-    </select>
+    </select> -->
 
-    <h1>{{ question.question_text }} -- {{ publish_id }}</h1>
+    <h1>{{ question.question_text }}</h1>
 
     <ul>
 
@@ -45,7 +45,7 @@
         {% endfor %}
     </ul>
 
-    <h2>Submissions</h2>
+    <h2>提交结果</h2>
     <!-- <form method="get">
         <input type="text" name="search" placeholder="Search..." value="{{ request.GET.search }}">
         <button type="submit">Search</button>
@@ -66,19 +66,19 @@
                 <th>
                     <a href="?ordering=user" title="Sort by 'User' in ascending order."
                         class="icon icon-arrow-down-after teal">
-                        User
+                        学生
                     </a>
                 </th>
                 <th>
                     <a href="?ordering=choice" title="Sort by 'Choice' in ascending order."
                         class="icon icon-arrow-down-after teal">
-                        Choice
+                        选择
                     </a>
                 </th>
                 <th>
                     <a href="?ordering=submitted_at" title="Sort by 'Submit Time' in ascending order."
                         class="icon icon-arrow-down-after teal">
-                        Submit Time
+                        提交时间
                     </a>
                 </th>
             </tr>

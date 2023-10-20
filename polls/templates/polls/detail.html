@@ -1,348 +1,256 @@
 {% load static wagtailcore_tags allauth i18n %}
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Webpixels">
-
-    <!-- Preloader -->
-    <style>
-        @keyframes hidePreloader {
-            0% {
-                width: 100%;
-                height: 100%;
-            }
-
-            100% {
-                width: 0;
-                height: 0;
-            }
-        }
-
-        body>div.preloader {
-            position: fixed;
-            background: white;
-            width: 100%;
-            height: 100%;
-            z-index: 1071;
-            opacity: 0;
-            transition: opacity .5s ease;
-            overflow: hidden;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        body:not(.loaded)>div.preloader {
-            opacity: 1;
-        }
-
-        body:not(.loaded) {
-            overflow: hidden;
-        }
-
-        body.loaded>div.preloader {
-            animation: hidePreloader .5s linear .5s forwards;
-        }
-
-        .alert-modern {
-            display: inline-block;
-        }
-    </style>
-    <script>
-        window.addEventListener("load", function () {
-            setTimeout(function () {
-                document.querySelector('body').classList.add('loaded');
-            }, 300);
-        });
-    </script>
-
-    <!-- Favicon -->
-    <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
-
-    <link rel="stylesheet" href="{% static 'libs/@fortawesome/fontawesome-free/css/all.min.css' %}">
-    <!-- Quick CSS -->
-    <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
-    <link rel="stylesheet" href="{% static 'css/eBook.css' %}">
+<!-- Case 1: 等待发布 !userchoice & !question -->
+{% if not question.published and question.id not in answered_question_list %}
+<div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+    <!-- Accordion card 1 -->
+    <div class="card">
+        <!-- Card Title -->
+        <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}" data-toggle="collapse"
+            role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}" aria-expanded="false"
+            aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+            <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                <span class="badge badge-info mr-4">TBA</span>
+                选择题 {{ question.question_text }}
+            </h6>
+        </div>
 
 
-
-</head>
-
-<body>
-    <!-- {% question %} -->
-    {{ question }}
-    {{ user_answer }}
-    <!-- Case 1: 等待发布 !userchoice & !question -->
-    {% if not question.published and not user_answer%}
-    <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
-        <!-- Accordion card 1 -->
-        <div class="card">
-            <!-- Card Title -->
-            <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
-                data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
-                aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
-                <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
-                    <span class="badge badge-info mr-4">TBA</span>
-                    选择题
-                </h6>
-            </div>
-
-
-            <!-- Card Content -->
-            <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
-                aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
-                data-parent="#accordion-{{ question.id }}">
-                <div class="card-body">
-                    <div class="container position-relative zindex-100">
-                        <div class="row justify-content-center">
-                            <p> 等待发布…… </p>
-                        </div>
+        <!-- Card Content -->
+        <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
+            aria-labelledby="heading-{{ question.id }}-{{ question.id }}" data-parent="#accordion-{{ question.id }}">
+            <div class="card-body">
+                <div class="container position-relative zindex-100">
+                    <div class="row justify-content-center">
+                        <p> 等待发布…… </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endif %}
+</div>
+{% endif %}
 
 
-    <!-- Case 2: 等待做题 !userchoice & question  -->
-    {% if question.published and not user_answer%}
-    <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
-        <!-- Accordion card 1 -->
-        <div class="card">
-            <!-- Card Title -->
-            <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
-                data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
-                aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
-                <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
-                    <span class="badge badge-warning mr-4">Waiting</span>
-                    选择题
-                </h6>
-            </div>
+<!-- Case 2: 等待做题 !userchoice & question  -->
+{% if question.published and question.id not in answered_question_list%}
+<div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+    <!-- Accordion card 1 -->
+    <div class="card">
+        <!-- Card Title -->
+        <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}" data-toggle="collapse"
+            role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}" aria-expanded="false"
+            aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+            <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                <span class="badge badge-warning mr-4">Waiting</span>
+                选择题 {{ question.question_text }}
+            </h6>
+        </div>
 
 
-            <!-- Card Content -->
-            <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
-                aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
-                data-parent="#accordion-{{ question.id }}">
-                <div class="card-body">
-                    <!-- 题目 -->
-                    <div class="container position-relative zindex-100">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="row justify-content-center">
-                                    <p>{{ question.body | richtext }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 选项 -->
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="row justify-content-center">
-                                    <div class="mb-3">
-                                        <form action="{% url 'polls:vote' publish.publish_id %}" method="post">
-                                            {% csrf_token %}
-                                            {% for choice in publish.question.choices.all %}
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" name="choice" id="choice-{{ choice.id }}"
-                                                    value="{{ choice.id }}" class="custom-control-input">
-                                                <label class="custom-control-label" for="choice-{{ choice.id }}">
-                                                    {{ choice.choice_text }}</label>
-                                            </div>
-                                            {% endfor %}
-                                            <div class="text-center">
-                                                <button type="submit" value="Vote"
-                                                    class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+        <!-- Card Content -->
+        <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
+            aria-labelledby="heading-{{ question.id }}-{{ question.id }}" data-parent="#accordion-{{ question.id }}">
+            <div class="card-body">
+                <!-- 题目 -->
+                <div class="container position-relative zindex-100">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row justify-content-center">
+                                <p>{{ question.body | richtext }}</p>
                             </div>
                         </div>
                     </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% endif %}
-
-
-    <!-- Case 3: 等待结果 userchoice & question  -->
-    {% if question.published and user_answer %}
-    <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
-        <!-- Accordion card 1 -->
-        <div class="card">
-            <!-- Card Title -->
-            <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
-                data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
-                aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
-                <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
-                    <span class="badge badge-success mr-4">Done</span>
-                    选择题
-                </h6>
-            </div>
-
-
-            <!-- Card Content -->
-            <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
-                aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
-                data-parent="#accordion-{{ question.id }}">
-                <div class="card-body">
-                    <!-- 题目 -->
-                    <div class="container position-relative zindex-100">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="row justify-content-center">
-                                    <p>{{ question.body | richtext }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 选项 -->
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <!-- Options -->
-                                <div class="row justify-content-center">
-                                    <div class="mb-3">
+                    <!-- 选项 -->
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row justify-content-center">
+                                <div class="mb-3">
+                                    <form action="{% url 'polls:vote' question.id %}" method="post">
+                                        {% csrf_token %}
                                         {% for choice in question.choices.all %}
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" name="choice" class="custom-control-input" disabled>
-                                            <label class="custom-control-label" for="choice{{ question.id }}">
+                                            <input type="radio" name="choice" id="choice-{{ choice.id }}"
+                                                value="{{ choice.id }}" class="custom-control-input">
+                                            <label class="custom-control-label" for="choice-{{ choice.id }}">
                                                 {{ choice.choice_text }}
                                             </label>
                                         </div>
                                         {% endfor %}
-                                    </div>
+                                        <div class="text-center">
+                                            <button type="submit" value="Vote"
+                                                class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="row justify-content-center">
-                                <p>你已经回答了这个问题。</p>
-                                <p>你的答案是
-                                    <span class="badge badge-soft-primary">
-                                        {{ user_answer.choice.choice_text}}
-                                    </span>。
-                                </p>
-                                <p>请等待问题结束后查看正确答案。
-                                </p>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    {% endif %}
+{% endif %}
 
 
-    <!-- Case 4: 答案 userchoice & !question  -->
-    {% if not question.published and user_answer%}
-    <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
-        <!-- Accordion card 1 -->
-        <div class="card">
-            <!-- Card Title -->
-            <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
-                data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
-                aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
-                <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
-                    {% if user_answer.correct == True %}
+<!-- Case 3: 等待结果 userchoice & question  -->
+{% if question.published and question.id in answered_question_list %}
+<div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+    <!-- Accordion card 1 -->
+    <div class="card">
+        <!-- Card Title -->
+        <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}" data-toggle="collapse"
+            role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}" aria-expanded="false"
+            aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+            <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                <span class="badge badge-success mr-4">Done</span>
+                选择题 {{ question.question_text }}
+            </h6>
+        </div>
+
+
+        <!-- Card Content -->
+        <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
+            aria-labelledby="heading-{{ question.id }}-{{ question.id }}" data-parent="#accordion-{{ question.id }}">
+            <div class="card-body">
+                <!-- 题目 -->
+                <div class="container position-relative zindex-100">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row justify-content-center">
+                                <p>{{ question.body | richtext }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 选项 -->
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <!-- Options -->
+                            <div class="row justify-content-center">
+                                <div class="mb-3">
+                                    {% for choice in question.choices.all %}
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" name="choice" class="custom-control-input" disabled>
+                                        <label class="custom-control-label" for="choice{{ question.id }}">
+                                            {{ choice.choice_text }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="row justify-content-center">
+                            <p>你已经回答了这个问题。</p>
+                            <p>你的答案是
+                                <span class="badge badge-soft-primary">
+                                   
+                                    {% for userchoice in user_choice %}
+
+                                    {% if userchoice.publish.question == question %}
+                                        {{ userchoice.choice.choice_text}}
+                                    {% endif %}
+                                    {% endfor %}
+                                </span>。
+                            </p>
+                            <p>请等待问题结束后查看正确答案。
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+<!-- Case 4: 答案 userchoice & !question  -->
+{% if not question.published and question.id in answered_question_list%}
+<div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+    <!-- Accordion card 1 -->
+    <div class="card">
+        <!-- Card Title -->
+        <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}" data-toggle="collapse"
+            role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}" aria-expanded="false"
+            aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+            <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                {% for userchoice in user_choice %}
+                {% if userchoice.publish.question == question %}
+                    {% if userchoice.correct == True %}
                     <span class="badge badge-success mr-4">正确</span>
                     {% else %}
                     <span class="badge badge-danger mr-4">错误</span>
                     {% endif %}
-                    选择题
-                </h6>
-            </div>
+                    选择题 {{ question.question_text }}
+                    {% endif %}
+                    {% endfor %}
+            </h6>
+        </div>
 
 
-            <!-- Card Content -->
-            <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
-                aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
-                data-parent="#accordion-{{ question.id }}">
-                <div class="card-body">
-                    <div class="container position-relative zindex-100">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="row justify-content-center">
-                                    <p>{{ question.body | richtext }}</p>
-                                </div>
+        <!-- Card Content -->
+        <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse"
+            aria-labelledby="heading-{{ question.id }}-{{ question.id }}" data-parent="#accordion-{{ question.id }}">
+            <div class="card-body">
+                <div class="container position-relative zindex-100">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="row justify-content-center">
+                                <p>{{ question.body | richtext }}</p>
                             </div>
                         </div>
-                        <!-- 选项 -->
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <!-- Options -->
-                                <div class="row justify-content-center">
-                                    <div class="mb-3">
-                                        {% for choice in question.choices.all %}
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" name="choice" class="custom-control-input" disabled>
-                                            <label class="custom-control-label" for="choice{{ question.id }}">
-                                                {{ choice.choice_text}}
-                                            </label>
-                                        </div>
-                                        {% endfor %}
+                    </div>
+                    <!-- 选项 -->
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <!-- Options -->
+                            <div class="row justify-content-center">
+                                <div class="mb-3">
+                                    {% for choice in question.choices.all %}
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" name="choice" class="custom-control-input" disabled>
+                                        <label class="custom-control-label" for="choice{{ question.id }}">
+                                            {{ choice.choice_text}}
+                                        </label>
                                     </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <p>
+                </div>
+                <div class="row justify-content-center">
+                    <p>
+                        
+                        {% for userchoice in user_choice %}
+                        {% if userchoice.publish.question == question %}
                             你的答案是
-                            {% if user_answer.correct == True %}
-                            <span class="badge badge-soft-success">{{ user_answer.choice.choice_text }}</span>.
+                            {% if userchoice.correct == True %}
+                            <span class="badge badge-soft-success">{{ userchoice.choice.choice_text }}</span>.
                             {% else %}
-                            <span class="badge badge-soft-danger">{{ user_answer.choice.choice_text }}</span>.
+                            <span class="badge badge-soft-danger">{{ userchoice.choice.choice_text }}</span>.
                             正确答案是
                             <span class="badge badge-soft-success">
-                                {{ user_answer.publish.question.correct_choice}}
+                                {{ userchoice.publish.question.correct_choice}}
                             </span>.
-                            {% endif %}
-                        </p>
-                    </div>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    {% endif %}
-
-
-
-
-
-
-
-
-
-
-    <!-- Core JS  -->
-    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'libs/svg-injector/dist/svg-injector.min.js' %}"></script>
-    <!-- Quick JS -->
-    <script src="{% static 'js/quick-website.js' %}"></script>
-    <!-- Feather Icons -->
-    <script src="{% static 'libs/feather-icons/dist/feather.min.js' %}">
-        feather.replace({
-            'width': '1em',
-            'height': '1em'
-        })
-    </script>
-
-</body>
-
-</html>
+{% endif %}

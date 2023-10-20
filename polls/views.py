@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 from .models import Question, Choice, UserChoice, Publish
+from polls_cloze.models import ClozeQuestion, ClozeUserChoice, ClozePublish
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -70,22 +71,40 @@ class HistoryView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        site = Site.objects.first()  # 或者使用您的站点名称或ID来过滤
+
         root_page = Page.objects.get(title="计算机导论")
-        questions = Question.objects.all
+        questions = Question.objects.all()
+        cloze_questions = ClozeQuestion.objects.all()
+        
+        answered_publish_id = ClozeUserChoice.objects.filter(user=self.request.user).values_list('publish', flat=True)
+        answered_question_id = ClozePublish.objects.filter(publish_id__in=answered_publish_id).values_list('question', flat=True)
+        print(answered_question_id)
+        # cloze_answered_question_list = ClozePublish.objects.filter(publish_id__in=answered_publish_id).values_list('question_id', flat=True)
 
         if self.request.user.is_authenticated:
-            user_answer_id = UserChoice.objects.filter(user=self.request.user, publish__question_id__in=questions).aggregate(max_id=Max('id'))['max_id']
-        if user_answer_id:
-            user_answer = UserChoice.objects.get(id=user_answer_id)
+            user_answer = UserChoice.objects.filter(user=self.request.user).values_list('publish_id', flat=True)
+            user_choice = UserChoice.objects.filter(user=self.request.user)
+            answered_question_list =  Publish.objects.filter(publish_id__in=user_answer).values_list('question_id', flat=True)
+
+            # cloze_user_answer = ClozeUserChoice.objects.filter(user=self.request.user).values_list('publish_id', flat=True)
+            cloze_user_choice = ClozeUserChoice.objects.filter(user=self.request.user)
+            # cloze_answered_question_list =  ClozePublish.objects.filter(publish_id__in=user_answer).values_list('question_id', flat=True)
         else:
             user_answer = None
+            user_choice = None
+            answered_question_list = None
 
         context = {
             'root': root_page,
             'questions': questions,
-             'user_answer': user_answer,
-
+            'user_answer': user_answer,
+            'answered_question_list': answered_question_list,
+            'user_choice': user_choice,
+            'cloze_questions': cloze_questions,
+            # 'cloze_user_answer': cloze_user_answer,
+            'cloze_user_choice': cloze_user_choice,
+            # 'cloze_answered_question_list': cloze_answered_question_list,
+            'answered_question_id': answered_question_id
         }
         return context
     
@@ -117,18 +136,20 @@ class ResultsView(generic.DetailView):
         }
         return context
 
-def vote(request, publish_id):
+def vote(request, question_id):
     current_user = request.user
 
     # Check if the user has already made a choice for this question
-    existing_choice = UserChoice.objects.filter(user=current_user, publish_id=publish_id).first()
+    publish_id = Publish.objects.filter(question__id=question_id).aggregate(max_id=Max('publish_id'))['max_id']
+    publish = Publish.objects.get(publish_id=publish_id)
+
+    existing_choice = UserChoice.objects.filter(user=current_user, publish=publish).first()
 
     if existing_choice:
         messages.error(request, f'For Question, you have already submitted Option {existing_choice.choice}')
         # Redirect to the appropriate page
     else:
-        publish_object = Publish.objects.get(publish_id=publish_id)
-        question = publish_object.question
+        question = publish.question
         try:
             selected_choice = question.choices.get(pk=request.POST["choice"])
         except (KeyError, Choice.DoesNotExist):
@@ -144,7 +165,7 @@ def vote(request, publish_id):
         else:
             user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
             user_choice.save()
-    return HttpResponseRedirect(reverse("polls:index"))
+    return HttpResponseRedirect(reverse("polls:history"))
 
 def publish(request, pk):
     question = get_object_or_404(Question, pk=pk)

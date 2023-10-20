@@ -15,6 +15,7 @@ urlpatterns = [
     path("polls/", include("polls.urls")),
     path("cloze_polls/", include("polls_cloze.urls")),
     path('accounts/', include('allauth.urls')),
+    path('chat/', include('chatbot.urls')),
 ]
 
 if settings.DEBUG:

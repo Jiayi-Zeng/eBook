@@ -5,8 +5,6 @@
 {% block content %}
 
 
-
-
 <div class="tab-example-result mt-3 ml-sm-5 mr-sm-5 ml-lg-10 mr-lg-10" style="min-height: 55vh;">
     <div class="row mt-5">
         {% for chapter in root.get_children %}
@@ -19,15 +17,22 @@
             <div class="col-md-12 flex-column align-items-start justify-content-center">
                 
                 {% for md_page in chapter.get_children %}
-                <h5 class="h5 mt-3 mb-3">
-                    {{ md_page.title }}
-                </h5>
-                
-                {% for question in questions %}
-                {% if question.page_id == md_page.id %}
-                {% include "polls/detail.html"%}
-                {% endif %}
+                    <h5 class="h5 mt-3 mb-3">
+                        {{ md_page.title }}
+                    </h5>
+                    
+                    {% for question in questions %}
+                        {% if question.page_id == md_page.id %}
+                            {% include "polls/detail.html" with question=question answers=user_answer user_choice=user_choice%}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for question in cloze_questions %}
+                    {% if question.page_id == md_page.id %}
+                        {% include "polls_cloze/detail.html" with cloze_question=cloze_question cloze_user_answer=cloze_user_answer cloze_user_choice=cloze_user_choice answered_publish_id=answered_publish_id%}
+                    {% endif %}
                 {% endfor %}
+                    
                 {% endfor %}
             </div>
         </div>
@@ -35,40 +40,5 @@
         {% endfor %}
     </div>
 </div>
-    <!-- No Question Available -->
-
-<section class="slice py-7 ">
-    <div class="container">
-        <div class="row row-grid align-items-center">
-            <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
-                <!-- Image -->
-                <figure class="w-100">
-                    <img alt="Image placeholder" src="{% static 'img/svg/illustrations/illustration-2.svg' %}"
-                        class="img-fluid mw-md-120">
-                </figure>
-            </div>
-            <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5">
-                <!-- Heading -->
-                <h1 class="display-4 text-center text-md-left mb-3">
-                    {% if error_message %}
-                    <p>{{ error_message }}</p>
-                    {% else %}
-                    <strong class="text-primary">暂无</strong>历史记录。
-                    {% endif %}
-                </h1>
-                <!-- Buttons -->
-                <div class="text-center text-md-left mt-5">
-                    <a href="/intro_to_cs/" class="btn btn-primary btn-icon" target="_self">
-                        <span class="btn-inner--text">Return</span>
-                    </a>
-                    <!-- <a href="https://webpixels.io/illustrations"
-                        class="btn btn-neutral btn-icon d-none d-lg-inline-block" target="_blank">Chat with Bot
-                    </a> -->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 
 {% endblock %}

@@ -7,9 +7,9 @@ from .models import Question
 from wagtail.contrib.modeladmin.views import CreateView
 from django.shortcuts import get_object_or_404
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
-
-
 from wagtail.snippets import widgets as wagtailsnippets_widgets
+
+register_snippet(Question)
 
 @hooks.register('register_snippet_listing_buttons')
 def snippet_history_buttons(snippet, user, next_url=None):
@@ -44,4 +44,4 @@ def register_publish_url():
         path('snippets/polls/<int:pk>/', views.ResultsView.as_view(), name='history'),
     ]
                 
-register_snippet(Question)
+

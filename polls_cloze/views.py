@@ -106,34 +106,29 @@ def unpublish(request, pk):
 
     return HttpResponseRedirect(f'/admin/snippets/polls_cloze/{pk}/')
 
-def vote(request, publish_id):
+def vote(request, question_id):
     current_user = request.user
 
     # Check if the user has already made a choice for this question
-    existing_choice = ClozeUserChoice.objects.filter(user=current_user, publish_id=publish_id).first()
+    publish_id = ClozePublish.objects.filter(question__id=question_id).aggregate(max_id=Max('publish_id'))['max_id']
+    publish = ClozePublish.objects.get(publish_id=publish_id)
+
+    existing_choice = ClozeUserChoice.objects.filter(user=current_user, publish=publish).first()
+
 
     if existing_choice:
-        messages.error(request, f'For Question, you have already submitted Option {existing_choice.choice}')
+        messages.error(request, f'For Question, you have already submitted Option {existing_choice.answer}')
         # Redirect to the appropriate page
     else:
         publish_object = ClozePublish.objects.get(publish_id=publish_id)
         question = publish_object.question
         
-        answer = request.POST["answer"]
-        # except (KeyError, Choice.DoesNotExist):
-        #     # Redisplay the question voting form.
-        #     return render(
-        #         request,
-        #         "polls/index.html",
-        #         {
-        #             "question": question,
-        #             "error_message": "You didn't select a choice.",
-        #         },
-        #     )
-        # else:
+        answer = request.POST.get('answer')
+        answer = answer.replace(" ", "").replace("\n", "")
+        
         user_choice = ClozeUserChoice(user=current_user, answer=answer, publish_id=publish_id)
         user_choice.save()
-    return HttpResponseRedirect(reverse("cloze_polls:index"))
+    return HttpResponseRedirect(reverse("polls:history"))
 
 class ResultsView(generic.DetailView):
     model = ClozeQuestion
@@ -152,10 +147,49 @@ class ResultsView(generic.DetailView):
         publish_object = get_object_or_404(ClozePublish, pk=publish_id)
         user_choices = ClozeUserChoice.objects.filter(publish=publish_id)
         
+       
+        
         context = {
             'user_choices': user_choices,
             'question': question,
             'publish_id': publish_id,
             'all_publish_id': all_publish_id,
+        }
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class HistoryView(generic.ListView):
+    template_name = "polls/history.html"
+    context_object_name = "answer_objects"
+
+    def get_queryset(self):
+        """Return the answered questions."""
+        published_history = ClozePublish.objects.filter(status=False)
+        return ClozeUserChoice.objects.filter(user=self.request.user, publish__in=published_history)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        questions = ClozeQuestion.objects.all()
+        
+        if self.request.user.is_authenticated:
+            user_answer = ClozeUserChoice.objects.filter(user=self.request.user).values_list('publish_id', flat=True)
+            user_choice = ClozeUserChoice.objects.filter(user=self.request.user)
+            answered_question_list =  ClozePublish.objects.filter(publish_id__in=user_answer).values_list('question_id', flat=True)
+        else:
+            user_answer = None
+            user_choice = None
+            answered_question_list = None
+
+        answered_publish = ClozeUserChoice.objects.filter(user=self.request.user, publish__in=publish)
+        answered_publish_id =  answered_publish.values_list('publish_id', flat=True)
+
+        context = {
+            'cloze_questions': questions,
+            'cloze_user_answer': user_answer,
+            'cloze_answered_question_list': answered_question_list,
+            'cloze_user_choice': user_choice,
+            'answered_publish_id': answered_publish_id
         }
         return context
