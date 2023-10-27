@@ -241,11 +241,13 @@ def detail(request, question_id):
             user_answer = UserChoice.objects.get(id=user_answer_id)
         else:
             user_answer = None
+    else: 
+        user_answer = None
 
     context = {
         'question': question,
         'user_answer': user_answer,
         'publish': publish,
     }
-    return render(request, "polls/detail.html", context)
+    return render(request, "polls/detail_page.html", context)
  

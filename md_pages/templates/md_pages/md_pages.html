@@ -80,21 +80,28 @@
 <!-- <script src="{% static 'highlight/highlight.js' %}"></script> -->
 <script>hljs.highlightAll();</script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var showIframeButton = document.getElementById("showIframeButton");
-      var iframe = document.querySelector(".auto-height-iframe");
-    
-      showIframeButton.addEventListener("click", function() {
-        // 显示 iframe
-        iframe.style.display = "block";
-    
-        iframe.addEventListener("load", function() {
-            var iframeContentHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-            iframe.style.height = iframeContentHeight + "px";
-        });
+        // 获取页面中的所有 iframe 元素
+        var iframes = document.querySelectorAll('iframe');
 
-      });
-    });
+        // 遍历每个 iframe 并设置其高度
+        for (var i = 0; i < iframes.length; i++) {
+            var iframe = iframes[i];
+            iframe.onload = adjustIframeHeight; // 绑定 onload 事件
+        }
+
+        function adjustIframeHeight(event) {
+            var iframe = event.target; // 获取触发事件的 iframe 元素
+            var innerDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+            // 获取内部文档的默认高度
+            var innerDocHeight = Math.max(
+                innerDocument.body.scrollHeight,
+                innerDocument.documentElement.scrollHeight
+            );
+
+            // 设置 iframe 高度为内部文档的默认高度
+            iframe.style.height = 10 + innerDocHeight + "px";
+        }
     </script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -109,7 +116,7 @@
         });
     </script>
     <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js">
+            src="https://unpkg.zhimg.com/mathjax@2.7.5/MathJax.js">
     </script>
     
 {% endblock %}
