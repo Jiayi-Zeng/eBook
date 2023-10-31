@@ -80,43 +80,102 @@
 <!-- <script src="{% static 'highlight/highlight.js' %}"></script> -->
 <script>hljs.highlightAll();</script>
 <script>
-        // 获取页面中的所有 iframe 元素
-        var iframes = document.querySelectorAll('iframe');
+    document.addEventListener('DOMContentLoaded', function () {
+    // 获取页面中的所有 iframe 元素
+    var iframes = document.querySelectorAll('iframe');
 
-        // 遍历每个 iframe 并设置其高度
-        for (var i = 0; i < iframes.length; i++) {
-            var iframe = iframes[i];
-            iframe.onload = adjustIframeHeight; // 绑定 onload 事件
-        }
+    // 遍历每个 iframe 并设置其高度
+    for (var i = 0; i < iframes.length; i++) {
+        var iframe = iframes[i];
+        iframe.onload = adjustIframeHeight; // 绑定 onload 事件
+    }
 
-        function adjustIframeHeight(event) {
-            var iframe = event.target; // 获取触发事件的 iframe 元素
-            var innerDocument = iframe.contentDocument || iframe.contentWindow.document;
+    function adjustIframeHeight(event) {
+        var iframe = event.target; // 获取触发事件的 iframe 元素
+        var innerDocument = iframe.contentDocument || iframe.contentWindow.document;
 
-            // 获取内部文档的默认高度
-            var innerDocHeight = Math.max(
-                innerDocument.body.scrollHeight,
-                innerDocument.documentElement.scrollHeight
-            );
+        // 获取内部文档的默认高度
+        var innerDocHeight = Math.max(
+            innerDocument.body.scrollHeight,
+            innerDocument.documentElement.scrollHeight
+        );
 
-            // 设置 iframe 高度为内部文档的默认高度
-            iframe.style.height = 10 + innerDocHeight + "px";
-        }
-    </script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-          extensions: ["tex2jax.js"],
-          jax: ["input/TeX", "output/HTML-CSS"],
-          tex2jax: {
-            inlineMath: [['$','$']],
-            displayMath: [['$$','$$']] ,
-            processEscapes: true
-          },
-          "HTML-CSS": { availableFonts: ["TeX"] }
-        });
-    </script>
-    <script type="text/javascript"
-            src="https://unpkg.zhimg.com/mathjax@2.7.5/MathJax.js">
-    </script>
+        // 设置 iframe 高度为内部文档的默认高度
+        iframe.style.height = 10 + innerDocHeight + "px";
+    }
+});
+
+    
+// if ('MutationObserver' in window) {
+//     const observer = new MutationObserver(adjustIframeHeight);
+    
+//     iframe.onload = function() {
+//         try {
+//             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+//             observer.observe(iframeDoc.body, { childList: true, subtree: true });
+//         } catch (e) {
+//             console.error("Error setting up MutationObserver:", e);
+//         }
+//     };
+// }
+// 获取页面中的所有 iframe 元素
+// var iframes = document.querySelectorAll('iframe');
+
+// 定义调整 iframe 高度的函数
+// function adjustIframeHeight(iframe) {
+//     var innerDocument = iframe.contentDocument || iframe.contentWindow.document;
+//     var innerDocHeight = Math.max(
+//         innerDocument.body.scrollHeight,
+//         innerDocument.documentElement.scrollHeight
+//     );
+//     iframe.style.height = 10 + innerDocHeight + "px";
+// }
+
+// // 为每个 iframe 设置 MutationObserver 和 onload 事件监听器
+// for (var i = 0; i < iframes.length; i++) {
+//     (function(iframe) {
+//         if ('MutationObserver' in window) {
+//             const observer = new MutationObserver(function() {
+//                 adjustIframeHeight(iframe);
+//             });
+
+//             iframe.onload = function() {
+//                 try {
+//                     const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+//                     observer.observe(iframeDoc.body, { childList: true, subtree: true });
+//                     adjustIframeHeight(iframe); // 也要在 onload 时调整高度
+//                 } catch (e) {
+//                     console.error("Error setting up MutationObserver:", e);
+//                 }
+//             };
+//         } else {
+//             iframe.onload = function() {
+//                 adjustIframeHeight(iframe);
+//             };
+//         }
+//     })(iframes[i]);
+// }
+// const observer = new MutationObserver(function() {
+//     // console.log('iframe content mutated'); // 添加这行日志
+//     setTimeout(() => adjustIframeHeight(iframe), 1000);
+//     // adjustIframeHeight(iframe);
+// });
+
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']] ,
+        processEscapes: true
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+<script type="text/javascript"
+        src="https://unpkg.zhimg.com/mathjax@2.7.5/MathJax.js">
+</script>
     
 {% endblock %}

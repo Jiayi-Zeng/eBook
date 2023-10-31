@@ -1,0 +1,358 @@
+{% load static wagtailcore_tags allauth i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Webpixels">
+    <!-- Preloader -->
+    <style>
+        @keyframes hidePreloader {
+            0% {
+                width: 100%;
+                height: 100%;
+            }
+
+            100% {
+                width: 0;
+                height: 0;
+            }
+        }
+
+        body>div.preloader {
+            position: fixed;
+            background: white;
+            width: 100%;
+            height: 100%;
+            z-index: 1071;
+            opacity: 0;
+            transition: opacity .5s ease;
+            overflow: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body:not(.loaded)>div.preloader {
+            opacity: 1;
+        }
+
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        body.loaded>div.preloader {
+            animation: hidePreloader .5s linear .5s forwards;
+        }
+
+        .alert-modern {
+            display: inline-block;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                document.querySelector('body').classList.add('loaded');
+            }, 300);
+        });
+    </script>
+
+    {# Global stylesheets #}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+
+    <link rel="stylesheet" href="{% static 'libs/@fortawesome/fontawesome-free/css/all.min.css' %}">
+    <!-- Quick CSS -->
+    <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eBook.css' %}">
+
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="col-12">
+            {% if not flag %}
+
+            <div class="row justify-content-center" style="width: 100%;">
+                <div class="col-lg-12">
+                    <div class="alert alert-outline-warning" role="alert">
+                        请<strong>登录</strong>查看题目!
+                    </div>
+
+                </div>
+            </div>
+
+
+            {% else %}
+            <!-- Case 1: 等待发布 !userchoice & !question -->
+            {% if not question.published and not user_answer %}
+            <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+                <!-- Accordion card 1 -->
+                <div class="card">
+                    <!-- Card Title -->
+                    <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
+                        data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
+                        aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+                        <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                            <span class="badge badge-info mr-4">TBA</span>
+                            填空题 {{ question.question_text }}
+                        </h6>
+                    </div>
+
+
+                    <!-- Card Content -->
+                    <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse show"
+                        aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
+                        data-parent="#accordion-{{ question.id }}">
+                        <div class="card-body">
+                            <div class="container position-relative zindex-100">
+                                <div class="row justify-content-center">
+                                    <p> 等待发布…… </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+
+            <!-- Case 2: 等待做题 !userchoice & question  -->
+            {% if question.published and not user_answer%}
+            <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+                <!-- Accordion card 1 -->
+                <div class="card">
+                    <!-- Card Title -->
+                    <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
+                        data-toggle="modal" role="button" data-target=".docs-example-modal-lg" aria-expanded="false"
+                        aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+                        <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                            <span class="badge badge-warning mr-4">Waiting</span>
+                            填空题 {{ question.question_text }}
+                        </h6>
+                    </div>
+
+
+                    <!-- Card Content -->
+                    <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse show"
+                        aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
+                        data-parent="#accordion-{{ question.id }}">
+                        <div class="card-body">
+                            <!-- 题目 -->
+                            <div class="container position-relative zindex-100">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="row justify-content-center">
+                                            <p>{{ question.body | richtext }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 选项 -->
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="row justify-content-center">
+                                            <div class="mb-3">
+                                                <form action="{% url 'cloze_polls:vote' question.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="answer"
+                                                            name="answer" placeholder="请输入答案">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit" value="Vote"
+                                                            class="btn btn-block btn-lg btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            {% endif %}
+
+
+            <!-- Case 3: 等待结果 userchoice & question  -->
+            {% if question.published and user_answer %}
+            <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+                <!-- Accordion card 1 -->
+                <div class="card">
+                    <!-- Card Title -->
+                    <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
+                        data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
+                        aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+                        <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                            <span class="badge badge-success mr-4">Done</span>
+                            填空题 {{ question.question_text }}
+                        </h6>
+                    </div>
+
+
+                    <!-- Card Content -->
+                    <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse show"
+                        aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
+                        data-parent="#accordion-{{ question.id }}">
+                        <div class="card-body">
+                            <!-- 题目 -->
+                            <div class="container position-relative zindex-100">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="row justify-content-center">
+                                            <p>{{ question.body | richtext }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="row justify-content-center">
+                                            <div class="mb-3">
+                                                <form action="{% url 'cloze_polls:vote' question.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="answer"
+                                                            name="answer" placeholder="请输入答案">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit" value="Vote"
+                                                            class="btn btn-block btn-lg btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6">
+                                    <div class="row justify-content-center">
+                                        <p>你已经回答了这个问题。</p>
+                                        <p>你的答案是
+                                            <span class="badge badge-soft-primary">
+                                                {{ user_answer.answer}}
+                                            </span>。
+                                        </p>
+                                        <p>请等待问题结束后查看正确答案。
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+
+            <!-- Case 4: 答案 userchoice & !question  -->
+            {% if not question.published and user_answer %}
+            <div id="accordion-{{ question.id }}" class="accordion accordion-stacked">
+                <!-- Accordion card 1 -->
+                <div class="card">
+                    <!-- Card Title -->
+                    <div class="card-header py-4 color" id="heading-{{ question.id }}-{{ question.id }}"
+                        data-toggle="collapse" role="button" data-target="#collapse-{{ question.id }}-{{ question.id }}"
+                        aria-expanded="false" aria-controls="collapse-{{ question.id }}-{{ question.id }}">
+                        <h6 class="mb-0"><i data-feather="file" class="mr-3"></i>
+                            {% if user_answer.publish.question == question %}
+                            {% if user_answer.correct == True %}
+                            <span class="badge badge-success mr-4">正确</span>
+                            {% else %}
+                            <span class="badge badge-danger mr-4">错误</span>
+                            {% endif %}
+                            填空题 {{ question.question_text }}
+                            {% endif %}
+
+                        </h6>
+                    </div>
+
+
+                    <!-- Card Content -->
+                    <div id="collapse-{{ question.id }}-{{ question.id }}" class="collapse show"
+                        aria-labelledby="heading-{{ question.id }}-{{ question.id }}"
+                        data-parent="#accordion-{{ question.id }}">
+                        <div class="card-body">
+                            <div class="container position-relative zindex-100">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="row justify-content-center">
+                                            <p>{{ question.body | richtext }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 选项 -->
+                            </div>
+                            <div class="row justify-content-center">
+                                <p>
+                                    {% if user_answer.publish.question == question %}
+                                    你的答案是
+                                    {% if user_answer.correct == True %}
+                                    <span class="badge badge-soft-success">{{ user_answer.answer }}</span>.
+                                    {% else %}
+                                    <span class="badge badge-soft-danger">{{ user_answer.answer }}</span>.
+                                    正确答案是
+                                    <span class="badge badge-soft-success">
+                                        {{ user_answer.publish.question.correct }}
+                                    </span>.
+                                    {% endif %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            {% endif %}
+        </div>
+    </div>
+    {# Global javascript #}
+    <!-- Core JS  -->
+    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/svg-injector/dist/svg-injector.min.js' %}"></script>
+    <!-- Quick JS -->
+    <script src="{% static 'js/quick-website.js' %}"></script>
+    <!-- Feather Icons -->
+    <script src="{% static 'libs/feather-icons/dist/feather.min.js' %}">
+        feather.replace({
+            'width': '1em',
+            'height': '1em'
+        })
+    </script>
+    <script>
+        $('#collapse-{{ question.id }}-{{ question.id }}').on('hide.bs.collapse', function (e) {
+            e.preventDefault(); // 阻止折叠事件的默认行为
+        });
+    </script>
+    {% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+    {% endblock %}
+</body>
+
+</html>

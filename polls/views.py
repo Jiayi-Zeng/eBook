@@ -12,6 +12,7 @@ from django.db.models import Max, Count, Q
 from django.http import Http404
 from django.utils import timezone
 from wagtail.models import Site, Page
+from django.shortcuts import redirect
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -100,6 +101,7 @@ class HistoryView(generic.ListView):
             'user_answer': user_answer,
             'answered_question_list': answered_question_list,
             'user_choice': user_choice,
+            
             'cloze_questions': cloze_questions,
             # 'cloze_user_answer': cloze_user_answer,
             'cloze_user_choice': cloze_user_choice,
@@ -145,26 +147,64 @@ def vote(request, question_id):
 
     existing_choice = UserChoice.objects.filter(user=current_user, publish=publish).first()
 
-    if existing_choice:
-        messages.error(request, f'For Question, you have already submitted Option {existing_choice.choice}')
-        # Redirect to the appropriate page
+    # if existing_choice:
+    #     # messages.error(request, f'For Question, you have already submitted Option {existing_choice.choice}')
+    #     # Redirect to the appropriate page
+    #     pass
+    # else:
+    question = publish.question
+    try:
+        selected_choice = question.choices.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(
+            request,
+            "polls/index.html",
+            {
+                "question": question,
+                "error_message": "You didn't select a choice.",
+            },
+        )
     else:
-        question = publish.question
-        try:
-            selected_choice = question.choices.get(pk=request.POST["choice"])
-        except (KeyError, Choice.DoesNotExist):
-            # Redisplay the question voting form.
-            return render(
-                request,
-                "polls/index.html",
-                {
-                    "question": question,
-                    "error_message": "You didn't select a choice.",
-                },
-            )
-        else:
-            user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
-            user_choice.save()
+        user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
+        print(user_choice)
+        user_choice.save()
+   
+    url = request.path.replace("/vote/", "")
+    return redirect(url)
+        
+def vote2(request, question_id):
+    current_user = request.user
+
+    # Check if the user has already made a choice for this question
+    publish_id = Publish.objects.filter(question__id=question_id).aggregate(max_id=Max('publish_id'))['max_id']
+    publish = Publish.objects.get(publish_id=publish_id)
+
+    existing_choice = UserChoice.objects.filter(user=current_user, publish=publish).first()
+
+    # if existing_choice:
+    #     # messages.error(request, f'For Question, you have already submitted Option {existing_choice.choice}')
+    #     # Redirect to the appropriate page
+    #     pass
+    # else:
+    question = publish.question
+    try:
+        selected_choice = question.choices.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(
+            request,
+            "polls/index.html",
+            {
+                "question": question,
+                "error_message": "You didn't select a choice.",
+            },
+        )
+    else:
+        user_choice = UserChoice(user=current_user, choice=selected_choice, publish_id=publish_id)
+        print(user_choice)
+        user_choice.save()
+   
     return HttpResponseRedirect(reverse("polls:history"))
 
 def publish(request, pk):
@@ -233,7 +273,10 @@ def detail(request, question_id):
         raise Http404("Question does not exist")
     
     publish_id = Publish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
-    publish = get_object_or_404(Publish, pk=publish_id)
+    if publish_id:
+        publish = Publish.objects.get(publish_id=publish_id)
+    else:
+        publish = None
 
     if request.user.is_authenticated:
         user_answer_id = UserChoice.objects.filter(user=request.user, publish__question_id=question_id).aggregate(max_id=Max('id'))['max_id']
@@ -241,13 +284,17 @@ def detail(request, question_id):
             user_answer = UserChoice.objects.get(id=user_answer_id)
         else:
             user_answer = None
+        flag = True
     else: 
         user_answer = None
+        flag = False
 
     context = {
         'question': question,
         'user_answer': user_answer,
         'publish': publish,
+        'flag': flag,
+
     }
     return render(request, "polls/detail_page.html", context)
  

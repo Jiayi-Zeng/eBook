@@ -67,7 +67,7 @@
                         <div class="col-lg-6">
                             <div class="row justify-content-center">
                                 <div class="mb-3">
-                                    <form action="{% url 'polls:vote' question.id %}" method="post">
+                                    <form action="{% url 'polls:vote2' question.id %}" method="post">
                                         {% csrf_token %}
                                         {% for choice in question.choices.all %}
                                         <div class="custom-control custom-radio">
@@ -131,14 +131,22 @@
                             <!-- Options -->
                             <div class="row justify-content-center">
                                 <div class="mb-3">
-                                    {% for choice in question.choices.all %}
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" name="choice" class="custom-control-input" disabled>
-                                        <label class="custom-control-label" for="choice{{ question.id }}">
-                                            {{ choice.choice_text }}
-                                        </label>
-                                    </div>
-                                    {% endfor %}
+                                    <form action="{% url 'polls:vote2' question.id %}" method="post">
+                                        {% csrf_token %}
+                                        {% for choice in question.choices.all %}
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="choice" id="choice-{{ choice.id }}"
+                                                value="{{ choice.id }}" class="custom-control-input">
+                                            <label class="custom-control-label" for="choice-{{ choice.id }}">
+                                                {{ choice.choice_text }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                        <div class="text-center">
+                                            <button type="submit" value="Vote"
+                                                class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

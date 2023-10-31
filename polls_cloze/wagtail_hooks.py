@@ -16,7 +16,6 @@ from wagtail.snippets import widgets as wagtailsnippets_widgets
 def snippet_publish_buttons(snippet, user, next_url=None):
     question_id = snippet.id
     is_published = snippet.published
-    print(type(snippet))
 
     if type(snippet) == ClozeQuestion:
         yield wagtailsnippets_widgets.SnippetListingButton(

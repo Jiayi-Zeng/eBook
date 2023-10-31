@@ -68,7 +68,7 @@
                         <div class="col-lg-6">
                             <div class="row justify-content-center">
                                 <div class="mb-3">
-                                    <form action="{% url 'cloze_polls:vote' question.id %}" method="post">
+                                    <form action="{% url 'cloze_polls:vote2' question.id %}" method="post">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="answer" name="answer" placeholder="请输入答案">
@@ -122,14 +122,18 @@
                     <!-- 选项 -->
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
-                            <!-- Options -->
                             <div class="row justify-content-center">
                                 <div class="mb-3">
-                                    {% for choice in question.choices.all %}
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" name="choice" class="custom-control-input" disabled>
-                                    </div>
-                                    {% endfor %}
+                                    <form action="{% url 'cloze_polls:vote2' question.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="请输入答案">
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" value="Vote"
+                                                class="btn btn-block btn-lg btn-primary">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +202,7 @@
                         </div>
                     </div>
                     <!-- 选项 -->
-                    <div class="row justify-content-center">
+<div class="row justify-content-center">
                         <div class="col-lg-6">
                             <!-- Options -->
                             <div class="row justify-content-center">
@@ -232,9 +236,9 @@
                             <span class="badge badge-soft-success">
                                 {{ userchoice.publish.question.correct }}
                             </span>.
+                            {% endif %}
                         {% endif %}
-                        {% endif %}
-                        {% endfor %}
+{% endfor %}
                         
                     </p>
                 </div>

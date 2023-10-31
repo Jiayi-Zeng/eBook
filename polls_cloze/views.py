@@ -9,16 +9,16 @@ from django.db.models import Q, Max
 from django.http import Http404
 from django.utils import timezone
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.shortcuts import redirect
 
-
-def detail(request, question_id):
-    try:
-        question = ClozeQuestion.objects.get(pk=question_id)
-    except ClozeQuestion.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, "polls_cloze/detail.html", {"question": question})
+# def detail(request, question_id):
+#     try:
+#         question = ClozeQuestion.objects.get(pk=question_id)
+#     except ClozeQuestion.DoesNotExist:
+#         raise Http404("Question does not exist")
+#     return render(request, "polls_cloze/detail.html", {"question": question})
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
@@ -116,19 +116,51 @@ def vote(request, question_id):
     existing_choice = ClozeUserChoice.objects.filter(user=current_user, publish=publish).first()
 
 
-    if existing_choice:
-        messages.error(request, f'For Question, you have already submitted Option {existing_choice.answer}')
-        # Redirect to the appropriate page
-    else:
-        publish_object = ClozePublish.objects.get(publish_id=publish_id)
-        question = publish_object.question
-        
-        answer = request.POST.get('answer')
-        answer = answer.replace(" ", "").replace("\n", "")
-        
-        user_choice = ClozeUserChoice(user=current_user, answer=answer, publish_id=publish_id)
-        user_choice.save()
+    # if existing_choice:
+    #     # messages.error(request, f'For Question, you have already submitted Option {existing_choice.answer}')
+    #     # Redirect to the appropriate page
+    #     pass
+    # else:
+    publish_object = ClozePublish.objects.get(publish_id=publish_id)
+    question = publish_object.question
+    
+    answer = request.POST.get('answer')
+    answer = answer.replace(" ", "").replace("\n", "")
+    
+    user_choice = ClozeUserChoice(user=current_user, answer=answer, publish_id=publish_id)
+    print(user_choice)
+    user_choice.save()
+
+    url = request.path.replace("/vote/", "")
+    return redirect(url)
+
+def vote2(request, question_id):
+    current_user = request.user
+
+    # Check if the user has already made a choice for this question
+    publish_id = ClozePublish.objects.filter(question__id=question_id).aggregate(max_id=Max('publish_id'))['max_id']
+    publish = ClozePublish.objects.get(publish_id=publish_id)
+
+    existing_choice = ClozeUserChoice.objects.filter(user=current_user, publish=publish).first()
+
+
+    # if existing_choice:
+    #     # messages.error(request, f'For Question, you have already submitted Option {existing_choice.answer}')
+    #     # Redirect to the appropriate page
+    #     pass
+    # else:
+    publish_object = ClozePublish.objects.get(publish_id=publish_id)
+    question = publish_object.question
+    
+    answer = request.POST.get('answer')
+    answer = answer.replace(" ", "").replace("\n", "")
+    
+    user_choice = ClozeUserChoice(user=current_user, answer=answer, publish_id=publish_id)
+    print(user_choice)
+    user_choice.save()
+
     return HttpResponseRedirect(reverse("polls:history"))
+
 
 class ResultsView(generic.DetailView):
     model = ClozeQuestion
@@ -193,3 +225,35 @@ class HistoryView(generic.ListView):
             'answered_publish_id': answered_publish_id
         }
         return context
+    
+def detail(request, question_id):
+    try:
+        question = ClozeQuestion.objects.get(pk=question_id)
+    except ClozeQuestion.DoesNotExist:
+        raise Http404("ClozeQuestion does not exist")
+    
+    publish_id = ClozePublish.objects.filter(question=question).aggregate(max_id=Max('publish_id'))['max_id']
+    if publish_id:
+        publish = get_object_or_404(ClozePublish, pk=publish_id)
+    else:
+        publish = None
+
+    if request.user.is_authenticated:
+        user_answer_id = ClozeUserChoice.objects.filter(user=request.user, publish__question_id=question_id).aggregate(max_id=Max('id'))['max_id']
+        if user_answer_id:
+            user_answer = ClozeUserChoice.objects.get(id=user_answer_id)
+        else:
+            user_answer = None
+        flag = True
+    else: 
+        flag = False
+        user_answer = None
+
+    context = {
+        'question': question,
+        'user_answer': user_answer,
+        'publish': publish,
+        'flag': flag
+    }
+    return render(request, "polls_cloze/detail_page.html", context)
+ 
