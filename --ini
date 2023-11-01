@@ -19601,3 +19601,30 @@ ClozeUserChoice object (None)
 [pid: 50701|app: 0|req: 161/240] 219.228.146.166 () {52 vars in 1109 bytes} [Wed Nov  1 11:33:00 2023] POST /accounts/login/ => generated 0 bytes in 513 msecs (HTTP/1.1 302) 14 headers in 1096 bytes (1 switches on core 0)
 <QuerySet [13, 14, 9, 7, 6, 5, 2, 3, 4, 12, 8, 11, 10]>
 [pid: 50701|app: 0|req: 162/241] 219.228.146.166 () {46 vars in 1407 bytes} [Wed Nov  1 11:33:00 2023] GET /polls/history/ => generated 153042 bytes in 87 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
+ClozeUserChoice object (None)
+[pid: 50701|app: 0|req: 163/242] 219.228.146.83 () {50 vars in 1466 bytes} [Wed Nov  1 11:33:11 2023] POST /cloze_polls/7/vote2/ => generated 0 bytes in 13 msecs (HTTP/1.1 302) 9 headers in 305 bytes (1 switches on core 0)
+<QuerySet [13, 14, 7, 6, 5, 2, 3, 4]>
+[pid: 50701|app: 0|req: 164/243] 219.228.146.83 () {44 vars in 1303 bytes} [Wed Nov  1 11:33:11 2023] GET /polls/history/ => generated 140038 bytes in 81 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
+[pid: 50701|app: 0|req: 165/244] 223.104.212.210 () {42 vars in 801 bytes} [Wed Nov  1 11:33:14 2023] GET /polls/history/ => generated 0 bytes in 1 msecs (HTTP/1.1 302) 9 headers in 327 bytes (1 switches on core 0)
+[pid: 50701|app: 0|req: 166/245] 223.104.212.210 () {42 vars in 844 bytes} [Wed Nov  1 11:33:14 2023] GET /accounts/login/?next=/polls/history/ => generated 7503 bytes in 7 msecs (HTTP/1.1 200) 11 headers in 526 bytes (1 switches on core 1)
+ClozeUserChoice object (None)
+[pid: 50701|app: 0|req: 167/246] 180.160.53.121 () {52 vars in 1568 bytes} [Wed Nov  1 11:33:23 2023] POST /cloze_polls/12/vote2/ => generated 0 bytes in 13 msecs (HTTP/1.1 302) 9 headers in 305 bytes (1 switches on core 0)
+<QuerySet [13, 14, 9, 7, 6, 5, 2, 3, 4, 12, 8, 11, 10]>
+[pid: 50701|app: 0|req: 168/247] 180.160.53.121 () {46 vars in 1401 bytes} [Wed Nov  1 11:33:23 2023] GET /polls/history/ => generated 153856 bytes in 88 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
+ClozeUserChoice object (None)
+[pid: 50701|app: 0|req: 169/248] 219.228.146.222 () {50 vars in 1472 bytes} [Wed Nov  1 11:33:24 2023] POST /cloze_polls/6/vote2/ => generated 0 bytes in 13 msecs (HTTP/1.1 302) 9 headers in 305 bytes (1 switches on core 0)
+<QuerySet [13, 14, 6, 5, 2, 3, 4]>
+[pid: 50699|app: 0|req: 42/249] 219.228.146.222 () {44 vars in 1309 bytes} [Wed Nov  1 11:33:24 2023] GET /polls/history/ => generated 127486 bytes in 70 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
+[pid: 50701|app: 0|req: 170/250] 223.104.212.210 () {50 vars in 1030 bytes} [Wed Nov  1 11:33:29 2023] POST /accounts/login/ => generated 0 bytes in 912 msecs (HTTP/1.1 302) 14 headers in 1095 bytes (1 switches on core 1)
+<QuerySet [13, 14]>
+[pid: 50701|app: 0|req: 171/251] 223.104.212.210 () {44 vars in 1327 bytes} [Wed Nov  1 11:33:30 2023] GET /polls/history/ => generated 130212 bytes in 108 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 0)
+ClozeUserChoice object (None)
+[pid: 50701|app: 0|req: 172/252] 219.228.146.83 () {50 vars in 1468 bytes} [Wed Nov  1 11:33:51 2023] POST /cloze_polls/8/vote2/ => generated 0 bytes in 12 msecs (HTTP/1.1 302) 9 headers in 305 bytes (1 switches on core 1)
+<QuerySet [13, 14, 7, 6, 5, 2, 3, 4, 8]>
+[pid: 50701|app: 0|req: 173/253] 219.228.146.83 () {44 vars in 1303 bytes} [Wed Nov  1 11:33:51 2023] GET /polls/history/ => generated 142181 bytes in 82 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 0)
+<QuerySet [13, 14, 9, 7, 6, 5, 2, 3, 4, 12, 8, 11, 10]>
+[pid: 50701|app: 0|req: 174/254] 180.160.53.121 () {46 vars in 1401 bytes} [Wed Nov  1 11:33:55 2023] GET /polls/history/ => generated 153856 bytes in 150 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
+ClozeUserChoice object (None)
+[pid: 50701|app: 0|req: 175/255] 219.228.146.222 () {50 vars in 1472 bytes} [Wed Nov  1 11:33:56 2023] POST /cloze_polls/7/vote2/ => generated 0 bytes in 18 msecs (HTTP/1.1 302) 9 headers in 305 bytes (1 switches on core 0)
+<QuerySet [13, 14, 7, 6, 5, 2, 3, 4]>
+[pid: 50701|app: 0|req: 176/256] 219.228.146.222 () {44 vars in 1309 bytes} [Wed Nov  1 11:33:56 2023] GET /polls/history/ => generated 129327 bytes in 109 msecs (HTTP/1.1 200) 9 headers in 416 bytes (1 switches on core 1)
