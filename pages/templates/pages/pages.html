@@ -120,21 +120,22 @@
                 <!-- Navigation -->
                 <div class="docs-sidebar pt-6 pt-lg-7">
                     {% if page.get_parent.get_parent %}
-                    <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ page.get_parent.get_parent.title }}</a></h5>
+                    <h5><a href="{% pageurl page.get_parent.get_parent %}">{{ page.get_parent.get_parent.title }}</a>
+                    </h5>
                     {% endif %}
 
                     {% for chapter in page.get_parent.get_parent.get_children %}
-                        <h6 class="mt-4">{{ chapter.title }} </h6>
-                        <ul class="nav flex-column">
-                            {% for post in chapter.get_children %}
-                            <li class="nav-item">
-                                <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
-                            </li>
-                            {% endfor %}
-                        </ul>
+                    <h6 class="mt-4">{{ chapter.title }} </h6>
+                    <ul class="nav flex-column">
+                        {% for post in chapter.get_children %}
+                        <li class="nav-item">
+                            <a href="{% pageurl post %}" class="nav-link">{{ post.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                     {% endfor %}
 
-                    
+
                 </div>
             </div>
         </nav>
