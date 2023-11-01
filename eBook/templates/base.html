@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Webpixels">
     <title>计算机导论 - 2023秋</title>
-    <!-- Preloader -->
+    
     <style>
         @keyframes hidePreloader {
             0% {
@@ -49,6 +49,7 @@
         body.loaded>div.preloader {
             animation: hidePreloader .5s linear .5s forwards;
         }
+
         .alert-modern {
             display: inline-block;
         }
@@ -64,9 +65,7 @@
     {# Global stylesheets #}
     <!-- Favicon -->
     <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
-
     <link rel="stylesheet" href="{% static 'libs/@fortawesome/fontawesome-free/css/all.min.css' %}">
-    <!-- Quick CSS -->
     <link rel="stylesheet" href="{% static 'css/quick-website.css' %}">
     <link rel="stylesheet" href="{% static 'css/eBook.css' %}">
 
@@ -83,6 +82,8 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
+
+    <!-- cookies -->
     <div class="modal fade" tabindex="-1" role="dialog" id="modal-cookies" data-backdrop="false"
         aria-labelledby="modal-cookies" aria-hidden="true">
         <div class="modal-dialog modal-dialog-aside left-4 right-4 bottom-4">
@@ -100,101 +101,90 @@
             </div>
         </div>
     </div>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-main navbar-expand-lg fixed-top navbar-shadow navbar-light bg-white border-bottom"
+    id="navbar-main">
         <div class="container">
-            <!-- Brand -->
+            <!-- LOGO -->
             <a class="navbar-brand" href="/">
                 <img alt="Image placeholder" src="{% static 'img/brand/dark.png' %}" id="navbar-logo">
             </a>
-            <!-- Toggler -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <!-- Collapse -->
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mt-4 mt-lg-0 ml-auto">
                     <li class="nav-item ">
                         <a class="nav-link" href="/intro_to_cs/">电子教材</a>
                     </li>
-                    <!-- <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
-                        <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">练习</a>
-                        <div class="dropdown-menu dropdown-menu-single">
-                            <a href="/polls/" class="dropdown-item">当前问题</a>
-                            <a href="/polls/history/" class="dropdown-item">全部问题</a>
-                        </div>
-                    </li> -->
                     <li class="nav-item ">
                         <a class="nav-link" href="/polls/history/">练习</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="/chat/" >人工智能助手</a>
+                        <a class="nav-link" href="/chat/">人工智能助手</a>
                     </li>
                 </ul>
                 <!-- Button -->
-
                 {% if request.user.is_authenticated %}
                 <!-- Button trigger modal -->
-                <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                    data-toggle="modal" data-target="#exampleModal">
                     你好, {{ request.user.username }}!
                 </button>
-  
-                
-
                 {% else %}
                 <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
                     href="{% url 'account_login' %}">
                     登录/注册
                 </a>
                 {% endif %}
-                
             </div>
         </div>
     </nav>
+
     <!-- Main content -->
     {% block content %}{% endblock %}
-     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{user.username}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <div class="pt-2 pb-3">
-                    <h5>Hi, {{user.username}}</h5>
-                    <p class="text-muted mb-0">
-                        Email: {{user.email}}
-                    </p>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{user.username}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            {% include "account/logout.html" %}
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            {% url 'account_logout' as action_url %}
-            {% element form method="post" action=action_url no_visible_fields=True %}
-                {% slot body %}
+                <div class="modal-body">
+                    <div class="pt-2 pb-3">
+                        <h5>Hi, {{user.username}}</h5>
+                        <p class="text-muted mb-0">
+                            Email: {{user.email}}
+                        </p>
+                    </div>
+                    {% include "account/logout.html" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {% url 'account_logout' as action_url %}
+                    {% element form method="post" action=action_url no_visible_fields=True %}
+                    {% slot body %}
                     {% csrf_token %}
                     {% if redirect_field_value %}
-                        <input type="hidden"
-                            name="{{ redirect_field_name }}"
-                            value="{{ redirect_field_value }}" />
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                     {% endif %}
-                {% endslot %}
-                {% slot actions %}
+                    {% endslot %}
+                    {% slot actions %}
                     {% element button type="submit" %}
-                        {% trans '退出' %}
+                    {% trans '退出' %}
                     {% endelement %}
-                {% endslot %}
-            {% endelement %}
+                    {% endslot %}
+                    {% endelement %}
+                </div>
             </div>
         </div>
-        </div>
     </div>
+
+    <!-- footer -->
     <footer class="position-relative" id="footer-main">
         <div class="footer pt-lg-7 footer-dark bg-dark">
             <!-- SVG shape -->
@@ -212,8 +202,8 @@
                     <div class="col-lg-4">
                         <!-- Theme's logo -->
                         <a href="/">
-                            <img alt="Image placeholder" src="{% static 'img/brand/light.png' %}" id="footer-logo" 
-                            style="height: 2.75rem;">
+                            <img alt="Image placeholder" src="{% static 'img/brand/light.png' %}" id="footer-logo"
+                                style="height: 2.75rem;">
                         </a>
                         <!-- Webpixels' mission -->
                         <p class="mt-4 text-lg pr-lg-4">计算机导论 @2023年秋</p>
@@ -271,8 +261,7 @@
                 <div class="row align-items-center justify-content-md-between pb-4">
                     <div class="col-md-6">
                         <div class="copyright text-sm font-weight-bold text-center text-md-left">
-                            &copy; 2023 <a class="font-weight-bold"
-                                target="_blank">Introduction to CS</a>. 
+                            &copy; 2023 <a class="font-weight-bold" target="_blank">Introduction to CS</a>.
                         </div>
                     </div>
                     <!-- <div class="col-md-6">
@@ -307,17 +296,6 @@
     <!-- Quick JS -->
     <script src="{% static 'js/quick-website.js' %}"></script>
     <!-- Feather Icons -->
-    <script src="{% static 'libs/feather-icons/dist/feather.min.js' %}">
-        feather.replace({
-            'width': '1em',
-            'height': '1em'
-        })
-    </script>
-    <script>
-        const currentUrl = window.location.href; // 获取当前页面的完整URL
-        const currentPath = window.location.pathname; // 获取当前页面的路径
-
-    </script>
 
     {% block extra_js %}
     {# Override this in templates to add extra javascript #}
