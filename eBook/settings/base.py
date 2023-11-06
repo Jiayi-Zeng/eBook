@@ -16,7 +16,6 @@ import os
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -156,7 +155,7 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(PROJECT_DIR, ""),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -165,7 +164,13 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+<<<<<<< HEAD
 STATIC_URL = "https://ebook2023.oss-cn-shanghai.aliyuncs.com/"
+=======
+print(STATIC_ROOT)
+STATIC_URL = "static/"
+
+>>>>>>> 656b35f5e7410af870895257d051222489dba7d4
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
 
