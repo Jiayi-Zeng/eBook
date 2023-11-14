@@ -244,16 +244,19 @@ def detail(request, question_id):
             user_answer = ClozeUserChoice.objects.get(id=user_answer_id)
         else:
             user_answer = None
+        num = ClozeUserChoice.objects.filter(user=request.user, publish__question_id=question_id).count()
         flag = True
     else: 
         flag = False
         user_answer = None
+        num = 0
 
     context = {
         'question': question,
         'user_answer': user_answer,
         'publish': publish,
-        'flag': flag
+        'flag': flag,
+        'num': num
     }
     return render(request, "polls_cloze/detail_page.html", context)
  

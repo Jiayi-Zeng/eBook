@@ -123,9 +123,9 @@
                         <li class="nav-item ">
                             <a class="nav-link" href="/intro_to_cs/">电子教材</a>
                         </li>
-                        <li class="nav-item ">
+                        <!-- <li class="nav-item ">
                             <a class="nav-link" href="/polls/history/">练习</a>
-                        </li>
+                        </li> -->
                         <!-- <li class="nav-item dropdown dropdown-animate" data-toggle="hover">
                             <a class="nav-link" href="/polls/" role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">练习</a>
@@ -142,7 +142,7 @@
 
                     {% if request.user.is_authenticated %}
                     <!-- Button trigger modal -->
-                    <button type="button" class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                    <button type="button" class="navbar-btn btn btn-sm btn-primary d-lg-inline-block ml-3"
                         data-toggle="modal" data-target="#exampleModal">
                         你好, {{ request.user.username }}!
                     </button>
@@ -150,7 +150,7 @@
 
 
                     {% else %}
-                    <a class="navbar-btn btn btn-sm btn-primary d-none d-lg-inline-block ml-3"
+                    <a class="navbar-btn btn btn-sm btn-primary d-lg-inline-block ml-3"
                         href="{% url 'account_login' %}">
                         登录/注册
                     </a>

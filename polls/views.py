@@ -282,19 +282,22 @@ def detail(request, question_id):
         user_answer_id = UserChoice.objects.filter(user=request.user, publish__question_id=question_id).aggregate(max_id=Max('id'))['max_id']
         if user_answer_id:
             user_answer = UserChoice.objects.get(id=user_answer_id)
+            
         else:
             user_answer = None
+        num = UserChoice.objects.filter(user=request.user, publish__question_id=question_id).count()
         flag = True
     else: 
         user_answer = None
         flag = False
+        num = 0
 
     context = {
         'question': question,
         'user_answer': user_answer,
         'publish': publish,
         'flag': flag,
-
+        'num': num,
     }
     return render(request, "polls/detail_page.html", context)
  

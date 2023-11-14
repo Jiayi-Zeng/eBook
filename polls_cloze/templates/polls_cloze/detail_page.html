@@ -234,8 +234,13 @@
                                                             name="answer" placeholder="请输入答案">
                                                     </div>
                                                     <div class="text-center">
+                                                        {% if num >= 3 %}
+                                                        <button type="submit" value="Vote"
+                                                            class="btn btn-block btn-lg btn-primary" disabled>Submit</button>
+                                                        {% else %}
                                                         <button type="submit" value="Vote"
                                                             class="btn btn-block btn-lg btn-primary">Submit</button>
+                                                        {% endif %}
                                                     </div>
                                                 </form>
                                             </div>
