@@ -1,17 +1,17 @@
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth.models import User
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
-from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
 
-from django.urls import path, include
-from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
+from book.views import BookViewSet
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -26,6 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'book', BookViewSet)
 
 
 
@@ -38,7 +39,6 @@ urlpatterns = [
     path('chat/', include('chatbot.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
-
 ]
 
 if settings.DEBUG:

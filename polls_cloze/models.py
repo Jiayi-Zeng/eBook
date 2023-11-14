@@ -36,6 +36,7 @@ class ClozeQuestion(ClusterableModel):
     class Meta:
         verbose_name = "填空题"
         verbose_name_plural = "填空题"
+        ordering = ['question_text']
 
 class ClozeQuestionViewSet(SnippetViewSet):
     model = ClozeQuestion

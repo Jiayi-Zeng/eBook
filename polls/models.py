@@ -36,10 +36,10 @@ class Question(ClusterableModel):
     def __str__(self):
         return self.question_text
 
-    
     class Meta:
         verbose_name = "选择题"
         verbose_name_plural = "选择题"
+        ordering = ['question_text']
 
 class QuestionViewSet(SnippetViewSet):
     model = Question

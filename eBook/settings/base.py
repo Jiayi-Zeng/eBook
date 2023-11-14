@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
+    'rest_framework',
+
     'wagtailmarkdown',
 
     "wagtail.contrib.forms",
@@ -78,6 +80,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = "eBook.urls"
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 TEMPLATES = [
     {
@@ -164,13 +174,8 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-<<<<<<< HEAD
 STATIC_URL = "https://ebook2023.oss-cn-shanghai.aliyuncs.com/"
-=======
-print(STATIC_ROOT)
-STATIC_URL = "static/"
 
->>>>>>> 656b35f5e7410af870895257d051222489dba7d4
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
 
