@@ -4,9 +4,7 @@ from wagtailmarkdown.fields import MarkdownField
 from modelcluster.fields import ParentalKey
 
 
-class MdPages(Page):
-
-
+class MDPages(Page):
     body = MarkdownField(blank=True)
 
     content_panels = Page.content_panels + [

@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from .models import MDPages
+from .serializers import MDPageSerializer
+from rest_framework import viewsets
 
-# Create your views here.
+
+# ViewSets define the view behavior.
+class MDPageViewSet(viewsets.ModelViewSet):
+    queryset = MDPages.objects.all()
+    serializer_class = MDPageSerializer

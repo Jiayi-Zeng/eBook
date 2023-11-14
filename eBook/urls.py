@@ -12,6 +12,8 @@ from search import views as search_views
 from rest_framework import routers, serializers, viewsets
 
 from book.views import BookViewSet
+from md_pages.views import MDPageViewSet
+
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -27,7 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'book', BookViewSet)
-
+router.register(r'md_page', MDPageViewSet)
 
 
 urlpatterns = [

@@ -9,13 +9,13 @@ from wagtail.models import Page, Orderable
 from modelcluster.models import ClusterableModel
 from modelcluster.fields import ParentalKey
 from wagtail.snippets.views.snippets import SnippetViewSet
-from md_pages.models import MdPages
+from md_pages.models import MDPages
 from wagtail.admin.ui.tables import UpdatedAtColumn
 from wagtail.fields import RichTextField
 
 class ClozeQuestion(ClusterableModel):
     id = models.AutoField(primary_key=True)
-    page = ParentalKey(MdPages, on_delete=models.CASCADE, related_name='cloze_questions')
+    page = ParentalKey(MDPages, on_delete=models.CASCADE, related_name='cloze_questions')
     question_text = models.CharField(max_length=200)
     body = RichTextField(blank=True)
 
