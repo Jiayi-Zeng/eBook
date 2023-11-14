@@ -301,3 +301,29 @@ def detail(request, question_id):
     }
     return render(request, "polls/detail_page.html", context)
  
+
+
+from .serializers import QuestionSerializer, ChoiceSerializer, PublishSerializer, UserChoiceSerializer
+from rest_framework import viewsets
+
+
+# ViewSets define the view behavior.
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+
+class ChoiceViewSet(viewsets.ModelViewSet):
+    queryset = Choice.objects.all()
+    serializer_class = ChoiceSerializer
+
+    
+class PublishViewSet(viewsets.ModelViewSet):
+    queryset = Publish.objects.all()
+    serializer_class = PublishSerializer
+
+
+class UserChoiceViewSet(viewsets.ModelViewSet):
+    queryset = UserChoice.objects.all()
+    serializer_class = UserChoiceSerializer
+

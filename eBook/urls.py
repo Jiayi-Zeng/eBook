@@ -13,6 +13,7 @@ from rest_framework import routers, serializers, viewsets
 
 from book.views import BookViewSet
 from md_pages.views import MDPageViewSet
+from polls.views import QuestionViewSet, PublishViewSet, ChoiceViewSet, UserChoiceViewSet
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,6 +31,10 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'book', BookViewSet)
 router.register(r'md_page', MDPageViewSet)
+router.register(r'question', QuestionViewSet)
+router.register(r'publish', PublishViewSet)
+router.register(r'choice', ChoiceViewSet)
+router.register(r'userchoice', UserChoiceViewSet)
 
 
 urlpatterns = [
