@@ -8,6 +8,3 @@ cd eBook
 pip install -r requirements.txt
 python manage.py runserver
 ```
-## TODO
-- [ ] Frontend: Bootstrap + Vue
-- [ ] Online Questions Answering System
