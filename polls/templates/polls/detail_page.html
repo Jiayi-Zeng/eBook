@@ -243,8 +243,13 @@
                                             </div>
                                             {% endfor %}
                                             <div class="text-center">
+                                                {% if num >= 3 %}
+                                                <button type="submit" value="Vote"
+                                                class="btn btn-block btn-lg btn-primary mt-4" disabled>Submit</button>
+                                                {% else %}
                                                 <button type="submit" value="Vote"
                                                     class="btn btn-block btn-lg btn-primary mt-4">Submit</button>
+                                                {% endif %}
                                             </div>
                                         </form>
                                     </div>

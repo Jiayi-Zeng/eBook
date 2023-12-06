@@ -1,0 +1,41 @@
+{% extends "allauth/layouts/index.html" %}
+
+{% load wagtailcore_tags static allauth i18n account %}
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+{% block content %}
+
+<div class="card-body px-md-5 py-5">
+    <div class="mb-3">
+        <h6 class="h3">Login</h6>
+        <p class="text-muted mb-0">Sign in to your account to continue.</p>
+    </div>
+    <span class="clearfix"></span>
+    {% url 'account_login' as login_url %}
+    {% element form form=form method="post" action=login_url tags="entrance,login" %}
+        {% slot body %}
+            {% csrf_token %}
+            {% element fields form=form unlabeled=True %}
+            {% endelement %}
+            {% if redirect_field_value %}
+                <input type="hidden"
+                       name="{{ redirect_field_name }}"
+                       value="{{ redirect_field_value }}" />
+            {% endif %}
+        {% endslot %}
+        {% slot actions %}
+            {% element button type="submit" tags="prominent,login" %}
+                {% trans "Sign In" %}
+            {% endelement %}
+        {% endslot %}
+    {% endelement %}
+</div>
+<div class="card-footer px-md-5">
+    <small>Forget Password?</small>
+    <a href="/accounts/password/reset/" class="small font-weight-bold">Find your Password</a>.<br>
+    <small>Not registered?</small>
+    <a href="{{ signup_url }}" class="small font-weight-bold">Create account</a>.
+</div>
+
+{% endblock %}
