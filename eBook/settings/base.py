@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'rest_framework',
+    'wagtail.api.v2',
+    'corsheaders',
 
     'wagtailmarkdown',
 
@@ -75,6 +77,7 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     'eBook.settings.csp_middleware.CSPMiddleware',
     "allauth.account.middleware.AccountMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "eBook.urls"
@@ -84,9 +87,20 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    #     # 'django.contrib.auth'
+    # ]
+   'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 其他认证类
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAdminUser',
+    ],
+
 }
 
 TEMPLATES = [
@@ -222,3 +236,10 @@ WAGTAILMARKDOWN = {
     "extension_configs": {},  # optional. a dictionary with the extension name as key, and its configuration as value
     "extensions_settings_mode": "extend",  # optional. Possible values: "extend" or "override". Defaults to "extend".
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://www.zzuo.cn",
+    "http://www.zzuo.cn",
+]

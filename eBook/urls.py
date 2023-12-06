@@ -12,8 +12,10 @@ from search import views as search_views
 from rest_framework import routers, serializers, viewsets
 
 from book.views import BookViewSet
-from md_pages.views import MDPageViewSet
+from md_pages.views import MDPageViewSet, PageViewSet
 from polls.views import QuestionViewSet, PublishViewSet, ChoiceViewSet, UserChoiceViewSet
+from polls_cloze.views import ClozePublishViewSet, ClozeQuestionViewSet, ClozeUserChoiceViewSet
+from wagtail.api.v2.router import WagtailAPIRouter
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,10 +33,16 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'book', BookViewSet)
 router.register(r'md_page', MDPageViewSet)
+router.register(r'pages', PageViewSet)
 router.register(r'question', QuestionViewSet)
 router.register(r'publish', PublishViewSet)
 router.register(r'choice', ChoiceViewSet)
 router.register(r'userchoice', UserChoiceViewSet)
+router.register(r'cloze_publish', ClozePublishViewSet)
+router.register(r'cloze_question', ClozeQuestionViewSet)
+router.register(r'cloze_userchoice', ClozeUserChoiceViewSet)
+
+
 
 
 urlpatterns = [
@@ -46,6 +54,7 @@ urlpatterns = [
     path('chat/', include('chatbot.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
+    path('', include(wagtail_urls)),
 ]
 
 if settings.DEBUG:
@@ -55,15 +64,5 @@ if settings.DEBUG:
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns = urlpatterns + [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    path("", include(wagtail_urls)),
-    # Alternatively, if you want Wagtail pages to be served from a subpath
-    # of your site, rather than the site root:
-    #    path("pages/", include(wagtail_urls)),
-]
 
 

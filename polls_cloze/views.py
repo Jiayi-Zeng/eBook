@@ -260,3 +260,21 @@ def detail(request, question_id):
     }
     return render(request, "polls_cloze/detail_page.html", context)
  
+from .serializers import ClozeQuestionSerializer, ClozePublishSerializer, ClozeUserChoiceSerializer
+from rest_framework import viewsets
+
+
+# ViewSets define the view behavior.
+class ClozeQuestionViewSet(viewsets.ModelViewSet):
+    queryset = ClozeQuestion.objects.all()
+    serializer_class = ClozeQuestionSerializer
+    
+class ClozePublishViewSet(viewsets.ModelViewSet):
+    queryset = ClozePublish.objects.all()
+    serializer_class = ClozePublishSerializer
+
+
+class ClozeUserChoiceViewSet(viewsets.ModelViewSet):
+    queryset = ClozeUserChoice.objects.all()
+    serializer_class = ClozeUserChoiceSerializer
+
